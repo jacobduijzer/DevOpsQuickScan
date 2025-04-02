@@ -1,0 +1,57 @@
+﻿@page "/vote"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+
+<h3>Vote Page</h3>
+
+<input @bind="sessionId" placeholder="Session ID" />
+<input @bind="vote" placeholder="Your Vote" />
+<button @onclick="JoinSession">Join</button>
+<button @onclick="SubmitVote">Submit Vote</button>
+
+<p>@statusMessage</p>
+
+@code {
+    private HubConnection? hubConnection;
+    private string sessionId = "";
+    private string vote = "";
+    private string statusMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hub/voting"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string>("VoteReceived", async (receivedVote) =>
+        {
+            await InvokeAsync(() =>
+            {
+                statusMessage = $"Someone voted: {receivedVote}";
+                StateHasChanged();
+            });
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task JoinSession()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.InvokeAsync("JoinSession", sessionId);
+            statusMessage = $"Joined session {sessionId}";
+        }
+    }
+
+    private async Task SubmitVote()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.InvokeAsync("SubmitVote", sessionId, vote);
+            statusMessage = $"You voted: {vote}";
+        }
+    }
+}
