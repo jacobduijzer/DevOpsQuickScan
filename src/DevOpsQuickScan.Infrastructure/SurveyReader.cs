@@ -8,7 +8,7 @@ public class SurveyReader
     public async Task<Survey> Read(string fileName)
     {
         var path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)!;
-        var jsonFile = await File.ReadAllTextAsync(Path.Combine(path, fileName));
+        var jsonFile = Path.Combine(path, fileName);
         if (!File.Exists(fileName))
             throw new FileNotFoundException("File not found", jsonFile);
 
@@ -17,7 +17,7 @@ public class SurveyReader
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        var jsonSurveyData = await File.ReadAllTextAsync(fileName);
+        var jsonSurveyData = await File.ReadAllTextAsync(jsonFile);
         return JsonSerializer.Deserialize<Survey>(jsonSurveyData, options)!;
     }
 }

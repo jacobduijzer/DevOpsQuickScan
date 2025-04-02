@@ -1,8 +1,11 @@
 ﻿@page "/facilitator"
 @rendermode InteractiveServer
+@using DevOpsQuickScan.Domain
+@using DevOpsQuickScan.Infrastructure
+@using Microsoft.AspNetCore.Server.HttpSys
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
-
+@inject SurveyReader SurveyReader
 
 <PageTitle>Facilitator</PageTitle>
 
@@ -12,7 +15,7 @@
 
 @if (!sessionStarted)
 {
-    <input @bind="sessionId" placeholder="Session key (e.g. abc123)" />
+    <input @bind="sessionId" placeholder="Session key (e.g. abc123)"/>
     <button @onclick="StartSession">Start Session</button>
 }
 else
@@ -25,14 +28,17 @@ else
             <li>@user</li>
         }
     </ul>
-    
-    <p><b>Messages:</b></p>
-    <ul>
-        @foreach (var message in messages)
-        {
-            <li>@message</li>
-        }
-    </ul>
+
+    @if (_survey != null)
+    {
+        <p><b>Survey: @_survey.Title</b></p>
+        <ul>
+            @foreach (var question in _survey.Questions)
+            {
+                <li>@question.Text - <button @onclick="() => SendQuestion(question.Id)">Request vote</button> (@GetNumberOfVotes(question.Id))</li>
+            }
+        </ul>
+    }
 }
 
 @code {
@@ -40,7 +46,8 @@ else
     private string sessionId = "";
     private bool sessionStarted = false;
     private HashSet<string> participants = new();
-    private HashSet<string> messages = new();
+    private HashSet<Vote> votes = new();
+    private Survey _survey;
 
     private async Task StartSession()
     {
@@ -59,16 +66,7 @@ else
                 StateHasChanged();
             });
         });
-        
-        hubConnection.On<string>("VoteReceived", async (receivedVote) =>
-        {
-            await InvokeAsync(() =>
-            {
-                messages.Add(receivedVote);
-                StateHasChanged();
-            });
-        });
-        
+
         hubConnection.On<string>("ParticipantLeft", async (userId) =>
         {
             await InvokeAsync(() =>
@@ -78,8 +76,34 @@ else
             });
         });
 
+        hubConnection.On<Vote>("VoteReceived", async (vote) =>
+        {
+            await InvokeAsync(() =>
+            {
+                votes.Add(vote);
+                StateHasChanged();
+            });
+        });
+
         await hubConnection.StartAsync();
         await hubConnection.InvokeAsync("StartSession", sessionId);
         await hubConnection.InvokeAsync("JoinSession", sessionId);
+
+        _survey = await SurveyReader.Read(Path.Combine("Surveys", "survey-01.json"));
     }
+
+    private async Task SendQuestion(Guid questionId)
+    {
+        var question = _survey.Questions.FirstOrDefault(q => q.Id == questionId);
+        await hubConnection.InvokeAsync("SendQuestion", question);
+    }
+
+    private int GetNumberOfVotes(Guid questionId)
+    {
+        if (!votes.Any() || !votes.Any(x => x.QuestionId == questionId))
+            return 0;
+
+        return votes.Count(v => v.QuestionId == questionId);
+    }
+
 }

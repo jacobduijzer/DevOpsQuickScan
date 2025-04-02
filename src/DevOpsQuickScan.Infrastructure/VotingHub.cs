@@ -1,3 +1,4 @@
+using DevOpsQuickScan.Domain;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DevOpsQuickScan.Infrastructure;
@@ -33,10 +34,15 @@ public class VotingHub : Hub
             await Clients.Caller.SendAsync("ReceiveQuestion", currentQuestion);
         }
     }
-
-    public async Task SubmitVote(string sessionId, string option)
+    
+    public async Task SendQuestion(Question question)
     {
-        await Clients.Group(sessionId).SendAsync("VoteReceived", option);
+        await Clients.All.SendAsync("ReceiveQuestion", question);
+    }
+
+    public async Task SubmitVote(string sessionId, Vote vote)
+    {
+        await Clients.Group(sessionId).SendAsync("VoteReceived", vote);
     }
 
     public async Task SetCurrentQuestion(string sessionId, string question)

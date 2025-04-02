@@ -1,22 +1,36 @@
 ﻿@page "/vote"
 @rendermode InteractiveServer
+@using DevOpsQuickScan.Domain
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
 
 <h3>Vote Page</h3>
 
-<input @bind="sessionId" placeholder="Session ID" />
-<input @bind="vote" placeholder="Your Vote" />
+<input @bind="sessionId" placeholder="Session ID"/>
 <button @onclick="JoinSession">Join</button>
-<button @onclick="SubmitVote">Submit Vote</button>
 
 <p>@statusMessage</p>
+
+@if (_currentQuestion != null)
+{
+    <p>Question: @_currentQuestion.Text</p>
+    <ul>
+        @foreach (var answer in _currentQuestion.Answers)
+        {
+            <li>@answer.Text - <button @onclick="() => SubmitVote(answer.Id)">Vote</button></li>
+        }
+    </ul>
+}
+else
+{
+    <p>Waiting for question...</p>
+}
 
 @code {
     private HubConnection? hubConnection;
     private string sessionId = "";
-    private string vote = "";
     private string statusMessage = "";
+    private Question _currentQuestion;
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,11 +39,11 @@
             .WithAutomaticReconnect()
             .Build();
 
-        hubConnection.On<string>("VoteReceived", async (receivedVote) =>
+        hubConnection.On<Question>("ReceiveQuestion", async (question) =>
         {
             await InvokeAsync(() =>
             {
-                statusMessage = $"Someone voted: {receivedVote}";
+                _currentQuestion = question;
                 StateHasChanged();
             });
         });
@@ -46,12 +60,12 @@
         }
     }
 
-    private async Task SubmitVote()
+    private async Task SubmitVote(Guid answerId)
     {
         if (hubConnection is not null)
         {
-            await hubConnection.InvokeAsync("SubmitVote", sessionId, vote);
-            statusMessage = $"You voted: {vote}";
+            await hubConnection.InvokeAsync("SubmitVote", sessionId, new Vote(_currentQuestion.Id, answerId));
+            statusMessage = $"You voted: {_currentQuestion.Answers.FirstOrDefault(q => q.Id == answerId).Text}";
         }
     }
 }
