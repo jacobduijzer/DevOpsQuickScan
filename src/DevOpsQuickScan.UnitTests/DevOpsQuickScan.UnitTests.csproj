@@ -18,4 +18,15 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj" />
+      <ProjectReference Include="..\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="survey-01.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

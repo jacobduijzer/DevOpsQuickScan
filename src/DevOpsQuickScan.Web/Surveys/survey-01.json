@@ -1,0 +1,41 @@
+{
+  "id": "a3b8f7c9-9ef4-4c41-b620-fb3a1f123456",
+  "title": "Team Practices Survey",
+  "createdAt": "2025-04-02T09:30:00Z",
+  "active": true,
+  "questions": [
+    {
+      "id": "0d9f2e2c-b761-41a4-8d61-e8e43298f7cc",
+      "text": "How does your team ensure that code remains maintainable over time?",
+      "order": 1,
+      "answers": [
+        {
+          "id": "5f6be2ae-38a7-4f01-b84b-f1a2d9239e77",
+          "order": 1,
+          "text": "We don’t have a defined approach"
+        },
+        {
+          "id": "d7129d98-2103-4c0d-b678-ea0e2dfe7f51",
+          "order": 2,
+          "text": "We use basic linting and formatting tools"
+        },
+        {
+          "id": "7c2d91d3-c5ea-4f6c-8fc0-935b7d8c71d3",
+          "order": 3,
+          "text": "We follow code review and documentation guidelines"
+        },
+        {
+          "id": "fac2c5b7-5c2e-4b1f-b7a9-7c442e1ce1f8",
+          "order": 4,
+          "text": "We apply automated maintainability checks and refactoring practices"
+        },
+        {
+          "id": "fc6db9a0-6c6f-4f8f-bdc0-8d4f7fd8c7ee",
+          "order": 5,
+          "text": "We have a culture of continuous refactoring and evolutionary architecture"
+        }
+      ]
+    }
+  ]
+}
+
