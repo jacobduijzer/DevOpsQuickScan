@@ -4,21 +4,63 @@ namespace DevOpsQuickScan.Infrastructure;
 
 public class VotingHub : Hub
 {
-    public async Task JoinSession(string sessionId) =>
+    private static readonly Dictionary<string, string> SessionQuestions = new();
+    private static readonly Dictionary<string, HashSet<string>> SessionParticipants = new();
+
+    public async Task StartSession(string sessionId)
+    {
+        SessionParticipants.TryAdd(sessionId, new HashSet<string>());
+    }
+
+    public async Task JoinSession(string sessionId)
+    {
         await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
+
+        var userId = Context.ConnectionId; // or something more friendly later
+
+        if (!SessionParticipants.TryGetValue(sessionId, out var participants))
+        {
+            participants = new HashSet<string>();
+            SessionParticipants[sessionId] = participants;
+        }
+
+        participants.Add(userId);
+        await Clients.Group(sessionId).SendAsync("ParticipantJoined", userId);
+
+        // Send the current question if available
+        if (SessionQuestions.TryGetValue(sessionId, out var currentQuestion))
+        {
+            await Clients.Caller.SendAsync("ReceiveQuestion", currentQuestion);
+        }
+    }
 
     public async Task SubmitVote(string sessionId, string option)
     {
-        Console.WriteLine($"Received vote: {option} for session: {sessionId}");
+        await Clients.Group(sessionId).SendAsync("VoteReceived", option);
+    }
 
-        try
+    public async Task SetCurrentQuestion(string sessionId, string question)
+    {
+        SessionQuestions[sessionId] = question;
+        await Clients.Group(sessionId).SendAsync("ReceiveQuestion", question);
+    }
+    
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        Console.WriteLine($"Disconnected: {Context.ConnectionId}");
+
+        foreach (var kvp in SessionParticipants)
         {
-            await Clients.Group(sessionId).SendAsync("VoteReceived", option);
+            var sessionId = kvp.Key;
+            var participants = kvp.Value;
+
+            if (participants.Remove(Context.ConnectionId))
+            {
+                await Clients.Group(sessionId).SendAsync("ParticipantLeft", Context.ConnectionId);
+                break;
+            }
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"💥 Error in SubmitVote: {ex.Message}");
-            throw;
-        }
+
+        await base.OnDisconnectedAsync(exception);
     }
 }

@@ -1,0 +1,85 @@
+﻿@page "/facilitator"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+
+
+<PageTitle>Facilitator</PageTitle>
+
+<h1>Facilitator</h1>
+
+<h3>Facilitator Panel</h3>
+
+@if (!sessionStarted)
+{
+    <input @bind="sessionId" placeholder="Session key (e.g. abc123)" />
+    <button @onclick="StartSession">Start Session</button>
+}
+else
+{
+    <p><b>Session:</b> @sessionId</p>
+    <p><b>Participants:</b></p>
+    <ul>
+        @foreach (var user in participants)
+        {
+            <li>@user</li>
+        }
+    </ul>
+    
+    <p><b>Messages:</b></p>
+    <ul>
+        @foreach (var message in messages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+}
+
+@code {
+    private HubConnection? hubConnection;
+    private string sessionId = "";
+    private bool sessionStarted = false;
+    private HashSet<string> participants = new();
+    private HashSet<string> messages = new();
+
+    private async Task StartSession()
+    {
+        sessionStarted = true;
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hub/voting"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string>("ParticipantJoined", async (userId) =>
+        {
+            await InvokeAsync(() =>
+            {
+                participants.Add(userId);
+                StateHasChanged();
+            });
+        });
+        
+        hubConnection.On<string>("VoteReceived", async (receivedVote) =>
+        {
+            await InvokeAsync(() =>
+            {
+                messages.Add(receivedVote);
+                StateHasChanged();
+            });
+        });
+        
+        hubConnection.On<string>("ParticipantLeft", async (userId) =>
+        {
+            await InvokeAsync(() =>
+            {
+                participants.Remove(userId);
+                StateHasChanged();
+            });
+        });
+
+        await hubConnection.StartAsync();
+        await hubConnection.InvokeAsync("StartSession", sessionId);
+        await hubConnection.InvokeAsync("JoinSession", sessionId);
+    }
+}
