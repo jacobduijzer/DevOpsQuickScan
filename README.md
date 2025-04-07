@@ -22,3 +22,5 @@ People can answer questions, admin can see answers and reveal answers.
 People can rejoin by using the link.
 Admin is in control of which question is visible and if the answers are visible.
 
+![Screen](./docs/images/visual-01.png)
+
