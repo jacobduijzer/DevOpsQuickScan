@@ -12,3 +12,13 @@
 ## Hosting
 
 - Cloudflare Flare Tunnel
+
+## Ideas
+
+Hosting in Azure / Cloud environment, with a light-weight data solution.
+Storing questions and sessions together.
+Admin can create a session, adds questions, invite people.
+People can answer questions, admin can see answers and reveal answers.
+People can rejoin by using the link.
+Admin is in control of which question is visible and if the answers are visible.
+
