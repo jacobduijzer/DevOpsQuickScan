@@ -38,7 +38,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|jacobduijzer/devops-quickscan:latest'
+      linuxFxVersion: 'DOCKER|jacobduijzer/devops-quickscan'
     }
   }
 }
