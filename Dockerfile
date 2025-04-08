@@ -16,8 +16,9 @@ RUN dotnet publish -c Release -o /app/publish
 # Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
+ENV ASPNETCORE_URLS=http://+:80
 
 COPY --from=build /app/publish .
 
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["dotnet", "DevOpsQuickScan.Web.dll"]
