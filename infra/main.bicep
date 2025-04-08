@@ -43,47 +43,47 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
-  name: cosmosDbAccountName
-  location: location
-  kind: 'GlobalDocumentDB'
-  properties: {
-    databaseAccountOfferType: 'Standard'
-    locations: [
-      {
-        locationName: location
-        failoverPriority: 0
-      }
-    ]
-    consistencyPolicy: {
-      defaultConsistencyLevel: 'Session'
-    }
-    capabilities: []
-  }
-}
+// resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
+//   name: cosmosDbAccountName
+//   location: location
+//   kind: 'GlobalDocumentDB'
+//   properties: {
+//     databaseAccountOfferType: 'Standard'
+//     locations: [
+//       {
+//         locationName: location
+//         failoverPriority: 0
+//       }
+//     ]
+//     consistencyPolicy: {
+//       defaultConsistencyLevel: 'Session'
+//     }
+//     capabilities: []
+//   }
+// }
 
-resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-04-15' = {
-  name: '${cosmosDb.name}/${cosmosDbDatabaseName}'
-  properties: {
-    resource: {
-      id: cosmosDbDatabaseName
-    }
-  }
-  dependsOn: [cosmosDb]
-}
+// resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-04-15' = {
+//   name: '${cosmosDb.name}/${cosmosDbDatabaseName}'
+//   properties: {
+//     resource: {
+//       id: cosmosDbDatabaseName
+//     }
+//   }
+//   dependsOn: [cosmosDb]
+// }
 
-resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-04-15' = {
-  name: '${cosmosDb.name}/${cosmosDbDatabase.name}/${cosmosDbContainerName}'
-  properties: {
-    resource: {
-      id: cosmosDbContainerName
-      partitionKey: {
-        paths: ['/sessionId']
-        kind: 'Hash'
-      }
-    }
-  }
-  dependsOn: [cosmosDbDatabase]
-}
+// resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-04-15' = {
+//   name: '${cosmosDb.name}/${cosmosDbDatabase.name}/${cosmosDbContainerName}'
+//   properties: {
+//     resource: {
+//       id: cosmosDbContainerName
+//       partitionKey: {
+//         paths: ['/sessionId']
+//         kind: 'Hash'
+//       }
+//     }
+//   }
+//   dependsOn: [cosmosDbDatabase]
+// }
 
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
