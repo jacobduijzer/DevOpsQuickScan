@@ -18,7 +18,21 @@ param cosmosDbDatabaseName string = 'questionnaireDb'
 @description('The name of the Cosmos DB container')
 param cosmosDbContainerName string = 'sessions'
 
-resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
+@description('Docker hub password')
+param dockerHubPassword string 
+
+@description('Docker hub username')
+param dockerHubUsername string 
+
+
+var appConfigNew = {
+  DOCKER_ENABLE_CI: 'true'
+  DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
+  DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
+  DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
+}
+
+resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
   location: location
   sku: {
@@ -31,16 +45,22 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource webApp 'Microsoft.Web/sites@2022-03-01' = {
+resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: webAppName
   location: location
   kind: 'app,linux,container'
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|jacobduijzer/devops-quickscan'
+      linuxFxVersion: 'DOCKER|${dockerHubUsername}/devops-quickscan:latest'
     }
   }
+}
+
+resource appSettings 'Microsoft.Web/sites/config@2024-04-01' = {
+  name: 'appsettings'
+  parent: webApp
+  properties: appConfigNew
 }
 
 // resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {

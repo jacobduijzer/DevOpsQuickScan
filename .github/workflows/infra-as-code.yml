@@ -39,4 +39,4 @@ jobs:
           az deployment group create \
             --resource-group $RESOURCE_GROUP \
             --template-file infra/main.bicep \
-            --parameters webAppName=$WEBAPP_NAME cosmosDbAccountName=$COSMOSDB_NAME
+            --parameters webAppName=$WEBAPP_NAME cosmosDbAccountName=$COSMOSDB_NAME dockerHubPassword=${{ secrets.DOCKERHUB_TOKEN }} dockerHubUsername=${{ secrets.DOCKERHUB_USERNAME }}
