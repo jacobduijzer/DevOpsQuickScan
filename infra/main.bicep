@@ -38,7 +38,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
-      linuxFxVersion: 'DOCKER|<your-dockerhub-username>/<your-image-name>:latest'
+      linuxFxVersion: 'DOCKER|jacobduijzer/devops-quickscan:latest'
     }
   }
 }
