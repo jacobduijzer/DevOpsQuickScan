@@ -20,5 +20,5 @@ ENV ASPNETCORE_URLS=http://+:80
 
 COPY --from=build /app/publish .
 
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "DevOpsQuickScan.Web.dll"]
