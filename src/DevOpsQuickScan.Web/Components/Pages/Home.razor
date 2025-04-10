@@ -1,7 +1,113 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@using DevOpsQuickScan.Domain
+@using DevOpsQuickScan.Infrastructure
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+@inject SurveyReader SurveyReader
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+@if (!sessionStarted)
+{
+    <div class="quickscan-card">
+        <img src="@Assets["/img/logo.jpg"]" width="300" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
+        <div class="mb-3 text-start">
+            <label for="nameInput" class="form-label">Enter a session name</label>
+            <input type="text" class="form-control" id="nameInput" name="sessionName" required/>
+        </div>
+        <button @onclick="StartSession" class="btn btn-primary w-100">Start Session</button>
+    </div>
+}
+else
+{
+    <p><b>Session:</b> @sessionId</p>
+    <p><b>Participants:</b></p>
+    <ul>
+        @foreach (var user in participants)
+        {
+            <li>@user</li>
+        }
+    </ul>
 
-Welcome to your new app.
+    @if (_survey != null)
+    {
+        <p><b>Survey: @_survey.Title</b></p>
+        <ul>
+            @foreach (var question in _survey.Questions)
+            {
+                <li>@question.Text -
+                    <button @onclick="() => SendQuestion(question.Id)">Request vote</button>
+                    (@GetNumberOfVotes(question.Id))
+                </li>
+            }
+        </ul>
+    }
+}
+
+@code {
+    private HubConnection? hubConnection;
+    private string sessionId = "";
+    private bool sessionStarted = false;
+    private HashSet<string> participants = new();
+    private HashSet<Vote> votes = new();
+    private Survey _survey;
+
+    private async Task StartSession()
+    {
+        sessionStarted = true;
+
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hub/voting"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<string>("ParticipantJoined", async (userId) =>
+        {
+            await InvokeAsync(() =>
+            {
+                participants.Add(userId);
+                StateHasChanged();
+            });
+        });
+
+        hubConnection.On<string>("ParticipantLeft", async (userId) =>
+        {
+            await InvokeAsync(() =>
+            {
+                participants.Remove(userId);
+                StateHasChanged();
+            });
+        });
+
+        hubConnection.On<Vote>("VoteReceived", async (vote) =>
+        {
+            await InvokeAsync(() =>
+            {
+                votes.Add(vote);
+                StateHasChanged();
+            });
+        });
+
+        await hubConnection.StartAsync();
+        await hubConnection.InvokeAsync("StartSession", sessionId);
+        await hubConnection.InvokeAsync("JoinSession", sessionId);
+
+        _survey = await SurveyReader.Read(Path.Combine("Surveys", "survey-01.json"));
+    }
+
+    private async Task SendQuestion(Guid questionId)
+    {
+        var question = _survey.Questions.FirstOrDefault(q => q.Id == questionId);
+        await hubConnection.InvokeAsync("SendQuestion", question);
+    }
+
+    private int GetNumberOfVotes(Guid questionId)
+    {
+        if (!votes.Any() || !votes.Any(x => x.QuestionId == questionId))
+            return 0;
+
+        return votes.Count(v => v.QuestionId == questionId);
+    }
+
+}

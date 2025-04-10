@@ -3,8 +3,15 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - "Dockerfile"
+      - "src/**"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - "Dockerfile"
+      - "src/**"
+  workflow_dispatch:
 
 jobs:
 

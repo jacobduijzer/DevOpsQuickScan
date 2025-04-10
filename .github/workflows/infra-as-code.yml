@@ -3,7 +3,10 @@ name: Deploy Bicep to Azure
 on:
   push:
     branches:
-      - main  # or any branch you want to trigger from
+      - main
+    paths:
+      - "infra/**"
+  workflow_dispatch:
 
 env:
   RESOURCE_GROUP: rg-quickscan

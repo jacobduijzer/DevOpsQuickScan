@@ -96,3 +96,25 @@ main {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+
+.quickscan-card {
+    max-width: 400px;
+    margin: 5rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+.quickscan-logo {
+    width: 80px;
+    margin-bottom: 1rem;
+}
+.btn-primary {
+    background-color: #00bcd4;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #0097a7;
+}
