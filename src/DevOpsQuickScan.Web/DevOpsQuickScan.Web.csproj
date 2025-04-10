@@ -19,4 +19,9 @@
       <Folder Include="wwwroot\img\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Home.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Session.razor" />
+    </ItemGroup>
+
 </Project>

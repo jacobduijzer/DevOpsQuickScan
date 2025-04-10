@@ -1,7 +1,9 @@
+using DevOpsQuickScan.Application;
 using DevOpsQuickScan.Infrastructure;
 using DevOpsQuickScan.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
 builder.Services.AddScoped<SurveyReader>();
 builder.Services.AddSignalR();
 builder.Services.AddRazorComponents()

@@ -1,56 +1,78 @@
-﻿@page "/facilitator/session"
+﻿@page "/test"
 @rendermode InteractiveServer
+@using DevOpsQuickScan.Application
 @using DevOpsQuickScan.Domain
 @using DevOpsQuickScan.Infrastructure
 @using Microsoft.AspNetCore.SignalR.Client
+@inject ISessionStore SessionStore
 @inject NavigationManager Navigation
 @inject SurveyReader SurveyReader
 
-<PageTitle>Facilitator</PageTitle>
-
-<h1>Facilitator</h1>
-
-<h3>Facilitator Panel</h3>
+<PageTitle>Home</PageTitle>
 
 @if (!sessionStarted)
 {
-    <input @bind="sessionId" placeholder="Session key (e.g. abc123)"/>
-    <button @onclick="StartSession">Start Session</button>
+    <div class="quickscan-card">
+        <div class="quickscan-card">
+            <img src="@Assets["/img/logo.jpg"]" width="300" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
+            <h2 class="mb-4">Welcome to DevOps Quickscan</h2>
+            <EditForm Model="this" OnValidSubmit="StartSession">
+                <InputText class="form-control mb-3" @bind-Value="sessionName"/>
+                <button type="submit" class="btn btn-primary w-100">Start Session</button>
+            </EditForm>
+        </div>
+    </div>
 }
 else
 {
-    <p><b>Session:</b> @sessionId</p>
-    <p><b>Participants:</b></p>
-    <ul>
-        @foreach (var user in participants)
-        {
-            <li>@user</li>
-        }
-    </ul>
+    <div class="quickscan-card">
+        <p>Your session name: <strong>@sessionName</strong></p>
 
-    @if (_survey != null)
-    {
-        <p><b>Survey: @_survey.Title</b></p>
+        <div class="mt-3">
+            <p>Invite your team:</p>
+            <a href="@inviteLink">@inviteLink</a>
+        </div>
+        
+        <p><b>Participants:</b></p>
         <ul>
-            @foreach (var question in _survey.Questions)
+            @foreach (var user in participants)
             {
-                <li>@question.Text - <button @onclick="() => SendQuestion(question.Id)">Request vote</button> (@GetNumberOfVotes(question.Id))</li>
+                <li>@user</li>
             }
         </ul>
-    }
+
+        @if (_survey != null)
+        {
+            <p><b>Survey: @_survey.Questions</b></p>
+            <ul>
+                @foreach (var question in _survey.Questions)
+                {
+                    <li>@question.Text -
+                        <button @onclick="() => SendQuestion(question.Id)">Request vote</button>
+                        (@GetNumberOfVotes(question.Id))
+                    </li>
+                }
+            </ul>
+        }
+    </div>
 }
 
 @code {
     private HubConnection? hubConnection;
     private string sessionId = "";
+    private string sessionName;
+    private string inviteLink;
     private bool sessionStarted = false;
     private HashSet<string> participants = new();
     private HashSet<Vote> votes = new();
-    private Survey _survey;
+    private DevOpsQuickScan.Domain.Survey _survey;
 
     private async Task StartSession()
     {
         sessionStarted = true;
+        
+        var code = SessionStore.CreateSession(sessionName);
+        inviteLink = Navigation.BaseUri + $"join?session={code}";
 
         hubConnection = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/hub/voting"))
