@@ -9,21 +9,15 @@ param webAppName string
 @description('The name of the App Service plan')
 param hostingPlanName string = '${webAppName}-plan'
 
-@description('The name of the Cosmos DB account')
-param cosmosDbAccountName string
-
-@description('The name of the Cosmos DB database')
-param cosmosDbDatabaseName string = 'questionnaireDb'
-
-@description('The name of the Cosmos DB container')
-param cosmosDbContainerName string = 'sessions'
+@description('Name of the Application Insights instance')
+param appInsightsName string = '${webAppName}-appinsights'
 
 @description('Docker hub password')
+@secure()
 param dockerHubPassword string 
 
 @description('Docker hub username')
 param dockerHubUsername string 
-
 
 var appConfigNew = {
   DOCKER_ENABLE_CI: 'true'
@@ -63,47 +57,22 @@ resource appSettings 'Microsoft.Web/sites/config@2024-04-01' = {
   properties: appConfigNew
 }
 
-// resource cosmosDb 'Microsoft.DocumentDB/databaseAccounts@2021-04-15' = {
-//   name: cosmosDbAccountName
-//   location: location
-//   kind: 'GlobalDocumentDB'
-//   properties: {
-//     databaseAccountOfferType: 'Standard'
-//     locations: [
-//       {
-//         locationName: location
-//         failoverPriority: 0
-//       }
-//     ]
-//     consistencyPolicy: {
-//       defaultConsistencyLevel: 'Session'
-//     }
-//     capabilities: []
-//   }
-// }
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
+}
 
-// resource cosmosDbDatabase 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-04-15' = {
-//   name: '${cosmosDb.name}/${cosmosDbDatabaseName}'
-//   properties: {
-//     resource: {
-//       id: cosmosDbDatabaseName
-//     }
-//   }
-//   dependsOn: [cosmosDb]
-// }
-
-// resource cosmosDbContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-04-15' = {
-//   name: '${cosmosDb.name}/${cosmosDbDatabase.name}/${cosmosDbContainerName}'
-//   properties: {
-//     resource: {
-//       id: cosmosDbContainerName
-//       partitionKey: {
-//         paths: ['/sessionId']
-//         kind: 'Hash'
-//       }
-//     }
-//   }
-//   dependsOn: [cosmosDbDatabase]
-// }
+resource appInsightsExtension 'Microsoft.Web/sites/hostNameBindings@2021-02-01' = {
+  parent: webApp
+  name: 'appsettings'
+  properties: {
+    APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+  }
+}
 
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
