@@ -24,6 +24,8 @@ var appConfigNew = {
   DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
   DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
   DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
+  APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
+  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
 }
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
@@ -66,13 +68,6 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource appInsightsExtension 'Microsoft.Web/sites/hostNameBindings@2021-02-01' = {
-  parent: webApp
-  name: 'appsettings'
-  properties: {
-    APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
-    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-  }
-}
+
 
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
