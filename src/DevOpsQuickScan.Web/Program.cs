@@ -3,6 +3,7 @@ using DevOpsQuickScan.Infrastructure;
 using DevOpsQuickScan.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 builder.Services.AddSingleton<ISessionStore, InMemorySessionStore>();
 builder.Services.AddScoped<SurveyReader>();
 builder.Services.AddSignalR();
