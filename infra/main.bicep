@@ -27,6 +27,7 @@ var appConfigNew = {
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
   ASPNETCORE_URLS: 'http://+:8080'
+  WEBSITES_PORT: '8080'
 }
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {

@@ -82,17 +82,12 @@ public static class Extensions
         where TBuilder : IHostApplicationBuilder
     {
         var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
-
         if (useOtlpExporter)
-        {
             builder.Services.AddOpenTelemetry().UseOtlpExporter();
-        }
 
-        if (!string.IsNullOrEmpty(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]))
-        {
+        if (!string.IsNullOrEmpty(appInsightsConnectionString))
             builder.Services.AddOpenTelemetry()
                 .UseAzureMonitor(options => options.ConnectionString = appInsightsConnectionString);
-        }
 
         return builder;
     }
