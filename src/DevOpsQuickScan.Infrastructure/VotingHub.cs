@@ -6,14 +6,14 @@ namespace DevOpsQuickScan.Infrastructure;
 public class VotingHub : Hub
 {
     private static readonly Dictionary<string, string> SessionQuestions = new();
-    private static readonly Dictionary<string, HashSet<string>> SessionParticipants = new();
+    private static readonly Dictionary<string, HashSet<Participant>> SessionParticipants = new();
 
     public async Task StartSession(string sessionId)
     {
-        SessionParticipants.TryAdd(sessionId, new HashSet<string>());
+        SessionParticipants.TryAdd(sessionId, new HashSet<Participant>());
     }
 
-    public async Task JoinSession(string sessionId)
+    public async Task JoinSession(string sessionId, string userName)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, sessionId);
 
@@ -21,11 +21,11 @@ public class VotingHub : Hub
 
         if (!SessionParticipants.TryGetValue(sessionId, out var participants))
         {
-            participants = new HashSet<string>();
+            participants = new HashSet<Participant>();
             SessionParticipants[sessionId] = participants;
         }
 
-        participants.Add(userId);
+        participants.Add(new Participant(userId, userName));
         await Clients.Group(sessionId).SendAsync("ParticipantJoined", userId);
 
         // Send the current question if available
@@ -53,18 +53,16 @@ public class VotingHub : Hub
     
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        Console.WriteLine($"Disconnected: {Context.ConnectionId}");
+        var userId = Context.ConnectionId;
+        Console.WriteLine($"Disconnected: {userId}");
 
         foreach (var kvp in SessionParticipants)
         {
             var sessionId = kvp.Key;
             var participants = kvp.Value;
-
-            if (participants.Remove(Context.ConnectionId))
-            {
-                await Clients.Group(sessionId).SendAsync("ParticipantLeft", Context.ConnectionId);
-                break;
-            }
+            participants.RemoveWhere(x => x.UserId.Equals(userId));
+        
+            await Clients.Group(sessionId).SendAsync("ParticipantLeft", Context.ConnectionId);
         }
 
         await base.OnDisconnectedAsync(exception);

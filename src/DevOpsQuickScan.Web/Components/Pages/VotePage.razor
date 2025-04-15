@@ -1,71 +1,84 @@
-﻿@page "/vote"
+@page "/vote/{SessionId}"
 @rendermode InteractiveServer
-@using DevOpsQuickScan.Domain
-@using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager Navigation
 
-<h3>Vote Page</h3>
 
-<input @bind="sessionId" placeholder="Session ID"/>
-<button @onclick="JoinSession">Join</button>
+<div class="quickscan-card quickscan-card-wide">
+    <p>Voting session name: <strong>@_sessionName</strong></p>
 
-<p>@statusMessage</p>
-
-@if (_currentQuestion != null)
-{
-    <p>Question: @_currentQuestion.Text</p>
-    <ul>
-        @foreach (var answer in _currentQuestion.Answers)
-        {
-            <li>@answer.Text - <button @onclick="() => SubmitVote(answer.Id)">Vote</button></li>
-        }
-    </ul>
-}
-else
-{
-    <p>Waiting for question...</p>
-}
-
-@code {
-    private HubConnection? hubConnection;
-    private string sessionId = "";
-    private string statusMessage = "";
-    private Question _currentQuestion;
-
-    protected override async Task OnInitializedAsync()
+    @if (!string.IsNullOrEmpty(_currentQuestion?.Text))
     {
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/hub/voting"))
-            .WithAutomaticReconnect()
-            .Build();
+        <div class="question-container">
+            <p class="question-text">@_currentQuestion.Text</p>
 
-        hubConnection.On<Question>("ReceiveQuestion", async (question) =>
-        {
-            await InvokeAsync(() =>
-            {
-                _currentQuestion = question;
-                StateHasChanged();
-            });
-        });
+            <div class="answers-container mt-3">
+                @foreach (var answer in _currentQuestion.Answers)
+                {
+                    <button class="btn btn-outline-primary w-100 mb-2"
+                            @onclick="() => SelectAnswer(answer.Id)">
+                        @answer.Text
+                    </button>
+                }
+            </div>
 
-        await hubConnection.StartAsync();
+            <div class="vote-controls mt-4">
+                <button class="btn btn-primary w-100" @onclick="SubmitVote" disabled="@(!_isAnswerSelected)">
+                    Vote
+                </button>
+            </div>
+        </div>
     }
-
-    private async Task JoinSession()
+    else
     {
-        if (hubConnection is not null)
-        {
-            await hubConnection.InvokeAsync("JoinSession", sessionId);
-            statusMessage = $"Joined session {sessionId}";
-        }
+        <p class="text-muted">Waiting for the next question...</p>
     }
+</div>
 
-    private async Task SubmitVote(Guid answerId)
-    {
-        if (hubConnection is not null)
-        {
-            await hubConnection.InvokeAsync("SubmitVote", sessionId, new Vote(_currentQuestion.Id, answerId));
-            statusMessage = $"You voted: {_currentQuestion.Answers.FirstOrDefault(q => q.Id == answerId).Text}";
-        }
-    }
-}
+@* <div class="quickscan-card quickscan-card-wide"> *@
+@*     <p>Survey session name: <strong>@_sessionName</strong></p> *@
+@* *@
+@*     <div class="mt-3"> *@
+@*         <p>Invite your team:</p> *@
+@*         <div class="d-flex align-items-center"> *@
+@*             <span class="me-2">@_inviteLink</span> *@
+@*             <button class="btn btn-secondary" @onclick="CopyToClipboard"> *@
+@*                 <i class="fa-solid fa-copy"></i> Copy Link *@
+@*             </button> *@
+@*         </div> *@
+@*     </div> *@
+@* *@
+@*     <hr class="my-4" /> *@
+@* *@
+@*     @if (_surveyData != null && _surveyData.Questions.Any()) *@
+@*     { *@
+@*         <div class="question-container"> *@
+@*             <div class="progress mb-3"> *@
+@*                 <div class="progress-bar" *@
+@*                      style="width: @((_currentQuestionIndex + 1) * 100 / _surveyData.Questions.Count)%"></div> *@
+@*             </div> *@
+@* *@
+@*             <div class="question-card"> *@
+@*                 <p class="question-text">@_surveyData.Questions[_currentQuestionIndex].Text</p> *@
+@*                 <div class="d-flex justify-content-between align-items-center"> *@
+@*                     <span *@
+@*                         class="text-muted">Question @(_currentQuestionIndex + 1) of @_surveyData.Questions.Count</span> *@
+@*                     <button class="btn btn-primary" *@
+@*                             @onclick="() => SendQuestion(_surveyData.Questions[_currentQuestionIndex].Id)"> *@
+@*                         Request vote (@GetNumberOfVotes(_surveyData.Questions[_currentQuestionIndex].Id)) *@
+@*                     </button> *@
+@*                 </div> *@
+@*             </div> *@
+@* *@
+@*             <div class="navigation-controls mt-4"> *@
+@*                 <button class="btn btn-outline-primary" @onclick="PreviousQuestion" *@
+@*                         disabled="@(_currentQuestionIndex == 0)"> *@
+@*                     <i class="fa-solid fa-chevron-left"></i> Previous *@
+@*                 </button> *@
+@*                 <button class="btn btn-outline-primary" @onclick="NextQuestion" *@
+@*                         disabled="@(_currentQuestionIndex >= _surveyData.Questions.Count - 1)"> *@
+@*                     Next <i class="fa-solid fa-chevron-right"></i> *@
+@*                 </button> *@
+@*             </div> *@
+@*         </div> *@
+@*     } *@
+@* </div> *@
+@* *@

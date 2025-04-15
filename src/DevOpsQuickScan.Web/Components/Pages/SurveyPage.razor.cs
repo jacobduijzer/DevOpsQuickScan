@@ -7,7 +7,7 @@ using Microsoft.JSInterop;
 
 namespace DevOpsQuickScan.Web.Components.Pages;
 
-public partial class Survey : ComponentBase
+public partial class SurveyPage : ComponentBase
 {
      [Parameter]
      public string? SessionId { get; set; }
@@ -29,7 +29,7 @@ public partial class Survey : ComponentBase
      private string _sessionName;
      private string _inviteLink;
      private HashSet<Vote> _votes = new();
-     private DevOpsQuickScan.Domain.Survey _surveyData;
+     private Survey _surveyData;
      
      protected override async Task OnInitializedAsync()
      {
@@ -75,7 +75,7 @@ public partial class Survey : ComponentBase
 
          await _hubConnection.StartAsync();
          await _hubConnection.InvokeAsync("StartSession", SessionId);
-         await _hubConnection.InvokeAsync("JoinSession", SessionId);
+         //await _hubConnection.InvokeAsync("JoinSession", SessionId);
 
          _surveyData = await SurveyReader.Read(Path.Combine("Surveys", "survey-01.json"));
      }

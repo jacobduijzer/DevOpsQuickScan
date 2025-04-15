@@ -1,6 +1,3 @@
 namespace DevOpsQuickScan.Domain;
 
-public class Participant
-{
-    
-}
+public record Participant(string UserId, string UserName);
