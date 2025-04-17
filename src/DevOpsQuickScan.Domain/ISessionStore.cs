@@ -1,4 +1,4 @@
-namespace DevOpsQuickScan.Application;
+namespace DevOpsQuickScan.Domain;
 
 public interface ISessionStore
 {

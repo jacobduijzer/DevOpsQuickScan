@@ -1,8 +1,8 @@
-@page "/survey/{SessionId}"
+@page "/survey/{SessionName}"
 @rendermode InteractiveServer
 
 <div class="quickscan-card quickscan-card-wide">
-    <p>Survey session name: <strong>@_sessionName</strong></p>
+    <p>Survey session name: <strong>@SessionName</strong></p>
 
     <div class="mt-3">
         <p>Invite your team:</p>
@@ -16,33 +16,50 @@
 
     <hr class="my-4" />
 
-    @if (_surveyData != null && _surveyData.Questions.Any())
+    @if (_currentQuestion != null)
     {
         <div class="question-container">
             <div class="progress mb-3">
                 <div class="progress-bar"
-                     style="width: @((_currentQuestionIndex + 1) * 100 / _surveyData.Questions.Count)%"></div>
+                     style="width: @((SessionService.CurrentQuestionIndex + 1) * 100 / SessionService.Survey?.Questions.Count)%"></div>
             </div>
 
             <div class="question-card">
-                <p class="question-text">@_surveyData.Questions[_currentQuestionIndex].Text</p>
+                <p class="question-text">@_currentQuestion.Text</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <span
-                        class="text-muted">Question @(_currentQuestionIndex + 1) of @_surveyData.Questions.Count</span>
-                    <button class="btn btn-primary"
-                            @onclick="() => SendQuestion(_surveyData.Questions[_currentQuestionIndex].Id)">
-                        Request vote (@GetNumberOfVotes(_surveyData.Questions[_currentQuestionIndex].Id))
-                    </button>
+                        class="text-muted">Question @(SessionService.CurrentQuestionIndex + 1) of @SessionService.Survey?.Questions.Count</span>
+                    
                 </div>
+            </div>
+            
+            <div class="answers-list mt-4">
+                <p class="text-muted">Answers:</p>
+                <ul class="list-group">
+                    @foreach (var answer in _currentQuestion.Answers)
+                    {
+                        <li class="list-group-item">
+                            @answer.Text
+                        </li>
+                    }
+                </ul>
             </div>
 
             <div class="navigation-controls mt-4">
                 <button class="btn btn-outline-primary" @onclick="PreviousQuestion"
-                        disabled="@(_currentQuestionIndex == 0)">
+                        disabled="@(SessionService.CurrentQuestionIndex == 0)">
                     <i class="fa-solid fa-chevron-left"></i> Previous
                 </button>
+                <button class="btn btn-primary"
+                        @onclick="() => SendQuestion(_currentQuestion.Id)">
+                    Request vote (@GetNumberOfVotes(_currentQuestion.Id))
+                </button>
+                <button class="btn btn-primary"
+                        @onclick="() => SendQuestion(_currentQuestion.Id)">
+                    Reveal the answers (@GetNumberOfVotes(_currentQuestion.Id))
+                </button>
                 <button class="btn btn-outline-primary" @onclick="NextQuestion"
-                        disabled="@(_currentQuestionIndex >= _surveyData.Questions.Count - 1)">
+                        disabled="@(SessionService.CurrentQuestionIndex >= SessionService.Survey?.Questions.Count - 1)">
                     Next <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>

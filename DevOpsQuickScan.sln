@@ -9,11 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.ServiceDefa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Web", "src\DevOpsQuickScan.Web\DevOpsQuickScan.Web.csproj", "{4FAC2CED-7D6A-48E4-B4B8-07D45FA5C3C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Application", "src\DevOpsQuickScan.Application\DevOpsQuickScan.Application.csproj", "{37A587B6-B29F-48B6-A69D-5C5EA3D0336A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Domain", "src\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj", "{31FC979F-5F05-4A77-9CF1-7B775BCA4189}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Infrastructure", "src\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj", "{BAC709D1-377C-4BE9-821A-739FF3CDFDF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.UnitTests", "src\DevOpsQuickScan.UnitTests\DevOpsQuickScan.UnitTests.csproj", "{AA6AC9D1-71F7-494E-AE15-156122F06535}"
 EndProject
@@ -44,18 +40,10 @@ Global
 		{4FAC2CED-7D6A-48E4-B4B8-07D45FA5C3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FAC2CED-7D6A-48E4-B4B8-07D45FA5C3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FAC2CED-7D6A-48E4-B4B8-07D45FA5C3C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37A587B6-B29F-48B6-A69D-5C5EA3D0336A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37A587B6-B29F-48B6-A69D-5C5EA3D0336A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37A587B6-B29F-48B6-A69D-5C5EA3D0336A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37A587B6-B29F-48B6-A69D-5C5EA3D0336A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{31FC979F-5F05-4A77-9CF1-7B775BCA4189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{31FC979F-5F05-4A77-9CF1-7B775BCA4189}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31FC979F-5F05-4A77-9CF1-7B775BCA4189}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31FC979F-5F05-4A77-9CF1-7B775BCA4189}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BAC709D1-377C-4BE9-821A-739FF3CDFDF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BAC709D1-377C-4BE9-821A-739FF3CDFDF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BAC709D1-377C-4BE9-821A-739FF3CDFDF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BAC709D1-377C-4BE9-821A-739FF3CDFDF2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Release|Any CPU.ActiveCfg = Release|Any CPU

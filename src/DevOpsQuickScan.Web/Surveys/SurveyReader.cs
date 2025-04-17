@@ -1,9 +1,9 @@
 using System.Text.Json;
 using DevOpsQuickScan.Domain;
 
-namespace DevOpsQuickScan.Infrastructure;
+namespace DevOpsQuickScan.Web.Surveys;
 
-public class SurveyReader
+public class SurveyReader : ISurveyReader
 {
     public async Task<Survey> Read(string fileName)
     {

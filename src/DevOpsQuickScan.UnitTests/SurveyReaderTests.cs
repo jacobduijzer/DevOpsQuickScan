@@ -1,7 +1,7 @@
 using DevOpsQuickScan.Domain;
-using DevOpsQuickScan.Infrastructure;
+using DevOpsQuickScan.Web.Surveys;
 
-namespace DevOpsQuickScan.UnitTests.Infrastructure;
+namespace DevOpsQuickScan.UnitTests;
 
 public class SurveyReaderTests
 {
@@ -42,7 +42,7 @@ public class SurveyReaderTests
 
         // ASSERT
         Assert.NotNull(survey);
-        Assert.Single(survey.Questions);
+        Assert.Equal(3, survey.Questions.Count);
         Assert.Equal(5, survey.Questions[0].Answers.Count);
     }
 }

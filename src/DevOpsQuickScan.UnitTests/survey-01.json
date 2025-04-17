@@ -1,38 +1,92 @@
 {
-  "id": "a3b8f7c9-9ef4-4c41-b620-fb3a1f123456",
-  "title": "Team Practices Survey",
-  "createdAt": "2025-04-02T09:30:00Z",
+  "id": "b7239e78-b1b9-4f6b-a87b-5f70bcd0a0a4",
+  "title": "DORA Capabilities Survey",
+  "createdAt": "2025-04-02T10:00:00Z",
   "active": true,
   "questions": [
     {
-      "id": "0d9f2e2c-b761-41a4-8d61-e8e43298f7cc",
-      "text": "How does your team ensure that code remains maintainable over time?",
+      "id": "98f99a77-5c88-4e43-9b26-b0cb087f776a",
       "order": 1,
+      "text": "How frequently does your team deploy code to production or end users?",
       "answers": [
         {
-          "id": "5f6be2ae-38a7-4f01-b84b-f1a2d9239e77",
+          "id": "7a12fe76-9ae4-4a7c-8779-fb6bc59dbfc9",
           "order": 1,
-          "text": "We don’t have a defined approach"
+          "text": "Less than once a month"
         },
         {
-          "id": "d7129d98-2103-4c0d-b678-ea0e2dfe7f51",
+          "id": "71bdad71-df63-45d2-9b1a-b8f55bb973d6",
           "order": 2,
-          "text": "We use basic linting and formatting tools"
+          "text": "Every few weeks"
         },
         {
-          "id": "7c2d91d3-c5ea-4f6c-8fc0-935b7d8c71d3",
+          "id": "2042db7d-4b90-4c72-8e30-674bcf457dd5",
           "order": 3,
-          "text": "We follow code review and documentation guidelines"
+          "text": "Weekly"
         },
         {
-          "id": "fac2c5b7-5c2e-4b1f-b7a9-7c442e1ce1f8",
+          "id": "b4e72f44-57c4-42ff-8cd3-4df098f1f527",
           "order": 4,
-          "text": "We apply automated maintainability checks and refactoring practices"
+          "text": "Daily"
         },
         {
-          "id": "fc6db9a0-6c6f-4f8f-bdc0-8d4f7fd8c7ee",
+          "id": "4de2bb23-09db-4f4d-b04e-28774d92ff71",
           "order": 5,
-          "text": "We have a culture of continuous refactoring and evolutionary architecture"
+          "text": "Multiple times per day"
+        }
+      ]
+    },
+    {
+      "id": "f14205a9-4bdf-4cc7-bb2e-0d29ed654fe7",
+      "order": 2,
+      "text": "How long does it typically take to go from code committed to code running in production?",
+      "answers": [
+        {
+          "id": "58c0570e-3155-4c76-b34a-94f20a3877b1",
+          "order": 1,
+          "text": "More than a month"
+        },
+        {
+          "id": "de4a7f94-c88e-4e65-8fa7-663013f0879b",
+          "order": 2,
+          "text": "1 to 4 weeks"
+        },
+        {
+          "id": "7991d9f8-6a2d-4dcd-b0ff-7c7d2ecf6438",
+          "order": 3,
+          "text": "1 to 7 days"
+        },
+        {
+          "id": "b4f121c4-fadc-49e4-88c4-89ed2d7c29cd",
+          "order": 4,
+          "text": "Less than a day"
+        }
+      ]
+    },
+    {
+      "id": "e5fcff82-2a3e-4740-a0d1-90f6a8cc4b22",
+      "order": 3,
+      "text": "What percentage of changes to production result in degraded service or require remediation?",
+      "answers": [
+        {
+          "id": "0e057c1a-1cbb-453e-990e-10ad94e4966c",
+          "order": 1,
+          "text": "More than 30%"
+        },
+        {
+          "id": "27654b71-383e-45c4-a50e-8bda3a04b93e",
+          "order": 2,
+          "text": "16% to 30%"
+        },
+        {
+          "id": "b9051e34-315c-4fa5-9144-8ab2f13e2f34",
+          "order": 3,
+          "text": "1% to 15%"
+        },
+        {
+          "id": "63f10db7-8b4c-4ec1-81e5-58c3542a3e0c",
+          "order": 4,
+          "text": "Less than 1%"
         }
       ]
     }

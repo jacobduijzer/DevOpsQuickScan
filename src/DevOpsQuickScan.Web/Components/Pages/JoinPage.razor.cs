@@ -1,4 +1,4 @@
-using DevOpsQuickScan.Application;
+using DevOpsQuickScan.Domain;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -41,22 +41,9 @@ public partial class JoinPage : ComponentBase
     private async Task JoinSession()
     {
         if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(sessionId))
-        {
             return; // Ensure both userName and sessionId are valid
-        }
-
-        hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/hub/voting"))
-            .WithAutomaticReconnect()
-            .Build();
-
-        await hubConnection.StartAsync();
-
-        await hubConnection.InvokeAsync("JoinSession", sessionId, userName);
-
-        joined = true;
 
         // Navigate to the vote page
-        NavigationManager.NavigateTo($"/vote/{sessionId}");
+        NavigationManager.NavigateTo($"/vote/{sessionId}/{userName}");
     }
 }

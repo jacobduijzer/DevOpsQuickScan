@@ -1,6 +1,6 @@
-using DevOpsQuickScan.Application;
 using DevOpsQuickScan.Domain;
-using DevOpsQuickScan.Infrastructure;
+using DevOpsQuickScan.Web.Sessions;
+using DevOpsQuickScan.Web.Surveys;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
@@ -9,114 +9,77 @@ namespace DevOpsQuickScan.Web.Components.Pages;
 
 public partial class SurveyPage : ComponentBase
 {
-     [Parameter]
-     public string? SessionId { get; set; }
-     
-     [Inject]
-     private NavigationManager NavigationManager { get; set; } = default!;
-     
-     [Inject]
-     private ISessionStore SessionStore { get; set; } = default!;
-     
-     [Inject]
-     private SurveyReader SurveyReader { get; set; } = default!;
-     
-     [Inject]
-     private IJSRuntime JSRuntime { get; set; } = default!;
+    [Parameter] public string SessionName { get; set; } = string.Empty;
 
-     private HubConnection? _hubConnection;
+    [Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
-     private string _sessionName;
-     private string _inviteLink;
-     private HashSet<Vote> _votes = new();
-     private Survey _surveyData;
-     
-     protected override async Task OnInitializedAsync()
-     {
-         if (string.IsNullOrEmpty(SessionId))
-         {
-             throw new InvalidOperationException("SessionId cannot be null or empty.");
-         }
+    [Inject] private SessionService SessionService { get; set; } = default!;
 
-         _sessionName = SessionStore.GetSessionName(SessionId)!;
-         _inviteLink = NavigationManager.BaseUri + $"join?session={SessionId}";
-         
-         _hubConnection = new HubConnectionBuilder()
-             .WithUrl(NavigationManager.ToAbsoluteUri("/hub/voting"))
-             .WithAutomaticReconnect()
-             .Build();
+    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
 
-         // _hubConnection.On<string>("ParticipantJoined", async (userId) =>
-         // {
-         //     await InvokeAsync(() =>
-         //     {
-         //         participants.Add(userId);
-         //         StateHasChanged();
-         //     });
-         // });
 
-         // _hubConnection.On<string>("ParticipantLeft", async (userId) =>
-         // {
-         //     await InvokeAsync(() =>
-         //     {
-         //         participants.Remove(userId);
-         //         StateHasChanged();
-         //     });
-         // });
+    private string _inviteLink;
+    private List<Participant> _participants = new();
+    private HashSet<ParticipantAnswer> _votes = new();
 
-         _hubConnection.On<Vote>("VoteReceived", async (vote) =>
-         {
-             await InvokeAsync(() =>
-             {
-                 _votes.Add(vote);
-                 StateHasChanged();
-             });
-         });
+    private Question? _currentQuestion;
 
-         await _hubConnection.StartAsync();
-         await _hubConnection.InvokeAsync("StartSession", SessionId);
-         //await _hubConnection.InvokeAsync("JoinSession", SessionId);
+    protected override async Task OnInitializedAsync()
+    {
+        var sessionId = await SessionService.Start(
+            SessionName,
+            NavigationManager.ToAbsoluteUri("/hub/voting").ToString(),
+            Path.Combine("Surveys", "survey-01.json"));
 
-         _surveyData = await SurveyReader.Read(Path.Combine("Surveys", "survey-01.json"));
-     }
-     
-     private async Task CopyToClipboard() =>
-         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
-     
-     
-     private async Task SendQuestion(Guid questionId)
-     {
-         var question = _surveyData.Questions.FirstOrDefault(q => q.Id == questionId);
-         await _hubConnection.InvokeAsync("SendQuestion", question);
-     }
+        _inviteLink = NavigationManager.BaseUri + $"join?session={sessionId}";
+        SessionService.OnParticipantJoined += async participant =>
+        {
+            await InvokeAsync(() =>
+            {
+                if (_participants.Contains(participant)) return;
 
-     private int GetNumberOfVotes(Guid questionId)
-     {
-         if (!_votes.Any() || !_votes.Any(x => x.QuestionId == questionId))
-             return 0;
+                _participants.Add(participant);
+                StateHasChanged();
+            });
+        };
 
-         return _votes.Count(v => v.QuestionId == questionId);
-     }
-     
+        SessionService.OnParticipantAnswered += async (participantAnswer) =>
+        {
+            await InvokeAsync(() =>
+            {
+                _votes.Add(participantAnswer);
+                StateHasChanged();
+            });
+        };
+        _currentQuestion = SessionService.CurrentQuestion;
+    }
 
-     private int _currentQuestionIndex = 0;
+    private async Task CopyToClipboard() =>
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
 
-     private void NextQuestion()
-     {
-         if (_currentQuestionIndex < _surveyData.Questions.Count - 1)
-         {
-             _currentQuestionIndex++;
-             StateHasChanged();
-         }
-     }
 
-     private void PreviousQuestion()
-     {
-         if (_currentQuestionIndex > 0)
-         {
-             _currentQuestionIndex--;
-             StateHasChanged();
-         }
-     }
-     
+    private async Task SendQuestion(Guid questionId) =>
+        await SessionService.SendCurrentQuestion();
+
+    private int GetNumberOfVotes(Guid questionId)
+    {
+        if (!_votes.Any() || !_votes.Any(x => x.QuestionId == questionId))
+            return 0;
+
+        return _votes.Count(v => v.QuestionId == questionId);
+    }
+
+    private async Task NextQuestion()
+    {
+        _currentQuestion = SessionService.NextQuestion();
+        await SessionService.SendCurrentQuestion();
+        StateHasChanged();
+    }
+
+    private async Task PreviousQuestion()
+    {
+        _currentQuestion = SessionService.PreviousQuestion();
+        await SessionService.SendCurrentQuestion();
+        StateHasChanged();
+    }
 }
