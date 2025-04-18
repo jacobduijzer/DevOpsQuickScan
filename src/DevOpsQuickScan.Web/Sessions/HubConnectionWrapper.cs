@@ -1,4 +1,4 @@
-using DevOpsQuickScan.Domain;
+using DevOpsQuickScan.Web.Surveys;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace DevOpsQuickScan.Web.Sessions;

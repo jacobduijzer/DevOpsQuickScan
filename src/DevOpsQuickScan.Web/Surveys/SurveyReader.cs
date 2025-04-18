@@ -1,5 +1,4 @@
 using System.Text.Json;
-using DevOpsQuickScan.Domain;
 
 namespace DevOpsQuickScan.Web.Surveys;
 

@@ -1,5 +1,3 @@
-using DevOpsQuickScan.Domain;
-
 namespace DevOpsQuickScan.Web.Sessions;
 
 public class InMemorySessionStore : ISessionStore

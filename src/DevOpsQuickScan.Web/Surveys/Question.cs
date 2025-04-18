@@ -1,4 +1,4 @@
-namespace DevOpsQuickScan.Domain;
+namespace DevOpsQuickScan.Web.Surveys;
 
 public class Question
 {

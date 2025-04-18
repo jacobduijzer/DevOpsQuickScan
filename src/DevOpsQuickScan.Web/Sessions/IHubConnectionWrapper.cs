@@ -1,4 +1,4 @@
-using DevOpsQuickScan.Domain;
+using DevOpsQuickScan.Web.Surveys;
 
 namespace DevOpsQuickScan.Web.Sessions;
 

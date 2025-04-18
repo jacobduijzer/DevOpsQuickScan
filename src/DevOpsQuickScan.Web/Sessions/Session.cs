@@ -1,4 +1,4 @@
-namespace DevOpsQuickScan.Domain;
+namespace DevOpsQuickScan.Web.Sessions;
 
 public class Session
 {

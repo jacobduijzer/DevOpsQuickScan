@@ -1,69 +1,86 @@
 @page "/survey/{SessionName}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+<div class="d-flex">
+    <!-- Main Content -->
+    <div class="flex-grow-1">
+        <div class="quickscan-card quickscan-card-wide">
+            <p>Survey session name: <strong>@SessionName</strong></p>
 
-<div class="quickscan-card quickscan-card-wide">
-    <p>Survey session name: <strong>@SessionName</strong></p>
-
-    <div class="mt-3">
-        <p>Invite your team:</p>
-        <div class="d-flex align-items-center">
-            <span class="me-2">@_inviteLink</span>
-            <button class="btn btn-secondary" @onclick="CopyToClipboard">
-                <i class="fa-solid fa-copy"></i> Copy Link
-            </button>
-        </div>
-    </div>
-
-    <hr class="my-4" />
-
-    @if (_currentQuestion != null)
-    {
-        <div class="question-container">
-            <div class="progress mb-3">
-                <div class="progress-bar"
-                     style="width: @((SessionService.CurrentQuestionIndex + 1) * 100 / SessionService.Survey?.Questions.Count)%"></div>
-            </div>
-
-            <div class="question-card">
-                <p class="question-text">@_currentQuestion.Text</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span
-                        class="text-muted">Question @(SessionService.CurrentQuestionIndex + 1) of @SessionService.Survey?.Questions.Count</span>
-                    
+            <div class="mt-3">
+                <p>Invite your team:</p>
+                <div class="d-flex align-items-center">
+                    <span class="me-2">@_inviteLink</span>
+                    <button class="btn btn-secondary" @onclick="CopyToClipboard">
+                        <i class="fa-solid fa-copy"></i> Copy Link
+                    </button>
                 </div>
             </div>
-            
-            <div class="answers-list mt-4">
-                <p class="text-muted">Answers:</p>
-                <ul class="list-group">
-                    @foreach (var answer in _currentQuestion.Answers)
-                    {
-                        <li class="list-group-item">
-                            @answer.Text
-                        </li>
-                    }
-                </ul>
-            </div>
 
-            <div class="navigation-controls mt-4">
-                <button class="btn btn-outline-primary" @onclick="PreviousQuestion"
-                        disabled="@(SessionService.CurrentQuestionIndex == 0)">
-                    <i class="fa-solid fa-chevron-left"></i> Previous
-                </button>
-                <button class="btn btn-primary"
-                        @onclick="() => SendQuestion(_currentQuestion.Id)">
-                    Request vote (@GetNumberOfVotes(_currentQuestion.Id))
-                </button>
-                <button class="btn btn-primary"
-                        @onclick="() => SendQuestion(_currentQuestion.Id)">
-                    Reveal the answers (@GetNumberOfVotes(_currentQuestion.Id))
-                </button>
-                <button class="btn btn-outline-primary" @onclick="NextQuestion"
-                        disabled="@(SessionService.CurrentQuestionIndex >= SessionService.Survey?.Questions.Count - 1)">
-                    Next <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
+            <hr class="my-4"/>
+
+            @if (_currentQuestion != null)
+            {
+                <div class="question-container">
+                    <div class="progress mb-3">
+                        <div class="progress-bar"
+                             style="width: @((SessionService.CurrentQuestionIndex + 1) * 100 / SessionService.Survey?.Questions.Count)%"></div>
+                    </div>
+
+                    <div class="question-card">
+                        <p class="question-text">@_currentQuestion.Text</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                    <span
+                        class="text-muted">Question @(SessionService.CurrentQuestionIndex + 1) of @SessionService.Survey?.Questions.Count</span>
+
+                        </div>
+                    </div>
+
+                    <div class="answers-list mt-4">
+                        <p class="text-muted">Answers:</p>
+                        <ul class="list-group">
+                            @foreach (var answer in _currentQuestion.Answers)
+                            {
+                                <li class="list-group-item">
+                                    @answer.Text
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="navigation-controls mt-4">
+                        <button class="btn btn-outline-primary" @onclick="PreviousQuestion"
+                                disabled="@(SessionService.CurrentQuestionIndex == 0)">
+                            <i class="fa-solid fa-chevron-left"></i> Previous
+                        </button>
+                        <button class="btn btn-primary"
+                                @onclick="() => SendQuestion(_currentQuestion.Id)">
+                            Request vote (@GetNumberOfVotes(_currentQuestion.Id))
+                        </button>
+                        <button class="btn btn-primary"
+                                @onclick="() => SendQuestion(_currentQuestion.Id)">
+                            Reveal the answers (@GetNumberOfVotes(_currentQuestion.Id))
+                        </button>
+                        <button class="btn btn-outline-primary" @onclick="NextQuestion"
+                                disabled="@(SessionService.CurrentQuestionIndex >= SessionService.Survey?.Questions.Count - 1)">
+                            Next <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            }
         </div>
-    }
-</div>
 
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar bg-light p-3" style="width: 300px; border-left: 1px solid #ddd;">
+        <h5>Participants</h5>
+        <ul class="list-group">
+            @foreach (var participant in _participants)
+            {
+                <li class="list-group-item">
+                    @participant.UserName
+                </li>
+            }
+        </ul>
+    </div>
+</div>

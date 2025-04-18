@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj" />
       <ProjectReference Include="..\DevOpsQuickScan.ServiceDefaults\DevOpsQuickScan.ServiceDefaults.csproj" />
     </ItemGroup>
 

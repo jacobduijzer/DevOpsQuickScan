@@ -1,4 +1,3 @@
-using DevOpsQuickScan.Domain;
 using Microsoft.AspNetCore.Components;
 
 namespace DevOpsQuickScan.Web.Components.Pages;

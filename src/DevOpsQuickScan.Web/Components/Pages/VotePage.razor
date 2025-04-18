@@ -1,5 +1,5 @@
 @page "/vote/{SessionId}/{UserName}"
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <div class="quickscan-card quickscan-card-wide">
     <p>Voting session name: <strong>@_sessionName</strong></p>

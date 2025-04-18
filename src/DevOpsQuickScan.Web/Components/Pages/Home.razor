@@ -1,6 +1,6 @@
 @page "/"
-@rendermode InteractiveServer
-
+@using Microsoft.AspNetCore.Components.Endpoints
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
 <PageTitle>Home</PageTitle>
 
 <div class="quickscan-card">
