@@ -1,4 +1,5 @@
 @page "/vote/{SessionId}/{UserName}"
+@using DevOpsQuickScan.Web.Components.CustomComponents
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
 
 <div class="quickscan-card quickscan-card-wide">
@@ -6,6 +7,8 @@
 
     @if (!string.IsNullOrEmpty(_currentQuestion?.Text))
     {
+        <QuestionComponent CurrentQuestion="_currentQuestion" />
+        
         <div class="question-container">
             <p class="question-text">@_currentQuestion.Text</p>
 
@@ -30,4 +33,14 @@
     {
         <p class="text-muted">Waiting for the next question...</p>
     }
+    
+    
+    
+    @* <PieChart @ref="pieChart" Width="500" /> *@
+    @* *@
+    @* <div class="mt-5"> *@
+    @*     <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await RandomizeAsync()"> Randomize </Button> *@
+    @*     <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDatasetAsync()"> Add Dataset </Button> *@
+    @*     <Button Type="ButtonType.Button" Color="ButtonColor.Primary" Size="ButtonSize.Small" @onclick="async () => await AddDataAsync()">Add Data</Button> *@
+    @* </div> *@
 </div>

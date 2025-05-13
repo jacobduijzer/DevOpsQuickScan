@@ -1,0 +1,40 @@
+@using DevOpsQuickScan.Web.Surveys
+
+<div class="question-container">
+
+       <!--// Question //-->
+    <div class="question-card">
+        <p class="question-text">@CurrentQuestion.Text</p>
+        @* <div class="d-flex justify-content-between align-items-center"> *@
+        @*     <span *@
+        @*         class="text-muted">Question @(CurrentQuestionIndex + 1) of @TotalNumberOfQuestions</span> *@
+        @* *@
+        @* </div> *@
+    </div>
+
+    <!--// Answers //-->
+    <div class="answers-list mt-4">
+        <p class="text-muted">Answers:</p>
+        <ul class="list-group">
+            @foreach (var answer in CurrentQuestion.Answers)
+            {
+                <li class="list-group-item">
+                    @answer.Text
+                </li>
+            }
+        </ul>
+    </div>
+
+</div>
+
+@code {
+    
+    [Parameter] 
+    public required Question CurrentQuestion { get; set; }
+    
+    // [Parameter]
+    // public required int CurrentQuestionIndex { get; set; }
+    //
+    // [Parameter]
+    // public required int TotalNumberOfQuestions { get; set; }
+}
