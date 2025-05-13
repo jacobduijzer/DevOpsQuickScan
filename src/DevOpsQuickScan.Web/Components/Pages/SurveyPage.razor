@@ -5,30 +5,19 @@
     <!-- Main Content -->
     <div class="flex-grow-1">
         <div class="quickscan-card quickscan-card-wide">
-            <p>Survey session name: <strong>@SessionName</strong></p>
 
-            <div class="mt-3">
-                <p>Invite your team:</p>
-                <div class="d-flex align-items-center">
-                    <span class="me-2">@_inviteLink</span>
-                    <button class="btn btn-secondary" @onclick="CopyToClipboard">
-                        <i class="fa-solid fa-copy"></i> Copy Link
-                    </button>
-                </div>
-            </div>
 
             <hr class="my-4"/>
 
             @if (_currentQuestion != null)
             {
-                
                 <!--// Progress bar //-->
                 <div class="progress mb-3">
                     <div class="progress-bar"
                          style="width: @((SessionService.CurrentQuestionIndex + 1) * 100 / SessionService.Survey!.Questions.Count)%"></div>
                 </div>
-                
-                <QuestionComponent CurrentQuestion="_currentQuestion" />
+
+                <QuestionComponent CurrentQuestion="_currentQuestion"/>
 
                 <div class="navigation-controls mt-4">
                     <button class="btn btn-outline-primary" @onclick="PreviousQuestion"
@@ -55,14 +44,31 @@
 
     <!-- Sidebar -->
     <div class="sidebar bg-light p-3" style="width: 300px; border-left: 1px solid #ddd;">
-        <h5>Participants</h5>
-        <ul class="list-group">
-            @foreach (var participant in _participants)
-            {
-                <li class="list-group-item">
-                    @participant.UserName
-                </li>
-            }
-        </ul>
+        <div class="mt-3">
+            <h5>Invite</h5>
+            <div class="d-flex align-items-center">
+                <span class="me-2" hidden="true">@_inviteLink</span>
+                <button class="btn btn-secondary" @onclick="CopyToClipboard">
+                    <i class="fa-solid fa-copy"></i> Copy Link
+                </button>
+            </div>
+            
+            <button class="btn btn-secondary" @onclick="OpenQRCodePage">
+                Open QR Code Page
+            </button>
+            
+        </div>
+
+        <div class="mt-3">
+            <h5>Participants</h5>
+            <ul class="list-group">
+                @foreach (var participant in _participants)
+                {
+                    <li class="list-group-item">
+                        @participant.UserName
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
 </div>

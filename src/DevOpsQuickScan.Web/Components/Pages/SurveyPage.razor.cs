@@ -1,7 +1,6 @@
 using DevOpsQuickScan.Web.Sessions;
 using DevOpsQuickScan.Web.Surveys;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 
 namespace DevOpsQuickScan.Web.Components.Pages;
@@ -31,6 +30,7 @@ public partial class SurveyPage : ComponentBase
             Path.Combine("Surveys", "survey-01.json"));
 
         _inviteLink = NavigationManager.BaseUri + $"join?session={sessionId}";
+        
         SessionService.OnParticipantJoined += async participant =>
         {
             await InvokeAsync(() =>
@@ -53,6 +53,8 @@ public partial class SurveyPage : ComponentBase
         _currentQuestion = SessionService.CurrentQuestion;
     }
 
+    public string QRCodeImage { get; set; }
+    
     private async Task CopyToClipboard() =>
         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
 
@@ -80,5 +82,11 @@ public partial class SurveyPage : ComponentBase
         _currentQuestion = SessionService.PreviousQuestion();
         await SessionService.SendCurrentQuestion();
         StateHasChanged();
+    }
+    
+    private async Task OpenQRCodePage()
+    {
+        var url = NavigationManager.ToAbsoluteUri($"/qrcodepage/{Uri.EscapeDataString(_inviteLink)}").ToString();
+        await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
     }
 }
