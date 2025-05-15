@@ -6,6 +6,10 @@ This application can be used as a driver for conversations regarding the state o
 
 The goal is to have good conversations around the capabilities as defined by [DORA](https://dora.dev). 
 
+## The flow of the application
+
+![Application flow](./docs/assets/application_flow.png)
+
 ## Features
 
 * The application can run from Docker, or as a web application.
