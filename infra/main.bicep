@@ -22,16 +22,6 @@ param dockerHubUsername string
 var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup().id)}')
 var storageAccountName = substring(baseStorageAccountName, 0, 24)
 
-var appConfigNew = {
-  DOCKER_ENABLE_CI: 'true'
-  DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
-  DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
-  DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
-  APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
-  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-  ASPNETCORE_URLS: 'http://+:8080'
-  WEBSITES_PORT: '8080'
-}
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
@@ -92,6 +82,20 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
       linuxFxVersion: 'DOCKER|${dockerHubUsername}/devops-quickscan:latest'
     }
   }
+}
+
+var appConfigNew = {
+  DOCKER_ENABLE_CI: 'true'
+  DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
+  DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
+  DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
+  APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
+  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+  BLOB_STORAGE_CONNECTION_STRING: storageAccount.listKeys().keys[0].value
+  BLOG_STORAGE_QUESTIONS_CONTAINER_NAME: questionDataBlobContainer.name
+  BLOG_STORAGE_SESSION_CONTAINER_NAME: sessionDataBlobContainer.name
+  ASPNETCORE_URLS: 'http://+:8080'
+  WEBSITES_PORT: '8080'
 }
 
 resource appSettings 'Microsoft.Web/sites/config@2024-04-01' = {
