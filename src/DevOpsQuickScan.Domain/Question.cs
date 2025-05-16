@@ -1,3 +1,3 @@
 namespace DevOpsQuickScan.Domain;
 
-public record Question(string Text, List<Answer> Answers);
+public record Question(int Id, string Text, List<Answer> Answers);
