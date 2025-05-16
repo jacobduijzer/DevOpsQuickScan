@@ -93,6 +93,7 @@ var appConfigNew = {
   DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+  BLOB_STORAGE_ACCOUNT_NAME: storageAccount.name
   BLOB_STORAGE_SHARED_ACCESS_KEY: storageAccount.listKeys().keys[0].value
   BLOG_STORAGE_QUESTIONS_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${questionContainerName}'
   BLOG_STORAGE_SESSION_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${sessionContainerName}'
