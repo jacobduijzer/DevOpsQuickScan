@@ -6,10 +6,6 @@ This application can be used as a driver for conversations regarding the state o
 
 The goal is to have good conversations around the capabilities as defined by [DORA](https://dora.dev). 
 
-## The flow of the application
-
-![Application flow](./docs/assets/application_flow.png)
-
 ## Features
 
 * The application can run from Docker, or as a web application.
@@ -22,6 +18,24 @@ The goal is to have good conversations around the capabilities as defined by [DO
 - Session: a session is a live activity where a group of participants answer a predefined set of questions (a survey) together.
 - Participant: a participant is a person participating in a session, answering the questions from a survey together.
 - Facilitator: a facilitator can create surveys, start sessions, invite participants, and, in the future, create reports and compare the results of sessions.
+
+## Architecture
+
+### System Context
+
+![Software System Context](./docs/context_diagram.png)
+
+### Container Diagram
+
+![Container Diagram](./docs/container_diagram.png)
+
+## State diagram
+
+![Application States](./docs/assets/application_states.png)
+
+## The flow of the application
+
+![Application flow](./docs/assets/application_flow.png)
 
 ## Ideas
 

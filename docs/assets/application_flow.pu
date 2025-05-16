@@ -24,6 +24,7 @@ repeat
     :Facilitator reveals answers;
     :Discuss answers;
 
+  :Participants answer again;
 repeat while (More questions?)
 
 stop

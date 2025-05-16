@@ -19,6 +19,8 @@ param dockerHubPassword string
 @description('Docker hub username')
 param dockerHubUsername string 
 
+param storageAccountName string = '${webAppName}${uniqueString(resourceGroup().id)}'
+
 var appConfigNew = {
   DOCKER_ENABLE_CI: 'true'
   DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
@@ -41,6 +43,29 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   properties: {
     reserved: true
   }
+}
+
+resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
+  name: storageAccountName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    accessTier: 'Hot'
+    supportsHttpsTrafficOnly: true
+  }
+}
+
+resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
+  name: '${storageAccount.name}/default/sessiondata'
+  properties: {
+    publicAccess: 'None'
+  }
+  dependsOn: [
+    storageAccount
+  ]
 }
 
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
@@ -70,6 +95,14 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-
+resource storageBlobContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(resourceGroup().id, webApp.id, storageAccount.id, 'Storage Blob Data Contributor')
+  scope: storageAccount
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor
+    principalId: webApp.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
 
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'

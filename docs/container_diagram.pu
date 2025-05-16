@@ -1,0 +1,18 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container diagram for the DevOpsQuickScan Application
+
+Person(facilitator, "Facilitator", "The person who leads the DevOps Quick Scan session")
+Person(participant, "Participant", "The person who participates in the DevOps Quick Scan session")
+
+System_Boundary(c1, "DevOps Quick Scan Application") {
+    Container(web_app, "Web Application", ".NET, Blazer, SignalR", "")
+    ContainerDb(database, "Database", "MySQL Database", "Stores session information and answers.")
+}
+
+Rel_D(facilitator, web_app, "Leads the DevOps Quick Scan session")
+Rel_D(participant, web_app, "Participates in the DevOps Quick Scan session")
+Rel_D(web_app, database, "Uses")
+
+@enduml
