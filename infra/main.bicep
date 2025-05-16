@@ -21,6 +21,8 @@ param dockerHubUsername string
 
 var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup().id)}')
 var storageAccountName = substring(baseStorageAccountName, 0, 24)
+var questionContainerName = 'questiondata'
+var sessionContainerName = 'sessiondata'
 
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
@@ -50,7 +52,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
 }
 
 resource sessionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
-  name: '${storageAccount.name}/default/sessiondata'
+  name: '${storageAccount.name}/default/${questionContainerName}'
   properties: {
     publicAccess: 'None'
   }
@@ -60,7 +62,7 @@ resource sessionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobService
 }
 
 resource questionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
-  name: '${storageAccount.name}/default/questiondata'
+  name: '${storageAccount.name}/default/${sessionContainerName}'
   properties: {
     publicAccess: 'None'
   }
@@ -91,9 +93,9 @@ var appConfigNew = {
   DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
   APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-  BLOB_STORAGE_CONNECTION_STRING: storageAccount.listKeys().keys[0].value
-  BLOG_STORAGE_QUESTIONS_CONTAINER_NAME: questionDataBlobContainer.name
-  BLOG_STORAGE_SESSION_CONTAINER_NAME: sessionDataBlobContainer.name
+  BLOB_STORAGE_SHARED_ACCESS_KEY: storageAccount.listKeys().keys[0].value
+  BLOG_STORAGE_QUESTIONS_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${questionContainerName}'
+  BLOG_STORAGE_SESSION_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${sessionContainerName}'
   ASPNETCORE_URLS: 'http://+:8080'
   WEBSITES_PORT: '8080'
 }
