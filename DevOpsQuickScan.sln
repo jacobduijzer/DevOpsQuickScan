@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Infrastructure", "src\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj", "{21D44680-8837-436E-B536-EEDB357EC396}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Domain", "src\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj", "{37CCBC62-E015-402B-B610-3A735F9CF8ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +35,13 @@ Global
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA6AC9D1-71F7-494E-AE15-156122F06535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21D44680-8837-436E-B536-EEDB357EC396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21D44680-8837-436E-B536-EEDB357EC396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21D44680-8837-436E-B536-EEDB357EC396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21D44680-8837-436E-B536-EEDB357EC396}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37CCBC62-E015-402B-B610-3A735F9CF8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37CCBC62-E015-402B-B610-3A735F9CF8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37CCBC62-E015-402B-B610-3A735F9CF8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37CCBC62-E015-402B-B610-3A735F9CF8ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

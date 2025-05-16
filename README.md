@@ -29,6 +29,10 @@ The goal is to have good conversations around the capabilities as defined by [DO
 
 ![Container Diagram](./docs/container_diagram.png)
 
+### Component Diagram
+
+![Component Diagram](./docs/component_diagram.png)
+
 ## State diagram
 
 ![Application States](./docs/assets/application_states.png)

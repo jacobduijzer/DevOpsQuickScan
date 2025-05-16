@@ -59,8 +59,18 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
   }
 }
 
-resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
+resource sessionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
   name: '${storageAccount.name}/default/sessiondata'
+  properties: {
+    publicAccess: 'None'
+  }
+  dependsOn: [
+    storageAccount
+  ]
+}
+
+resource questionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
+  name: '${storageAccount.name}/default/questiondata'
   properties: {
     publicAccess: 'None'
   }
