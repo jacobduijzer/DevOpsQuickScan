@@ -73,6 +73,9 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: webAppName
   location: location
   kind: 'app,linux,container'
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     serverFarmId: hostingPlan.id
     siteConfig: {
