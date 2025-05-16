@@ -19,7 +19,8 @@ param dockerHubPassword string
 @description('Docker hub username')
 param dockerHubUsername string 
 
-param storageAccountName string = '${webAppName}${uniqueString(resourceGroup().id)}'
+var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup().id)}')
+var storageAccountName = substring(baseStorageAccountName, 0, 24)
 
 var appConfigNew = {
   DOCKER_ENABLE_CI: 'true'
