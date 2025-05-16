@@ -120,3 +120,5 @@ resource storageBlobContributorRole 'Microsoft.Authorization/roleAssignments@202
 }
 
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
+output storageAccountName string = storageAccount.name
+output storageAccountKey string = storageAccount.listKeys().keys[0].value

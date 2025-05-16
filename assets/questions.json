@@ -1,0 +1,59 @@
+{
+  "title": "DORA Capabilities Survey",
+  "questions": [
+    {
+      "text": "How frequently does your team deploy code to production or end users?",
+      "answers": [
+        {
+          "text": "Less than once a month"
+        },
+        {
+          "text": "Every few weeks"
+        },
+        {
+          "text": "Weekly"
+        },
+        {
+          "text": "Daily"
+        },
+        {
+          "text": "Multiple times per day"
+        }
+      ]
+    },
+    {
+      "text": "How long does it typically take to go from code committed to code running in production?",
+      "answers": [
+        {
+          "text": "More than a month"
+        },
+        {
+          "text": "1 to 4 weeks"
+        },
+        {
+          "text": "1 to 7 days"
+        },
+        {
+          "text": "Less than a day"
+        }
+      ]
+    },
+    {
+      "text": "What percentage of changes to production result in degraded service or require remediation?",
+      "answers": [
+        {
+          "text": "More than 30%"
+        },
+        {
+          "text": "16% to 30%"
+        },
+        {
+          "text": "1% to 15%"
+        },
+        {
+          "text": "Less than 1%"
+        }
+      ]
+    }
+  ]
+}
