@@ -1,6 +1,3 @@
 namespace DevOpsQuickScan.Domain;
 
-public class QuestionData
-{
-    
-}
+public record QuestionData(string Title, List<Question> Questions);

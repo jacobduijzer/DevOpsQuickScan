@@ -4,7 +4,7 @@ using Moq;
 
 namespace DevOpsQuickScan.UnitTests;
 
-public class SessionServiceTests
+public class CurrentSessionServiceTests
 {
     [Fact]
     public async Task CanStartSessionWithName()
@@ -62,7 +62,7 @@ public class SessionServiceTests
         var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
         var sessionStore = new InMemorySessionStore();
         var surveyReader = new SurveyReader();
-        var sessionService = new SessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
+        var sessionService = new CurrentSessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
         
         var sessionId = await sessionService.Start("test", "test", "survey-01.json");
         Participant participant = new(sessionId, "John Doe");
@@ -82,7 +82,7 @@ public class SessionServiceTests
         var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
         var sessionStore = new InMemorySessionStore();
         var surveyReader = new SurveyReader();
-        var sessionService = new SessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
+        var sessionService = new CurrentSessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
         
         var sessionId = await sessionService.Start("test", "test", "survey-01.json");
         Participant participant = new(sessionId, "John Doe");
@@ -151,11 +151,11 @@ public class SessionServiceTests
         // Assert.Single(sessionService.Answers);
     }
 
-    private SessionService CreateSessionService()
+    private CurrentSessionService CreateSessionService()
     {
         var mockHubConnectionWrapper = new Mock<IHubConnectionWrapper>();
         var sessionStore = new InMemorySessionStore();
         var surveyReader = new SurveyReader();
-        return new SessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
+        return new CurrentSessionService(mockHubConnectionWrapper.Object, sessionStore, surveyReader);
     }
 }

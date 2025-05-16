@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Identity" Version="1.14.0" />
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.24.0" />
       <PackageReference Include="Blazor.Bootstrap" Version="3.3.1" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.4" />
       <PackageReference Include="PinguApps.Blazor.QRCode" Version="1.1.3" />
@@ -19,6 +21,11 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Home.razor" />
       <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Session.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj" />
+      <ProjectReference Include="..\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

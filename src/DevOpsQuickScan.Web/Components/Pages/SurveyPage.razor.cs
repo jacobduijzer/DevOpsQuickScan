@@ -1,7 +1,9 @@
+using DevOpsQuickScan.Domain;
 using DevOpsQuickScan.Web.Sessions;
 using DevOpsQuickScan.Web.Surveys;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Question = DevOpsQuickScan.Web.Surveys.Question;
 
 namespace DevOpsQuickScan.Web.Components.Pages;
 
@@ -11,7 +13,8 @@ public partial class SurveyPage : ComponentBase
 
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
 
-    [Inject] private SessionService SessionService { get; set; } = default!;
+    [Inject] private IQuestionRepository QuestionRepository { get; set; } = default!;
+    [Inject] private CurrentSessionService CurrentSessionService { get; set; } = default!;
 
     [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
 
@@ -24,14 +27,16 @@ public partial class SurveyPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        var sessionId = await SessionService.Start(
+        var testData = await QuestionRepository.QuestionData();
+        
+        var sessionId = await CurrentSessionService.Start(
             SessionName,
             NavigationManager.ToAbsoluteUri("/hub/voting").ToString(),
             Path.Combine("Surveys", "survey-01.json"));
 
         _inviteLink = NavigationManager.BaseUri + $"join?session={sessionId}";
         
-        SessionService.OnParticipantJoined += async participant =>
+        CurrentSessionService.OnParticipantJoined += async participant =>
         {
             await InvokeAsync(() =>
             {
@@ -42,7 +47,7 @@ public partial class SurveyPage : ComponentBase
             });
         };
 
-        SessionService.OnParticipantAnswered += async (participantAnswer) =>
+        CurrentSessionService.OnParticipantAnswered += async (participantAnswer) =>
         {
             await InvokeAsync(() =>
             {
@@ -50,7 +55,7 @@ public partial class SurveyPage : ComponentBase
                 StateHasChanged();
             });
         };
-        _currentQuestion = SessionService.CurrentQuestion;
+        _currentQuestion = CurrentSessionService.CurrentQuestion;
     }
 
     public string QRCodeImage { get; set; }
@@ -60,7 +65,7 @@ public partial class SurveyPage : ComponentBase
 
 
     private async Task SendQuestion(Guid questionId) =>
-        await SessionService.SendCurrentQuestion();
+        await CurrentSessionService.SendCurrentQuestion();
 
     private int GetNumberOfVotes(Guid questionId)
     {
@@ -72,15 +77,15 @@ public partial class SurveyPage : ComponentBase
 
     private async Task NextQuestion()
     {
-        _currentQuestion = SessionService.NextQuestion();
-        await SessionService.SendCurrentQuestion();
+        _currentQuestion = CurrentSessionService.NextQuestion();
+        await CurrentSessionService.SendCurrentQuestion();
         StateHasChanged();
     }
 
     private async Task PreviousQuestion()
     {
-        _currentQuestion = SessionService.PreviousQuestion();
-        await SessionService.SendCurrentQuestion();
+        _currentQuestion = CurrentSessionService.PreviousQuestion();
+        await CurrentSessionService.SendCurrentQuestion();
         StateHasChanged();
     }
     

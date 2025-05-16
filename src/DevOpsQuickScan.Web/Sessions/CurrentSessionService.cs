@@ -2,7 +2,7 @@ using DevOpsQuickScan.Web.Surveys;
 
 namespace DevOpsQuickScan.Web.Sessions;
 
-public class SessionService(
+public class CurrentSessionService(
     IHubConnectionWrapper hubConnectionWrapper, 
     ISessionStore sessionStore,
     ISurveyReader surveyReader) 
