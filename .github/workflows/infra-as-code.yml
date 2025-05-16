@@ -11,8 +11,7 @@ on:
 env:
   RESOURCE_GROUP: rg-quickscan
   LOCATION: westeurope
-  WEBAPP_NAME: devops-quickscap-app
-  COSMOSDB_NAME: devops-quickscan-cosmos
+  WEBAPP_NAME: devopsquickscan
 
 jobs:
   deploy:
@@ -43,4 +42,3 @@ jobs:
             --resource-group $RESOURCE_GROUP \
             --template-file infra/main.bicep \
             --parameters webAppName=$WEBAPP_NAME dockerHubPassword=${{ secrets.DOCKERHUB_TOKEN }} dockerHubUsername=${{ secrets.DOCKERHUB_USERNAME }}
-#cosmosDbAccountName
