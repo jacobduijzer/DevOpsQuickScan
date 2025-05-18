@@ -1,14 +1,15 @@
+@using DevOpsQuickScan.Domain
 <div class="question-container">
 
        <!--// Question //-->
     <div class="question-card">
-        <h3>@CurrentQuestion.Text <a href="@CurrentQuestion.Link" target="_blank"><i class="fa-solid fa-circle-info"></i></a></h3>
+        <h3>@CurrentQuestion.Question.Text <a href="@CurrentQuestion.Question.Link" target="_blank"><i class="fa-solid fa-circle-info"></i></a></h3>
     </div>
 
     <!--// Answers //-->
     <div class="answers-list mt-4">
         <ul class="list-group">
-            @foreach (var answer in CurrentQuestion.Answers)
+            @foreach (var answer in CurrentQuestion.Question.Answers)
             {
                 <li class="list-group-item">
                     @answer.Text
@@ -22,5 +23,5 @@
 @code {
     
     [Parameter] 
-    public required Domain.Question CurrentQuestion { get; set; }
+    public required QuestionWithAnswers CurrentQuestion { get; set; }
 }

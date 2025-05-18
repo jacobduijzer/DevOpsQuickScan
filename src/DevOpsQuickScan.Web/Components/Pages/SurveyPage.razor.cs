@@ -21,7 +21,7 @@ public partial class SurveyPage : ComponentBase
     // private List<Participant> _participants = new();
     // private HashSet<ParticipantAnswer> _votes = new();
 
-    private Question? _currentQuestion;
+    private QuestionWithAnswers? _currentQuestion;
 
     protected override async Task OnInitializedAsync()
     {

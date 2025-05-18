@@ -69,7 +69,7 @@ public class SessionServiceTests
         var next = service.NextQuestion();
 
         // ASSERT
-        Assert.NotEqual(first!.Id, next!.Id);
+        Assert.NotEqual(first!.Question.Id, next!.Question.Id);
     }
     
     [Fact]
@@ -86,7 +86,7 @@ public class SessionServiceTests
         var second = service.PreviousQuestion();
 
         // ASSERT
-        Assert.NotEqual(first!.Id, second!.Id);
+        Assert.NotEqual(first!.Question.Id, second!.Question.Id);
     }
     
     [Fact]
@@ -118,5 +118,24 @@ public class SessionServiceTests
 
         // Assert
         Assert.Null(result);
+    }
+    
+    [Fact]
+    public async Task CanAnswerQuestion()
+    {
+        // ARRANGE
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
+        await service.CreateSession(Guid.NewGuid(), "Test");
+        await service.Start();
+        var question = service.CurrentQuestion()!;
+        await service.AskQuestion(question.Question);
+        
+        // ACT
+        await service.AnswerQuestion(Guid.NewGuid(), question.Question.Id, question.Question.Answers.First().Id);
+
+        // ASSERT
+        var questionWithAnswers = service.CurrentQuestion();
+        Assert.NotNull(questionWithAnswers);
+        Assert.Single(questionWithAnswers.Answers!);
     }
 }
