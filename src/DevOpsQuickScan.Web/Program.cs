@@ -12,6 +12,7 @@ builder.Services.AddScoped<ISurveyReader, SurveyReader>();
 builder.Services.AddScoped<SurveyReader>();
 builder.Services.AddScoped<SessionHub>();
 builder.Services.AddScoped<CurrentSessionService>();
+builder.Services.AddScoped<SessionService>();
 builder.Services.AddScoped<IQuestionRepository>(sp =>
 {
     var storageAccountName = builder.Configuration["BLOB_STORAGE_ACCOUNT_NAME"] ?? throw new InvalidOperationException("BLOB_STORAGE_ACCOUNT_NAME is not set.");

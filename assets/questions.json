@@ -4,6 +4,7 @@
     {
       "id": 1,
       "text": "How frequently does your team deploy code to production or end users?",
+      "link": "https://dora.dev/capabilities/code-maintainability/",
       "answers": [
         {
           "id": 1, "text": "Less than once a month"
@@ -25,6 +26,7 @@
     {
       "id": 2,
       "text": "How long does it typically take to go from code committed to code running in production?",
+      "link": "https://dora.dev/capabilities/documentation-quality/",
       "answers": [
         {
           "id": 1, "text": "More than a month"
@@ -43,6 +45,7 @@
     {
       "id": 3,
       "text": "What percentage of changes to production result in degraded service or require remediation?",
+      "link": "https://dora.dev/capabilities/teams-empowered-to-choose-tools/",
       "answers": [
         {
           "id": 1, "text": "More than 30%"

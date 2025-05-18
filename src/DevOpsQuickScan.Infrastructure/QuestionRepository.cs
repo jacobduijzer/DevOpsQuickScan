@@ -7,7 +7,7 @@ public class QuestionRepository(
     string storageAccountName, string storageAccountKey, string containerUrl)
     : BaseRepository(storageAccountName, storageAccountKey, containerUrl), IQuestionRepository
 {
-    public async Task<QuestionData> QuestionData()
+    public async Task<QuestionData> Get()
     {
         var blobClient = ContainerClient.GetBlobClient("questions.json");
 

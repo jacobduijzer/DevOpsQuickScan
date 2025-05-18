@@ -1,5 +1,6 @@
 using System.Text.Json;
 using DevOpsQuickScan.Domain;
+using DevOpsQuickScan.UnitTests.Stubs;
 
 namespace DevOpsQuickScan.UnitTests.Domain;
 
@@ -20,9 +21,7 @@ public class SessionTests
    public void CanStartANewSession()
    {
       // ARRANGE
-      var facilitatorId = Guid.NewGuid();
-      var sessionName = "Test Session";
-      Session session = new(facilitatorId, sessionName);
+      Session session = CreateSession();
       
       // ACT
       session.Start();
@@ -35,7 +34,7 @@ public class SessionTests
    public void StartWhenAlreadyStartedThrowsInvalidOperationException()
    {
       // ARRANGE
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var session = CreateSession();
       session.Start();
 
       // ACT & ASSERT
@@ -47,8 +46,8 @@ public class SessionTests
    public void SelectQuestionOnInvalidStateThrowsInvalidOperationException()
    {
       // ARRANGE
-      var question = new Question(1, "Question 1", new List<Answer>());
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var question = new Question(1, "Question 1", "https://google.com",new List<Answer>());
+      var session = CreateSession();
       session.Start();
       session.SelectQuestion(question);
 
@@ -61,8 +60,8 @@ public class SessionTests
    public void AnswerQuestionWhenNotCollectingAnswersThrowsInvalidOperationException()
    {
       // ARRANGE
-      var question = new Question(1, "Question 1", new List<Answer>());
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var question = new Question(1, "Question 1", "https://google.com", new List<Answer>());
+      var session = CreateSession();
       session.Start();
 
       // ACT & ASSERT
@@ -74,8 +73,8 @@ public class SessionTests
    public void AnswerTheWrongQuestionThrowsInvalidOperationException()
    {
       // ARRANGE
-      var question = new Question(1, "Question 1", new List<Answer>());
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var question = new Question(1, "Question 1", "https://google.com", new List<Answer>());
+      var session = CreateSession();
       session.Start();
       session.SelectQuestion(question);
 
@@ -88,21 +87,21 @@ public class SessionTests
    public void AnswerAnNonExistingAnswerThrowsInvalidOperationException()
    {
       // ARRANGE
-      var question = new Question(1, "Question 1", [new Answer(1, "Answer 1")]);
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var question = new Question(1, "Question 1", "https://google.com", [new Answer(1, "Answer 1")]);
+      var session = CreateSession();
       session.Start();
       session.SelectQuestion(question);
 
       // ACT & ASSERT
-      var exception = Assert.Throws<InvalidOperationException>(() => session.AnswerQuestion(Guid.NewGuid(), 1, 2));
-      Assert.Equal($"The current question does not contain an answer with id '2'", exception.Message); 
+      var exception = Assert.Throws<InvalidOperationException>(() => session.AnswerQuestion(Guid.NewGuid(), 1, 5));
+      Assert.Equal($"The current question does not contain an answer with id '5'", exception.Message); 
    }
    
    [Fact]
    public void RevealingAnswersWhenNotInCollectingStateThrowsInvalidOperationException()
    {
       // ARRANGE
-      var session = new Session(Guid.NewGuid(), "Test Session");
+      var session = CreateSession();
       session.Start();
 
       // ACT & ASSERT
@@ -116,12 +115,12 @@ public class SessionTests
       // ARRANGE
       var participant1Id = Guid.NewGuid();
       var participant2Id = Guid.NewGuid();
-      var question1 = new Question(1, "Question 1", [
+      var question1 = new Question(1, "Question 1", "https://google.com", [
          new Answer(1, "Answer 1"), 
          new Answer(2, "Answer 2"), 
          new Answer(3, "Answer 3") 
       ]);
-      var question2 = new Question(2, "Question 2", [
+      var question2 = new Question(2, "Question 2", "https://google.com", [
          new Answer(1, "Answer 1"),
          new Answer(2, "Answer 2"),
          new Answer(3, "Answer 3")
@@ -150,12 +149,12 @@ public class SessionTests
       // ARRANGE
       var participant1Id = Guid.NewGuid();
       var participant2Id = Guid.NewGuid();
-      var question1 = new Question(1, "Question 1", [
+      var question1 = new Question(1, "Question 1", "https://google.com?q=question%202", [
          new Answer(1, "Answer 1"), 
          new Answer(2, "Answer 2"), 
          new Answer(3, "Answer 3") 
       ]);
-      var question2 = new Question(2, "Question 2", [
+      var question2 = new Question(2, "Question 2", "https://google.com?q=question%202", [
          new Answer(1, "Answer 1"),
          new Answer(2, "Answer 2"),
          new Answer(3, "Answer 3")
@@ -187,6 +186,6 @@ public class SessionTests
    }
    
    private Session CreateSession() =>
-      new Session(Guid.NewGuid(), "Test Session");
+      new Session(Guid.NewGuid(), "Test Session", new QuestionRepositoryStub().Get().Result.Questions);
    
 }

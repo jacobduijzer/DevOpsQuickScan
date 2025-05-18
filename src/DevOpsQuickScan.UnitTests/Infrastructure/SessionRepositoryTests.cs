@@ -14,14 +14,14 @@ public class SessionRepositoryTests(ITestOutputHelper outputWriter)
         var storageAccountKey = "oqeV4hoWJspdBNIGGaht2ONzGpyKuyirYv6dZafWSavg5NjWsVKP3JKtGdDcpvQUBQmspbL5S82d+AStVj40hg==";
         var sessionsContainerName = "https://devopsquickscanwu33ih6we.blob.core.windows.net/sessiondata";
         
-        Question question = new (1, "What is your favorite color", [
+        Question question = new (1, "What is your favorite color", "https://google.com?q=favorite%20color", [
             new Answer(1, "Red"), 
             new Answer(2, "Blue"), 
             new Answer(3, "Green"),
             new Answer(4, "Cheese")]);
             
         ISessionRepository sessionRepository = new SessionRepository(storageAccountName, storageAccountKey, sessionsContainerName);
-        Session session = new(Guid.NewGuid(), "Test Session");
+        Session session = new(Guid.NewGuid(), "Test Session", [question]);
 
         // ACT
         session.Start();

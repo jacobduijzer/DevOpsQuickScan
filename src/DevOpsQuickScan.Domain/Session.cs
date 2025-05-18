@@ -8,14 +8,16 @@ public class Session
    public Guid FacilitatorId { get; }
    public string Name { get; }
    public SessionState CurrentState { get; private set; } = SessionState.NotStarted;
-   public Question CurrentQuestion { get; private set; }
+   public List<Question> Questions { get; } = new ();
+   public Question? CurrentQuestion { get; private set; }
    public HashSet<QuestionAnswer> Answers { get; } = new();
 
-   public Session(Guid facilitatorId, string name)
+   public Session(Guid facilitatorId, string name, List<Question> questions)
    {
       Id = Guid.NewGuid();
       FacilitatorId = facilitatorId;
       Name = name;
+      Questions = questions;
    }
 
    [JsonConstructor]
@@ -24,6 +26,7 @@ public class Session
       Guid facilitatorId, 
       string name, 
       SessionState currentState,
+      List<Question> questions,
       Question currentQuestion,
       HashSet<QuestionAnswer> answers)
    {
@@ -31,6 +34,7 @@ public class Session
       FacilitatorId = facilitatorId;
       Name = name;
       CurrentState = currentState;
+      Questions = questions;
       CurrentQuestion = currentQuestion;
       Answers = answers;
    }
@@ -57,7 +61,7 @@ public class Session
       if(CurrentState != SessionState.CollectingAnswers)
          throw new InvalidOperationException("Invalid state for answering questions");
       
-      if(CurrentQuestion.Id != questionId)
+      if(CurrentQuestion!.Id != questionId)
          throw new InvalidOperationException("This is not the current question");
       
       if(CurrentQuestion.Answers.All(x => x.Id != answerId))
@@ -74,7 +78,7 @@ public class Session
       
       CurrentState = SessionState.RevealingAnswers;
    }
-
+   
    public void End() =>
       CurrentState = SessionState.SessionEnded;
 }

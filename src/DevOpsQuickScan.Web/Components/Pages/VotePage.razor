@@ -7,7 +7,7 @@
 
     @if (!string.IsNullOrEmpty(_currentQuestion?.Text))
     {
-        <QuestionComponent CurrentQuestion="_currentQuestion" />
+        @* <QuestionComponent CurrentQuestion="_currentQuestion" /> *@
         
         <div class="question-container">
             <p class="question-text">@_currentQuestion.Text</p>

@@ -5,10 +5,10 @@
 
 <div class="quickscan-card">
     <div class="quickscan-card">
-        <img src="@Assets["/img/logo.jpg"]" width="300" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
+        <img src="@Assets["/img/logo.jpg"]" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
         <h2 class="mb-4">Welcome to DevOps Quickscan</h2>
         <EditForm Model="this" OnValidSubmit="StartSession" FormName="sessionForm">
-            <InputText class="form-control mb-3" @bind-Value="_sessionName"/>
+            <InputText class="form-control mb-3" @bind-Value="_sessionName" placeholder="Session name" />
             <button type="submit" class="btn btn-primary w-100">Start Session</button>
         </EditForm>
     </div>
