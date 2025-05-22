@@ -9,6 +9,9 @@
     <ItemGroup>
       <PackageReference Include="Azure.Identity" Version="1.14.0" />
       <PackageReference Include="Azure.Storage.Blobs" Version="12.24.0" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.5" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.5" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.0" />
     </ItemGroup>
 
     <ItemGroup>

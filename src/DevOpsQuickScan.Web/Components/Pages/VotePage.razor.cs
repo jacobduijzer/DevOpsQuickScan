@@ -1,23 +1,23 @@
 using BlazorBootstrap;
-using DevOpsQuickScan.Web.Sessions;
-using DevOpsQuickScan.Web.Surveys;
+using DevOpsQuickScan.Domain;
 using Microsoft.AspNetCore.Components;
+using Question = DevOpsQuickScan.Web.Surveys.Question;
 
 namespace DevOpsQuickScan.Web.Components.Pages;
 
 public partial class VotePage : ComponentBase
 {
      [Parameter]
-     public string? SessionId { get; set; }
+     public Guid? SessionId { get; set; }
      
      [Parameter]
-     public string? UserName { get; set; }
+     public string? DisplayName { get; set; }
      
      [Inject]
      private NavigationManager NavigationManager { get; set; } = default!;
-
+   
      [Inject]
-     private IHubConnectionWrapper HubConnectionWrapper { get; set; } = default!;
+     private ICommunicationEvents CommunicationEvents { get; set; } = default!;
      
      private string _sessionName = string.Empty;
      private Question? _currentQuestion;
@@ -37,22 +37,27 @@ public partial class VotePage : ComponentBase
 
      protected override async Task OnInitializedAsync()
      {
-          if (string.IsNullOrEmpty(SessionId))
+          if (!SessionId.HasValue)
                throw new InvalidOperationException("SessionId cannot be null or empty.");
           
-          HubConnectionWrapper.OnNewQuestion += async question =>
-          {
-               await InvokeAsync(() =>
-               {
-                    _currentQuestion = question;
-                    _isAnswerSelected = false;
-                    StateHasChanged();
-               });
-          };
-
-          await HubConnectionWrapper.Start(SessionId, NavigationManager.ToAbsoluteUri("/hub/voting").ToString());
-          await HubConnectionWrapper.JoinSession(SessionId, UserName);
+          if(string.IsNullOrEmpty(DisplayName))
+              throw new InvalidOperationException("DisplayName cannot be null or empty.");
           
+          // HubConnectionWrapper.OnNewQuestion += async question =>
+          // {
+          //      await InvokeAsync(() =>
+          //      {
+          //           _currentQuestion = question;
+          //           _isAnswerSelected = false;
+          //           StateHasChanged();
+          //      });
+          // };
+
+          await CommunicationEvents.Start(NavigationManager.ToAbsoluteUri("/hub/voting"));
+          await CommunicationEvents.Join(SessionId.Value, DisplayName!);
+          // await HubConnectionWrapper.Start(SessionId, NavigationManager.ToAbsoluteUri("/hub/voting").ToString());
+          // await HubConnectionWrapper.JoinSession(SessionId, UserName);
+
           // backgroundColors = ColorUtility.CategoricalTwelveColors;
           // chartData = new ChartData { Labels = GetDefaultDataLabels(4), Datasets = GetDefaultDataSets(1) };
           //
@@ -70,11 +75,11 @@ public partial class VotePage : ComponentBase
 
      private async Task SubmitVote()
      {
-          if (_isAnswerSelected && _currentQuestion != null)
-          {
-               await HubConnectionWrapper.SendAnswer(SessionId, _currentQuestion.Id, _selectedAnswerId);
-               _isAnswerSelected = false;
-          }
+          // if (_isAnswerSelected && _currentQuestion != null)
+          // {
+          //      await HubConnectionWrapper.SendAnswer(SessionId.Value, _currentQuestion.Id, _selectedAnswerId);
+          //      _isAnswerSelected = false;
+          // }
      }
      
      protected override async Task OnAfterRenderAsync(bool firstRender)

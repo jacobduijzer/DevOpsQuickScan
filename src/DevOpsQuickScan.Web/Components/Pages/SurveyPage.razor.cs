@@ -14,28 +14,44 @@ public partial class SurveyPage : ComponentBase
     // [Inject] private CurrentSessionService CurrentSessionService { get; set; } = default!;
 
     [Inject] private SessionService SessionService { get; set; } = default!;
+    [Inject] private CommunicationService CommunicationService { get; set; } = default!;
     [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
 
 
     private string _inviteLink;
-    // private List<Participant> _participants = new();
     // private HashSet<ParticipantAnswer> _votes = new();
 
+    private List<Participant> _participants = new ();
+    
     private QuestionWithAnswers? _currentQuestion;
 
     protected override async Task OnInitializedAsync()
     {
-        // var testData = await Questions.Get();
-
-        var sessionId = await SessionService.CreateSession(Guid.NewGuid(), SessionName);
-            //SessionName,
-            //NavigationManager.ToAbsoluteUri("/hub/voting").ToString(),
-            //Path.Combine("Surveys", "survey-01.json"));
-
-        _inviteLink = NavigationManager.BaseUri + $"join?session={sessionId}";
+       
+        
+        var hubUri = NavigationManager.ToAbsoluteUri("/hub/voting");
+        SessionService.OnParticipantJoined += async participant =>
+        {
+            await InvokeAsync(() =>
+            {
+                if (_participants.Contains(participant)) return;
+        
+                _participants.Add(participant);
+                StateHasChanged();
+            });
+        };
+        
+        var sessionId = await SessionService.CreateSession(Guid.NewGuid(), SessionName, hubUri);
+        await SessionService.Start();
+        
+        
+        _inviteLink = NavigationManager.BaseUri + $"join?sessionid={sessionId}";
         _currentQuestion = SessionService.CurrentQuestion();
+        
+        
 
-        // CurrentSessionService.OnParticipantJoined += async participant =>
+
+        // SessionService.OnParticipantJoined += async participant =>
         // {
         //     await InvokeAsync(() =>
         //     {
@@ -63,28 +79,21 @@ public partial class SurveyPage : ComponentBase
         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
 
 
-    private async Task SendQuestion(Guid questionId) => throw new NotImplementedException();
-        // await CurrentSessionService.SendCurrentQuestion();
+    private async Task SelectQuestion(int questionId) =>
+        await SessionService.AskQuestion(questionId);
 
-    // private int GetNumberOfVotes(Guid questionId)
-    // {
-    //     if (!_votes.Any() || !_votes.Any(x => x.QuestionId == questionId))
-    //         return 0;
-    //
-    //     return _votes.Count(v => v.QuestionId == questionId);
-    // }
+    private async Task RevealAnswers(int questionId) =>
+        throw new NotImplementedException();
 
-    private async Task NextQuestion()
+    private void NextQuestion()
     {
         _currentQuestion = SessionService.NextQuestion();
-        // await CurrentSessionService.SendCurrentQuestion();
         StateHasChanged();
     }
 
-    private async Task PreviousQuestion()
+    private void PreviousQuestion()
     {
         _currentQuestion = SessionService.PreviousQuestion();
-        // await CurrentSessionService.SendCurrentQuestion();
         StateHasChanged();
     }
     

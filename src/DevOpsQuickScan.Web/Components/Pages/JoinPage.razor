@@ -9,23 +9,19 @@
 
         <h3>Join a DevOps Quickscan</h3>
 
-        @if (string.IsNullOrEmpty(sessionName))
+        @if (string.IsNullOrEmpty(_sessionName))
         {
             <p class="text-danger">Invalid or expired session code.</p>
         }
-        else if (!joined)
+        else 
         {
-            <p>You’re about to join session: <strong>@sessionName</strong></p>
+            <p>You’re about to join session: <strong>@_sessionName</strong></p>
 
             <EditForm Model="this" OnValidSubmit="JoinSession" FormName="Name">
-                <InputText class="form-control mb-3" @bind-Value="userName" placeholder="Enter your name" />
+                <InputText class="form-control mb-3" @bind-Value="_displayName" placeholder="Enter your name" />
                 <button type="submit" class="btn btn-primary">Join Session</button>
             </EditForm>
         }
-        else
-        {
-            <h4>Welcome, @userName!</h4>
-            <p>You’ve joined: <strong>@sessionName</strong></p>
-        }
+        
     </div>
 </div>

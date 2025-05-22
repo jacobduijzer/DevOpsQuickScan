@@ -1,4 +1,5 @@
 using DevOpsQuickScan.Domain;
+using DevOpsQuickScan.Infrastructure;
 using DevOpsQuickScan.UnitTests.Stubs;
 using Moq;
 
@@ -11,12 +12,13 @@ public class SessionServiceTests
     {
         // ARRANGE
         var mockSessions = new Mock<ISessionRepository>();
-        SessionService sessionService = new(new QuestionRepositoryStub(), mockSessions.Object);
+        var mockSessionEventsHandler = new Mock<ICommunicationEvents>();
+        SessionService sessionService = new(new QuestionRepositoryStub(), mockSessions.Object, mockSessionEventsHandler.Object);
         var facilitatorId = Guid.NewGuid();
         var sessionName = "Test Session";
     
         // ACT
-        var sessionId = await sessionService.CreateSession(facilitatorId, sessionName);
+        var sessionId = await sessionService.CreateSession(facilitatorId, sessionName, new Uri("/hub/vote"));
     
         // ASSERT
         Assert.NotEqual(Guid.Empty, sessionId);
@@ -35,11 +37,12 @@ public class SessionServiceTests
         var questionsStub = new QuestionRepositoryStub();
         var questionData = await questionsStub.Get();
         var mockSessions = new Mock<ISessionRepository>();
+        var mockSessionEventsHandler = new Mock<ICommunicationEvents>();
         var facilitatorId = Guid.NewGuid();
         var sessionName = "Test Session";
         
-        SessionService sessionService = new(questionsStub, mockSessions.Object);
-        var sessionId = await sessionService.CreateSession(facilitatorId, sessionName);
+        SessionService sessionService = new(questionsStub, mockSessions.Object, mockSessionEventsHandler.Object);
+        var sessionId = await sessionService.CreateSession(facilitatorId, sessionName, new Uri("/hub/vote"));
 
         mockSessions.Setup(x => x.Load(sessionId)).ReturnsAsync(
             new Session(sessionId, facilitatorId, sessionName, SessionState.NotStarted, questionData.Questions, null, new HashSet<QuestionAnswer>()));
@@ -56,13 +59,45 @@ public class SessionServiceTests
             session.CurrentState == SessionState.QuestionPending
         )), Times.Exactly(2));
     }
+
+    [Fact]
+    public async Task ParticipantCanJoinASession()
+    {
+        // ARRANGE
+        var questionsStub = new QuestionRepositoryStub();
+        var questionData = await questionsStub.Get();
+        var mockSessions = new Mock<ISessionRepository>();
+        var sessionEventsHandler = new CommunicationEventsHandlerStub();
+        
+        var facilitatorId = Guid.NewGuid();
+        var sessionName = "Test Session";
+
+        var fired = false;
+        
+        SessionService sessionService = new(questionsStub, mockSessions.Object, sessionEventsHandler);
+        sessionService.OnParticipantJoined += participant =>
+        {
+            fired = true;
+        };
+        
+        var sessionId = await sessionService.CreateSession(facilitatorId, sessionName, new Uri("/hub/vote"));
+
+        mockSessions.Setup(x => x.Load(sessionId)).ReturnsAsync(
+            new Session(sessionId, facilitatorId, sessionName, SessionState.NotStarted, questionData.Questions, null, new HashSet<QuestionAnswer>()));
+        
+        // ACT
+        await sessionEventsHandler.Join(sessionId, "Jacob");
+
+        // ASSERT
+        Assert.True(fired);
+    }
     
     [Fact]
     public async Task NextQuestionMovesToNextWhenNotAtEnd()
     {
         // ARRANGE
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
-        await service.CreateSession(Guid.NewGuid(), "Test");
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
 
         // ACT
         var first = service.CurrentQuestion();
@@ -76,8 +111,8 @@ public class SessionServiceTests
     public async Task PreviousQuestionMovesToPreviousWhenNotAtStart()
     {
         // ARRANGE 
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
-        await service.CreateSession(Guid.NewGuid(), "Test");
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
 
         // ACT
@@ -93,8 +128,8 @@ public class SessionServiceTests
     public async Task PreviousQuestionReturnsNullAtStart()
     {
         // Arrange
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
-        await service.CreateSession(Guid.NewGuid(), "Test");
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
 
         // Act
@@ -108,8 +143,8 @@ public class SessionServiceTests
     public async Task NextQuestion_ReturnsNull_AtEnd()
     {
         // Arrange
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
-        await service.CreateSession(Guid.NewGuid(), "Test");
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         // Move to last question
         while (service.NextQuestion() != null) { }
 
@@ -124,11 +159,11 @@ public class SessionServiceTests
     public async Task CanAnswerQuestion()
     {
         // ARRANGE
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub());
-        await service.CreateSession(Guid.NewGuid(), "Test");
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
         var question = service.CurrentQuestion()!;
-        await service.AskQuestion(question.Question);
+        await service.AskQuestion(question.Question.Id);
         
         // ACT
         await service.AnswerQuestion(Guid.NewGuid(), question.Question.Id, question.Question.Answers.First().Id);

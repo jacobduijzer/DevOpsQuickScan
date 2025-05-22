@@ -6,7 +6,7 @@ namespace DevOpsQuickScan.UnitTests.Infrastructure;
 
 public class SessionRepositoryTests(ITestOutputHelper outputWriter)
 {
-    [Fact]
+    [Fact(Skip = "Disabled, is for testing some Azure stuff only")]
     public async Task CanWriteSessionData()
     {
         // ARRANGE
@@ -33,7 +33,7 @@ public class SessionRepositoryTests(ITestOutputHelper outputWriter)
         outputWriter.WriteLine(session.Id.ToString());
     }
 
-    [Fact]
+    [Fact(Skip = "Disabled, is for testing some Azure stuff only")]
     public async Task CanReadSessionData()
     {
         // ARRANGE

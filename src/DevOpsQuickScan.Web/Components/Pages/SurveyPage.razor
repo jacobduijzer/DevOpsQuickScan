@@ -1,6 +1,7 @@
 @page "/survey/{SessionName}"
 @using DevOpsQuickScan.Web.Components.CustomComponents
 @rendermode @(new InteractiveServerRenderMode(prerender: false))
+
 <div class="d-flex">
     <!-- Main Content -->
     <div class="flex-grow-1">
@@ -19,14 +20,8 @@
                             disabled="@(SessionService.CurrentQuestionIndex == 0)">
                         <i class="fa-solid fa-chevron-left"></i> Previous
                     </button>
-                    @* <button class="btn btn-primary" *@
-                    @*         @onclick="() => SendQuestion(_currentQuestion.Id)"> *@
-                    @*     Request vote (@GetNumberOfVotes(_currentQuestion.Id)) *@
-                    @* </button> *@
-                    @* <button class="btn btn-primary" *@
-                    @*         @onclick="() => SendQuestion(_currentQuestion.Id)"> *@
-                    @*     Reveal the answers (@GetNumberOfVotes(_currentQuestion.Id)) *@
-                    @* </button> *@
+                    <button class="btn btn-primary" @onclick="() => SelectQuestion(_currentQuestion.Question.Id)"> Select this question</button>
+                    <button class="btn btn-primary" @onclick="() => RevealAnswers(_currentQuestion.Question.Id)" disabled="disabled">Reveal the answers</button>
                     <button class="btn btn-outline-primary" @onclick="NextQuestion"
                             disabled="@(SessionService.CurrentQuestionIndex >= SessionService.NumberOfQuestions - 1)">
                         Next <i class="fa-solid fa-chevron-right"></i>
@@ -57,12 +52,12 @@
         <div class="mt-3">
             <h5>Participants</h5>
             <ul class="list-group">
-                @* @foreach (var participant in _participants) *@
-                @* { *@
-                @*     <li class="list-group-item"> *@
-                @*         @participant.UserName *@
-                @*     </li> *@
-                @* } *@
+                @foreach (var participant in _participants)
+                {
+                    <li class="list-group-item">
+                        @participant.DisplayName
+                    </li>
+                }
             </ul>
         </div>
     </div>
