@@ -11,6 +11,11 @@ public class CommunicationEventsHandlerStub : ICommunicationEvents
        return Task.CompletedTask;
     }
 
+    public Task Start(Uri hubUri)
+    {
+        return Task.CompletedTask;
+    }
+
     public Task Join(Guid sessionId, string displayName)
     {
         var participant = new Participant(Guid.NewGuid().ToString(), sessionId, displayName);

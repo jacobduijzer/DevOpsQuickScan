@@ -1,5 +1,4 @@
 using DevOpsQuickScan.Domain;
-using DevOpsQuickScan.Infrastructure;
 using DevOpsQuickScan.UnitTests.Stubs;
 using Moq;
 
@@ -13,7 +12,8 @@ public class SessionServiceTests
         // ARRANGE
         var mockSessions = new Mock<ISessionRepository>();
         var mockSessionEventsHandler = new Mock<ICommunicationEvents>();
-        SessionService sessionService = new(new QuestionRepositoryStub(), mockSessions.Object, mockSessionEventsHandler.Object);
+        var communicationService = new CommunicationService(mockSessionEventsHandler.Object);
+        SessionService sessionService = new(new QuestionRepositoryStub(), mockSessions.Object, communicationService);
         var facilitatorId = Guid.NewGuid();
         var sessionName = "Test Session";
     
@@ -38,10 +38,11 @@ public class SessionServiceTests
         var questionData = await questionsStub.Get();
         var mockSessions = new Mock<ISessionRepository>();
         var mockSessionEventsHandler = new Mock<ICommunicationEvents>();
+        var communicationService = new CommunicationService(mockSessionEventsHandler.Object);
         var facilitatorId = Guid.NewGuid();
         var sessionName = "Test Session";
         
-        SessionService sessionService = new(questionsStub, mockSessions.Object, mockSessionEventsHandler.Object);
+        SessionService sessionService = new(questionsStub, mockSessions.Object, communicationService);
         var sessionId = await sessionService.CreateSession(facilitatorId, sessionName, new Uri("/hub/vote"));
 
         mockSessions.Setup(x => x.Load(sessionId)).ReturnsAsync(
@@ -68,13 +69,14 @@ public class SessionServiceTests
         var questionData = await questionsStub.Get();
         var mockSessions = new Mock<ISessionRepository>();
         var sessionEventsHandler = new CommunicationEventsHandlerStub();
+        var communicationService = new CommunicationService(sessionEventsHandler);
         
         var facilitatorId = Guid.NewGuid();
         var sessionName = "Test Session";
 
         var fired = false;
         
-        SessionService sessionService = new(questionsStub, mockSessions.Object, sessionEventsHandler);
+        SessionService sessionService = new(questionsStub, mockSessions.Object, communicationService);
         sessionService.OnParticipantJoined += participant =>
         {
             fired = true;
@@ -96,7 +98,8 @@ public class SessionServiceTests
     public async Task NextQuestionMovesToNextWhenNotAtEnd()
     {
         // ARRANGE
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        var communicationService = new CommunicationService(new Mock<ICommunicationEvents>().Object);
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), communicationService);
         await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
 
         // ACT
@@ -111,7 +114,8 @@ public class SessionServiceTests
     public async Task PreviousQuestionMovesToPreviousWhenNotAtStart()
     {
         // ARRANGE 
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        var communicationService = new CommunicationService(new Mock<ICommunicationEvents>().Object);
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), communicationService);
         await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
 
@@ -128,7 +132,8 @@ public class SessionServiceTests
     public async Task PreviousQuestionReturnsNullAtStart()
     {
         // Arrange
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        var communicationService = new CommunicationService(new Mock<ICommunicationEvents>().Object);
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), communicationService);
         await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
 
@@ -143,7 +148,8 @@ public class SessionServiceTests
     public async Task NextQuestion_ReturnsNull_AtEnd()
     {
         // Arrange
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        var communicationService = new CommunicationService(new Mock<ICommunicationEvents>().Object);
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), communicationService);
         await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         // Move to last question
         while (service.NextQuestion() != null) { }
@@ -159,7 +165,8 @@ public class SessionServiceTests
     public async Task CanAnswerQuestion()
     {
         // ARRANGE
-        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), new Mock<ICommunicationEvents>().Object);
+        var communicationService = new CommunicationService(new Mock<ICommunicationEvents>().Object);
+        var service = new SessionService(new QuestionRepositoryStub(), new SessionRepositoryStub(), communicationService);
         await service.CreateSession(Guid.NewGuid(), "Test", new Uri("/hub/vote"));
         await service.Start();
         var question = service.CurrentQuestion()!;
