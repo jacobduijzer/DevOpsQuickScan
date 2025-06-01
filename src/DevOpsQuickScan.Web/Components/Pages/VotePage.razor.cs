@@ -1,7 +1,6 @@
 using BlazorBootstrap;
 using DevOpsQuickScan.Domain;
 using Microsoft.AspNetCore.Components;
-using Question = DevOpsQuickScan.Web.Surveys.Question;
 
 namespace DevOpsQuickScan.Web.Components.Pages;
 
@@ -20,7 +19,7 @@ public partial class VotePage : ComponentBase
      private ICommunicationEvents CommunicationEvents { get; set; } = default!;
      
      private string _sessionName = string.Empty;
-     private Question? _currentQuestion;
+     private QuestionWithAnswers? _currentQuestion;
      private Guid _selectedAnswerId;
      private bool _isAnswerSelected = false;
      
@@ -43,20 +42,20 @@ public partial class VotePage : ComponentBase
           if(string.IsNullOrEmpty(DisplayName))
               throw new InvalidOperationException("DisplayName cannot be null or empty.");
           
-          // HubConnectionWrapper.OnNewQuestion += async question =>
-          // {
-          //      await InvokeAsync(() =>
-          //      {
-          //           _currentQuestion = question;
-          //           _isAnswerSelected = false;
-          //           StateHasChanged();
-          //      });
-          // };
-
-          await CommunicationEvents.Start(NavigationManager.ToAbsoluteUri("/hub/voting"));
+          var hubUri = NavigationManager.ToAbsoluteUri("/hub/voting");
+          
+          CommunicationEvents.OnQuestionAsked += async question =>
+          {
+               await InvokeAsync(() =>
+               {
+                    _currentQuestion = question;
+                    _isAnswerSelected = false;
+                    StateHasChanged();
+               });
+          };
+          
+          await CommunicationEvents.Start(hubUri);
           await CommunicationEvents.Join(SessionId.Value, DisplayName!);
-          // await HubConnectionWrapper.Start(SessionId, NavigationManager.ToAbsoluteUri("/hub/voting").ToString());
-          // await HubConnectionWrapper.JoinSession(SessionId, UserName);
 
           // backgroundColors = ColorUtility.CategoricalTwelveColors;
           // chartData = new ChartData { Labels = GetDefaultDataLabels(4), Datasets = GetDefaultDataSets(1) };

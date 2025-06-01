@@ -3,6 +3,7 @@ namespace DevOpsQuickScan.Domain;
 public class CommunicationService
 {
     public event Action<Participant>? OnParticipantJoined;
+    public event Action<QuestionWithAnswers>? OnQuestionAsked;
 
     private readonly ICommunicationEvents _communicationEvents;
     
@@ -11,6 +12,8 @@ public class CommunicationService
         _communicationEvents = communicationEvents;
         _communicationEvents.OnParticipantJoined += participant =>
             OnParticipantJoined?.Invoke(participant);
+        _communicationEvents.OnQuestionAsked += question =>
+            OnQuestionAsked?.Invoke(question);
     }
     
     public async Task Start(Uri hubUri) =>
@@ -18,4 +21,7 @@ public class CommunicationService
     
     public async Task Join(Guid sessionId, string displayName) =>
         await _communicationEvents.Join(sessionId, displayName);
+    
+    public async Task AskQuestion(Guid sessionId, QuestionWithAnswers questionWithAnswers) =>
+        await _communicationEvents.AskQuestion(sessionId, questionWithAnswers);
 }

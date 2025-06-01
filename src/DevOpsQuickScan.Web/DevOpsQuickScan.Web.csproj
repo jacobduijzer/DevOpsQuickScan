@@ -21,6 +21,7 @@
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Home.razor" />
       <_ContentIncludedByDefault Remove="Components\Pages\Facilitator\Session.razor" />
+      <_ContentIncludedByDefault Remove="Surveys\survey-01.json" />
     </ItemGroup>
 
     <ItemGroup>

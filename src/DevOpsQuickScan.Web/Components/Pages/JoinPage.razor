@@ -7,7 +7,7 @@
     <div class="quickscan-card">
         <img src="@Assets["/img/logo.jpg"]" width="300" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
 
-        <h3>Join a DevOps Quickscan</h3>
+        <h3>Join a DevOps Quickscan Session</h3>
 
         @if (string.IsNullOrEmpty(_sessionName))
         {
@@ -18,7 +18,7 @@
             <p>You’re about to join session: <strong>@_sessionName</strong></p>
 
             <EditForm Model="this" OnValidSubmit="JoinSession" FormName="Name">
-                <InputText class="form-control mb-3" @bind-Value="_displayName" placeholder="Enter your name" />
+                <InputText class="form-control mb-3" @bind-Value="_displayName" placeholder="Enter your name" autofocus/>
                 <button type="submit" class="btn btn-primary">Join Session</button>
             </EditForm>
         }

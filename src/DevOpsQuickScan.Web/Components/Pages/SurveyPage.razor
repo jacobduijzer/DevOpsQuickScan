@@ -36,17 +36,18 @@
     <div class="sidebar bg-light p-3" style="width: 300px; border-left: 1px solid #ddd;">
         <div class="mt-3">
             <h5>Invite</h5>
-            <div class="d-flex align-items-center">
+            
+            <div class="list-group">
                 <span class="me-2" hidden="true">@_inviteLink</span>
-                <button class="btn btn-secondary" @onclick="CopyToClipboard">
-                    <i class="fa-solid fa-copy"></i> Copy Link
+                <button class="list-group-item list-group-item-action" @onclick="CopyToClipboard">
+                    <i class="fa-solid fa-copy"></i> Link to join session
                 </button>
+                
+                <button class="list-group-item list-group-item-action" @onclick="OpenQrCodePage">
+                    <i class="fa-solid fa-qrcode"></i> QR Code 
+                </button>
+                
             </div>
-            
-            <button class="btn btn-secondary" @onclick="OpenQRCodePage">
-                Open QR Code Page
-            </button>
-            
         </div>
 
         <div class="mt-3">

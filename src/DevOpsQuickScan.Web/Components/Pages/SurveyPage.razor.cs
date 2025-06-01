@@ -9,17 +9,11 @@ public partial class SurveyPage : ComponentBase
     [Parameter] public string SessionName { get; set; } = string.Empty;
 
     [Inject] private NavigationManager NavigationManager { get; set; } = default!;
-
-    // [Inject] private IQuestionRepository Questions { get; set; } = default!;
-    // [Inject] private CurrentSessionService CurrentSessionService { get; set; } = default!;
-
     [Inject] private SessionService SessionService { get; set; } = default!;
     [Inject] private CommunicationService CommunicationService { get; set; } = default!;
-    [Inject] private IJSRuntime JSRuntime { get; set; } = default!;
+    [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
 
-
-    private string _inviteLink;
-    // private HashSet<ParticipantAnswer> _votes = new();
+    private string? _inviteLink;
 
     private List<Participant> _participants = new ();
     
@@ -27,8 +21,6 @@ public partial class SurveyPage : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-       
-        
         var hubUri = NavigationManager.ToAbsoluteUri("/hub/voting");
         SessionService.OnParticipantJoined += async participant =>
         {
@@ -44,23 +36,8 @@ public partial class SurveyPage : ComponentBase
         var sessionId = await SessionService.CreateSession(Guid.NewGuid(), SessionName, hubUri);
         await SessionService.Start();
         
-        
         _inviteLink = NavigationManager.BaseUri + $"join?sessionid={sessionId}";
         _currentQuestion = SessionService.CurrentQuestion();
-        
-        
-
-
-        // SessionService.OnParticipantJoined += async participant =>
-        // {
-        //     await InvokeAsync(() =>
-        //     {
-        //         if (_participants.Contains(participant)) return;
-        //
-        //         _participants.Add(participant);
-        //         StateHasChanged();
-        //     });
-        // };
 
         // CurrentSessionService.OnParticipantAnswered += async (participantAnswer) =>
         // {
@@ -73,10 +50,10 @@ public partial class SurveyPage : ComponentBase
         // _currentQuestion = CurrentSessionService.CurrentQuestion;
     }
 
-    public string QRCodeImage { get; set; }
+    public string? QrCodeImage { get; set; }
     
     private async Task CopyToClipboard() =>
-        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
+        await JsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", _inviteLink);
 
 
     private async Task SelectQuestion(int questionId) =>
@@ -97,9 +74,10 @@ public partial class SurveyPage : ComponentBase
         StateHasChanged();
     }
     
-    private async Task OpenQRCodePage()
+    private async Task OpenQrCodePage()
     {
         var url = NavigationManager.ToAbsoluteUri($"/qrcodepage/{Uri.EscapeDataString(_inviteLink)}").ToString();
-        await JSRuntime.InvokeVoidAsync("window.open", url, "_blank");
+        await JsRuntime.InvokeVoidAsync("window.open", url, "_blank");
     }
+    
 }

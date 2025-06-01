@@ -11,6 +11,9 @@ public class SessionHub : Hub
         Participant participant = new(Context.ConnectionId, sessionId, displayName);
         await Clients.Group(sessionId.ToString()).SendAsync("ParticipantJoined", participant);
     }
+    
+    public async Task AskQuestion(string sessionId, QuestionWithAnswers questionWithAnswers) =>
+        await Clients.Group(sessionId).SendAsync("QuestionAsked", questionWithAnswers);
 
     // public async Task ParticipantJoined(Participant participant)
     // {

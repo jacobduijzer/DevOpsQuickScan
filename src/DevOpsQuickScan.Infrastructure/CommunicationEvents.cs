@@ -6,6 +6,7 @@ namespace DevOpsQuickScan.Infrastructure;
 public class CommunicationEvents : ICommunicationEvents
 {
     public event Action<Participant>? OnParticipantJoined;
+    public event Action<QuestionWithAnswers>? OnQuestionAsked;
 
     private HubConnection? _hubConnection;
 
@@ -19,11 +20,17 @@ public class CommunicationEvents : ICommunicationEvents
         _hubConnection.On<Participant>("ParticipantJoined", participant =>
             OnParticipantJoined?.Invoke(participant));
 
+        _hubConnection.On<QuestionWithAnswers>("QuestionAsked", questionWithAnswers =>
+            OnQuestionAsked?.Invoke(questionWithAnswers));
+
         await _hubConnection.StartAsync();
     }
 
     public async Task Join(Guid sessionId, string displayName) =>
         await _hubConnection?.SendAsync("JoinSession", sessionId, displayName)!;
+
+    public async Task AskQuestion(Guid sessionId, QuestionWithAnswers questionWithAnswers) =>
+        await _hubConnection?.SendAsync("AskQuestion", sessionId, questionWithAnswers)!;
 
     public async ValueTask DisposeAsync()
     {

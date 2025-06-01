@@ -53,6 +53,7 @@ public class SessionService(
     {
         _session!.SelectQuestion(_session.Questions.First(q => q.Id == questionId));
         await sessions.Save(_session);
+        await communication.AskQuestion(_session.Id, CurrentQuestion()!);
     }
 
     public async Task AnswerQuestion(Guid participantId, int questionId, int answerId)
