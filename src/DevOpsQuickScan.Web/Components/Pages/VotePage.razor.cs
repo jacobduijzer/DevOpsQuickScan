@@ -18,10 +18,7 @@ public partial class VotePage : ComponentBase
      [Inject]
      private ICommunicationEvents CommunicationEvents { get; set; } = default!;
      
-     private string _sessionName = string.Empty;
      private QuestionWithAnswers? _currentQuestion;
-     private Guid _selectedAnswerId;
-     private bool _isAnswerSelected = false;
      
      //-- pie test
      private PieChart pieChart = default!;
@@ -49,7 +46,6 @@ public partial class VotePage : ComponentBase
                await InvokeAsync(() =>
                {
                     _currentQuestion = question;
-                    _isAnswerSelected = false;
                     StateHasChanged();
                });
           };
@@ -66,19 +62,19 @@ public partial class VotePage : ComponentBase
           // pieChartOptions.Plugins.Title.Display = true;
      }
 
-     private void SelectAnswer(Guid answerId)
-     {
-          _selectedAnswerId = answerId;
-          _isAnswerSelected = true;
-     }
+    
 
      private async Task SubmitVote()
      {
-          // if (_isAnswerSelected && _currentQuestion != null)
-          // {
-          //      await HubConnectionWrapper.SendAnswer(SessionId.Value, _currentQuestion.Id, _selectedAnswerId);
-          //      _isAnswerSelected = false;
-          // }
+         // QuestionAnswer answer = new(SessionId!.Value, _currentQuestion.Question.Id, _selectedAnswerId)
+         // CommunicationEvents.AnswerQuestion(answer);
+         // _currentQuestion.Question.Id
+         // CommunicationEvents.
+         // if (_isAnswerSelected && _currentQuestion != null)
+         // {
+         //      await HubConnectionWrapper.SendAnswer(SessionId.Value, _currentQuestion.Id, _selectedAnswerId);
+         //      _isAnswerSelected = false;
+         // }
      }
      
      protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -4,6 +4,8 @@ public class CommunicationService
 {
     public event Action<Participant>? OnParticipantJoined;
     public event Action<QuestionWithAnswers>? OnQuestionAsked;
+    
+    public event Action<QuestionAnswer>? OnQuestionAnswered;
 
     private readonly ICommunicationEvents _communicationEvents;
     
@@ -14,6 +16,8 @@ public class CommunicationService
             OnParticipantJoined?.Invoke(participant);
         _communicationEvents.OnQuestionAsked += question =>
             OnQuestionAsked?.Invoke(question);
+        _communicationEvents.OnQuestionAnswered += answer =>
+            OnQuestionAnswered?.Invoke(answer);
     }
     
     public async Task Start(Uri hubUri) =>

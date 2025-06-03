@@ -4,7 +4,7 @@
 
     <!--// Question //-->
     <div class="question-card">
-        <h3>@CurrentQuestion.Question.Text 
+        <h3>@CurrentQuestion.Question.Text
             <a href="@CurrentQuestion.Question.Link" target="_blank">
                 <i class="fa-solid fa-circle-info"></i>
             </a>
@@ -24,14 +24,17 @@
             }
         </div>
     </div>
-    
+
     <div class="mt-4">
-        <button type="button" class="btn btn-primary" @onclick="SendAnswer" disabled="@IsSendButtonDisabled">Send</button>
+        <button type="button" class="btn btn-primary" @onclick="SendAnswer" disabled="@IsSendButtonDisabled">Send
+        </button>
     </div>
 
 </div>
 
 @code {
+    [Parameter] public required Guid SessionId { get; set; }
+    [Parameter] public required ICommunicationEvents CommunicationEvents { get; set; }
     [Parameter] public required QuestionWithAnswers CurrentQuestion { get; set; }
     private int _selectedAnswerId;
 
@@ -42,25 +45,22 @@
     {
         if (IsAnswerSent)
             return;
-        
+
         await InvokeAsync(() =>
         {
             _selectedAnswerId = answerId;
             StateHasChanged();
         });
     }
-    
+
     private async Task SendAnswer()
     {
         if (IsAnswerSent)
             return;
-        
-        await InvokeAsync(() =>
-        {
-            IsAnswerSent = true;
-            StateHasChanged();
-        });
-    }
 
+        QuestionAnswer answer = new(SessionId, CurrentQuestion.Question.Id, _selectedAnswerId);
+        await CommunicationEvents.AnswerQuestion(answer);
+        StateHasChanged();
+    }
 
 }

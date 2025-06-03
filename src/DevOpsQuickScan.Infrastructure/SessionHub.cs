@@ -15,6 +15,10 @@ public class SessionHub : Hub
     public async Task AskQuestion(string sessionId, QuestionWithAnswers questionWithAnswers) =>
         await Clients.Group(sessionId).SendAsync("QuestionAsked", questionWithAnswers);
 
+    public async Task AnswerQuestion(QuestionAnswer answer) =>
+        throw new NotImplementedException();
+    // await Clients.Group()
+
     // public async Task ParticipantJoined(Participant participant)
     // {
     //     

@@ -6,7 +6,9 @@
 
     @if (!string.IsNullOrEmpty(_currentQuestion?.Question.Text))
     {
-        <ParticipantQuestionComponent CurrentQuestion="_currentQuestion" />
+        <ParticipantQuestionComponent CurrentQuestion="_currentQuestion" 
+                                      CommunicationEvents="CommunicationEvents"
+                                      SessionId="SessionId!.Value"/>
     }
     else
     {
