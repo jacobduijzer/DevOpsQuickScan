@@ -1,25 +1,56 @@
-using System.Text.Json;
 using DevOpsQuickScan.Domain;
+using Xunit.Abstractions;
 
 namespace DevOpsQuickScan.UnitTests.Domain;
 
-public class SessionServiceTests_Storing_State
+public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
 {
     [Fact]
-    public void SessionServiceCanStoreState()
+    public async Task SessionServiceCanRestoreState()
     {
         // Arrange
-        SessionService sessionService = new();
-        sessionService.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        var json = JsonSerializer.Serialize(sessionService);
-
+        FakeSessionDataRepository fakeSessionDataRepository = new();
+        SessionService sessionService = new(fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
+        var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+        
         // Act
-        var restoredSessionService = JsonSerializer.Deserialize<SessionService>(json);
-
+        SessionService restoredSessionService = new(fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
+        await restoredSessionService.Restore(sessionId);
+        
         // Assert
-        Assert.IsType<SessionService>(restoredSessionService);
-        Assert.Equal(sessionService.CurrentState, restoredSessionService.CurrentState);
-        Assert.Equal(sessionService.SessionName, restoredSessionService.SessionName);
-        // Assert.Equal(sessionService.Questions.Count, restoredSessionService.Questions.Count);
+        Assert.Multiple(
+            () => Assert.IsType<SessionService>(restoredSessionService),
+            () => Assert.Equal(sessionService.CurrentState, restoredSessionService.CurrentState),
+            () => Assert.Equal(sessionService.SessionName, restoredSessionService.SessionName),
+            () => Assert.Equal(sessionService.CurrentQuestionIndex, restoredSessionService.CurrentQuestionIndex)
+        );
+    }
+    
+    [Fact]
+    public async Task SessionServiceCanRestoreFinishedSessionState()
+    {
+        // Arrange
+        FakeSessionDataRepository fakeSessionDataRepository = new();
+        SessionService sessionService = new(fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
+        var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+        await sessionService.Finish();
+        
+        // Act
+        SessionService restoredSessionService = new(fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
+        await restoredSessionService.Restore(sessionId);
+        
+        // Assert
+        Assert.Multiple(
+            () => Assert.IsType<SessionService>(restoredSessionService),
+            () => Assert.Equal(sessionService.CurrentState, restoredSessionService.CurrentState),
+            () => Assert.Equal(sessionService.SessionName, restoredSessionService.SessionName),
+            () => Assert.Equal(sessionService.CurrentQuestionIndex, restoredSessionService.CurrentQuestionIndex)
+        );
     }
 }

@@ -1,135 +1,151 @@
-
 using DevOpsQuickScan.Domain;
+using Xunit.Abstractions;
 
 namespace DevOpsQuickScan.UnitTests.Domain;
 
-public class SessionServiceTests_State_Transitions
+public class SessionServiceTests_State_Transitions(ITestOutputHelper outputHelper)
 {
     [Fact]
-    public void CanNotTransitionWithoutSessionName()
+    public async Task CanCreateSessionGraph()
     {
         // ARRANGE
-        SessionService session = new();
-        
-        // ACT & ASSERT
-        var exception = Assert.Throws<InvalidOperationException>(() => session.Start("", []));
-        Assert.Contains("A session name must be set before starting and at least one question must be added.", exception.Message); 
-    }
-    
-    [Fact]
-    public void CanNotTransitionWithoutQuestions()
-    {
-        // ARRANGE
-        SessionService session = new();
-        
-        // ACT & ASSERT
-        var exception = Assert.Throws<InvalidOperationException>(() => session.Start("", [new Question(1, "What is your favorite color?")]));
-        Assert.Contains("A session name must be set before starting and at least one question must be added.", exception.Message); 
-    }
-    
-    [Fact]
-    public void ASessionCanStartWhenNameAndQuestionsAreSet()
-    {
-        // ARRANGE
-        SessionService session = new();
-        
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+
         // ACT
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        
+        var sessionGraph = sessionService.GetStateGraph();
+
         // ASSERT
-        Assert.Equal(SessionState.Started, session.CurrentState);
+        Assert.NotNull(sessionGraph);
     }
     
-    // TODO: Dubious test. It is not testing the state machine, but rather the logic of the method.
     [Fact]
-    public void CanNotAskQuestionWithoutSettingCurrentQuestion()
+    public async Task CanNotTransitionWithoutSessionName()
     {
         // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+
         // ACT & ASSERT
-        var exception = Assert.Throws<InvalidOperationException>(() => session.AskQuestion());
-        Assert.Contains("A question must be selected before asking.", exception.Message); 
-    }
-    
-    [Fact]
-    public void CanRevealAnswersAfterAskingQuestion()
-    {
-        // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        session.NextQuestion();
-        session.AskQuestion();
-        
-        // ACT
-        session.RevealAnswers();
-        
-        // ASSERT
-        Assert.Equal(SessionState.AnswersRevealed, session.CurrentState);
-    }
-    
-    [Fact]
-    public void CanAnswerNewQuestionAfterRevealingAnswers()
-    {
-        // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        session.NextQuestion();
-        session.AskQuestion();
-        session.RevealAnswers();
-        
-        // ACT
-        session.AskQuestion();
-        
-        // ASSERT
-        Assert.Equal(SessionState.AwaitAnswers, session.CurrentState);
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await sessionService.Start("", []));
+        Assert.Contains("A session name must be set before starting and at least one question must be added.",
+            exception.Message);
     }
 
     [Fact]
-    public void CanFinishSessionWithoutAskingQuestions()
+    public async Task CanNotTransitionWithoutQuestions()
     {
         // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        
-        // ACT
-        session.Finish();
-        
-        // ASSERT
-        Assert.Equal(SessionState.Completed, session.CurrentState); 
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+
+        // ACT & ASSERT
+        var exception =
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await sessionService.Start("", TestQuestionRepository.Questions!));
+        Assert.Contains("A session name must be set before starting and at least one question must be added.",
+            exception.Message);
     }
-    
+
     [Fact]
-    public void CanFinishSessionWhenAwaitingAnswers()
+    public async Task ASessionCanStartWhenNameAndQuestionsAreSet()
     {
         // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        session.NextQuestion();
-        session.AskQuestion();
-        
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+
         // ACT
-        session.Finish();
-        
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+
         // ASSERT
-        Assert.Equal(SessionState.Completed, session.CurrentState); 
+        Assert.Equal(SessionState.Started, sessionService.CurrentState);
     }
-    
+
     [Fact]
-    public void CanFinishSessionWhenRevealingAnswers()
+    public async Task CanNotAskQuestionWithoutSettingCurrentQuestion()
     {
         // ARRANGE
-        SessionService session = new();
-        session.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
-        session.NextQuestion();
-        session.AskQuestion();
-        session.RevealAnswers();
-        
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+
+        // ACT & ASSERT
+        var exception = await Assert.ThrowsAsync<InvalidOperationException>(sessionService.AskQuestion);
+        Assert.Contains("A question must be selected before asking.", exception.Message);
+    }
+
+    [Fact]
+    public async Task CanRevealAnswersAfterAskingQuestion()
+    {
+        // ARRANGE
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+
         // ACT
-        session.Finish();
-        
+        await sessionService.RevealAnswers();
+
         // ASSERT
-        Assert.Equal(SessionState.Completed, session.CurrentState); 
+        Assert.Equal(SessionState.AnswersRevealed, sessionService.CurrentState);
+    }
+
+    [Fact]
+    public async Task CanAnswerNewQuestionAfterRevealingAnswers()
+    {
+        // ARRANGE
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+        await sessionService.RevealAnswers();
+
+        // ACT
+        await sessionService.AskQuestion();
+
+        // ASSERT
+        Assert.Equal(SessionState.AwaitAnswers, sessionService.CurrentState);
+    }
+
+    [Fact]
+    public async Task CanFinishSessionWithoutAskingQuestions()
+    {
+        // ARRANGE
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+
+        // ACT
+        await sessionService.Finish();
+
+        // ASSERT
+        Assert.Equal(SessionState.Completed, sessionService.CurrentState);
+    }
+
+    [Fact]
+    public async Task CanFinishSessionWhenAwaitingAnswers()
+    {
+        // ARRANGE
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+
+        // ACT
+        await sessionService.Finish();
+
+        // ASSERT
+        Assert.Equal(SessionState.Completed, sessionService.CurrentState);
+    }
+
+    [Fact]
+    public async Task CanFinishSessionWhenRevealingAnswers()
+    {
+        // ARRANGE
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        sessionService.NextQuestion();
+        await sessionService.AskQuestion();
+        await sessionService.RevealAnswers();
+
+        // ACT
+        await sessionService.Finish();
+
+        // ASSERT
+        Assert.Equal(SessionState.Completed, sessionService.CurrentState);
     }
 }

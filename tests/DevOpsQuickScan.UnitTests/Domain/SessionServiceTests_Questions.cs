@@ -1,17 +1,16 @@
 using DevOpsQuickScan.Domain;
+using Xunit.Abstractions;
 
 namespace DevOpsQuickScan.UnitTests.Domain;
 
-public class SessionServiceTests_Questions
+public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
 {
     [Fact]
-    public void CanNotGoToPreviousQuestionWhenStarting()
+    public async Task CanNotGoToPreviousQuestionWhenStarting()
     {
-
         // ARRANGE
-        SessionService sessionService = new();
-        sessionService.Start("Test Session",
-            [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
 
         // ACT
         var question = sessionService.PreviousQuestion();
@@ -21,12 +20,12 @@ public class SessionServiceTests_Questions
     }
     
     [Fact]
-    public void CanNotGoBeyondLastQuestion()
+    public async Task CanNotGoBeyondLastQuestion()
     {
 
         // ARRANGE
-        SessionService sessionService = new();
-        sessionService.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
         sessionService.NextQuestion();
         sessionService.NextQuestion();
 
@@ -38,12 +37,12 @@ public class SessionServiceTests_Questions
     }
 
     [Fact]
-    public void CanSelectQuestions()
+    public async Task CanSelectQuestions()
     {
 
         // ARRANGE
-        SessionService sessionService = new();
-        sessionService.Start("Test Session", [new Question(1, "What is your favorite color?"), new Question(2, "What is your favorite food?")]);
+        SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
+        await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
         
         // ACT
         var question = sessionService.NextQuestion();
