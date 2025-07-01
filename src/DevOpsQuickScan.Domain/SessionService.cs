@@ -1,96 +1,103 @@
+using System.Text.Json.Serialization;
+using Stateless;
+
 namespace DevOpsQuickScan.Domain;
 
-// TODO: IAsyncDisposable?
-public class SessionService(
-    IQuestionRepository questions,
-    ISessionRepository sessions,
-    CommunicationService communication)
+public class SessionService
 {
-    public event Action<Participant>? OnParticipantJoined;
+    private StateMachine<SessionState, SessionTrigger> _sessionState;
+    [JsonInclude]
+    private List<Question?> _questions = new ();
 
-    public int CurrentQuestionIndex = 0;
-    public int NumberOfQuestions => _session!.Questions.Count;
+    public SessionState CurrentState => _sessionState.State;
+    
+    [JsonInclude]
+    public string SessionName = string.Empty;
+    public int CurrentQuestionIndex = -1;
+    public int NumberOfQuestions => _questions.Count;
 
-    private Session? _session;
-
-    public async Task<Guid> CreateSession(Guid facilitatorId, string sessionName, Uri hubUrl)
+    public SessionService()
     {
-        communication.OnParticipantJoined += participant => 
-            OnParticipantJoined?.Invoke(participant);;
-        
-        var questionData = await questions.Get();
-        _session = new Session(facilitatorId, sessionName, questionData.Questions);
-        await sessions.Save(_session);
-        await communication.Start(hubUrl);
-        await communication.Join(_session.Id, "Facilitator");
-
-        return _session.Id;
+        _sessionState = new StateMachine<SessionState, SessionTrigger>(SessionState.Initial);
+        ConfigureStateMachine();
     }
 
-    // TODO: probably move to Create
-    public async Task Start()
+    [JsonConstructor]
+    public SessionService(string sessionName, SessionState currentState, List<Question?> _questions)
     {
-        _session!.Start();
-        await sessions.Save(_session);
+        SessionName = sessionName;
+        _sessionState = new StateMachine<SessionState, SessionTrigger>(currentState);
+        _questions = _questions ?? new List<Question?>();
+       
+        ConfigureStateMachine();
+    }
+
+    private void ConfigureStateMachine()
+    {
+        _sessionState.Configure(SessionState.Initial)
+            .PermitIf(SessionTrigger.Start, SessionState.Started,
+                () => !string.IsNullOrEmpty(SessionName) && _questions.Count > 0,
+                "A session name must be set before starting and at least one question must be added.")
+            .OnEntry(async void () => await SaveState())
+            .OnExit(async void () => await SaveState());
+
+        _sessionState.Configure(SessionState.Started)
+            .PermitIf(SessionTrigger.AskQuestion, SessionState.AwaitAnswers, () => CurrentQuestionIndex > -1 && CurrentQuestionIndex < _questions.Count,
+                "A question must be selected before asking.")
+            .PermitIf(SessionTrigger.Finish, SessionState.Completed);
+
+        _sessionState.Configure(SessionState.AwaitAnswers)
+            .PermitIf(SessionTrigger.RevealAnswers, SessionState.AnswersRevealed)
+            .PermitIf(SessionTrigger.Finish, SessionState.Completed);
+
+        _sessionState.Configure(SessionState.AnswersRevealed)
+            .PermitIf(SessionTrigger.AskQuestion, SessionState.AwaitAnswers)
+            .PermitIf(SessionTrigger.Finish, SessionState.Completed);
+    }
+
+    public void Start(string sessionName, List<Question?> questions)
+    {
+        SessionName = sessionName;
+        _questions = questions;
+        _sessionState.Fire(SessionTrigger.Start);
+    }
+
+    public void AskQuestion()
+    {
+        _sessionState.Fire(SessionTrigger.AskQuestion);
+    }
+
+    public void RevealAnswers()
+    {
+        _sessionState.Fire(SessionTrigger.RevealAnswers);
+    }
+
+    public void Finish()
+    {
+        _sessionState.Fire(SessionTrigger.Finish);
     }
     
-    public async Task Join(Uri hubUri, Guid sessionId, string displayName)
+    public Question? NextQuestion()
     {
-        await communication.Start(hubUri);
-        await communication.Join(sessionId, displayName);
-    }
-    
-    public async Task<string> SessionName(Guid sessionId)
-    {
-        _session = await Load(sessionId);
-        if (_session == null)
-            throw new InvalidOperationException($"Session with ID {sessionId} not found.");
-
-        return _session.Name;
-    }
-
-    public async Task AskQuestion(int questionId)
-    {
-        _session!.SelectQuestion(_session.Questions.First(q => q.Id == questionId));
-        await sessions.Save(_session);
-        await communication.AskQuestion(_session.Id, CurrentQuestion()!);
-    }
-
-    public async Task AnswerQuestion(Guid participantId, int questionId, int answerId)
-    {
-        _session!.AnswerQuestion(participantId, questionId, answerId);
-        await sessions.Save(_session);
-    }
-
-    public QuestionWithAnswers? CurrentQuestion() =>
-        QuestionWithAnswers(CurrentQuestionIndex);
-
-    public QuestionWithAnswers? NextQuestion()
-    {
-        if (CurrentQuestionIndex >= _session!.Questions.Count - 1)
+        if (CurrentQuestionIndex >= _questions.Count - 1)
             return default;
 
         CurrentQuestionIndex++;
-        return QuestionWithAnswers(CurrentQuestionIndex);
+        return _questions[CurrentQuestionIndex];
     }
 
-    public QuestionWithAnswers? PreviousQuestion()
+    public Question? PreviousQuestion()
     {
         if (CurrentQuestionIndex <= 0)
             return default;
 
         CurrentQuestionIndex--;
-        return QuestionWithAnswers(CurrentQuestionIndex);
+        return _questions[CurrentQuestionIndex];
     }
 
-    private async Task<Session> Load(Guid sessionId) =>
-        await sessions.Load(sessionId);
-
-    private QuestionWithAnswers? QuestionWithAnswers(int index)
+    private async Task SaveState()
     {
-        var question = _session!.Questions.ElementAtOrDefault(index)!;
-        var answers = _session!.Answers.Where(x => x.QuestionId == question.Id).ToList();
-        return new QuestionWithAnswers(question, answers.Any() ? answers : null);
+        // TODO
+        await Task.CompletedTask;
     }
-       
 }
