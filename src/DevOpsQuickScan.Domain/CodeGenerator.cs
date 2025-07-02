@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DevOpsQuickScan.Api.Domain;
+namespace DevOpsQuickScan.Domain;
 
 public static class CodeGenerator
 {

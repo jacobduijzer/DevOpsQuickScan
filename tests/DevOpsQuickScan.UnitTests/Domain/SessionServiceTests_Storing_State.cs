@@ -39,14 +39,14 @@ public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
         var mockQuestionSender = new Mock<IQuestionSender>();
         var mockAnswersSender = new Mock<IAnswersSender>();
         SessionService sessionService = new(mockQuestionSender.Object, mockAnswersSender.Object, fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
-        var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        var sessionCode = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
         sessionService.NextQuestion();
         await sessionService.AskQuestion();
         var question = sessionService.NextQuestion();
         await sessionService.AskQuestion();
         await sessionService.AddAnswer(new UserAnswer
         { 
-            SessionId = sessionId,
+            SessionCode = sessionCode,
             UserId = Guid.NewGuid(),
             QuestionId = question!.Id,
             AnswerId = question.Answers.First().Id
@@ -54,7 +54,7 @@ public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
         
         // Act
         SessionService restoredSessionService = new(mockQuestionSender.Object, mockAnswersSender.Object, fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
-        await restoredSessionService.Restore(sessionId);
+        await restoredSessionService.Restore(sessionCode);
         
         // Assert
         Assert.Multiple(

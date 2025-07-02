@@ -11,7 +11,13 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\DevOpsQuickScan.Application\DevOpsQuickScan.Application.csproj" />
+      <ProjectReference Include="..\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj" />
       <ProjectReference Include="..\DevOpsQuickScan.ServiceDefaults\DevOpsQuickScan.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="App_Data\Sessions\" />
     </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ public class FakeSessionDataRepository : ISessionDataRepository
         await Task.CompletedTask; 
     }
 
-    public async Task<SessionData> Retrieve(Guid sessionId)
+    public async Task<SessionData> Retrieve(string sessionCode)
     {
         var sessionData = JsonSerializer.Deserialize<SessionData>(_sessionDataJson!);
         return await Task.FromResult(sessionData!);

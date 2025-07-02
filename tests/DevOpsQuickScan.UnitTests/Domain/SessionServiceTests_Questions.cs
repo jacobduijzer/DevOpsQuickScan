@@ -70,7 +70,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         mockQuestionSender
             .Verify(x => 
                 x.Send(
-                    It.Is<Guid>(g => g.Equals(sessionId)), 
+                    It.Is<string>(g => g.Equals(sessionId)), 
                     It.Is<Question>(q => q.Id.Equals(TestQuestionRepository.Questions[0].Id))), 
                 Times.Once);
     }
@@ -83,13 +83,13 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         var mockQuestionSender = new Mock<IQuestionSender>();
         var mockAnswersSender = new Mock<IAnswersSender>();
         var sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper), mockQuestionSender.Object, mockAnswersSender.Object);
-        var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
+        var sessionCode = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
         var question = sessionService.NextQuestion();
         await sessionService.AskQuestion();
         
         await sessionService.AddAnswer(new UserAnswer
         { 
-            SessionId = sessionId,
+            SessionCode = sessionCode,
             UserId = Guid.NewGuid(),
             QuestionId = question!.Id,
             AnswerId = question.Answers.First().Id
@@ -97,7 +97,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         
         await sessionService.AddAnswer(new UserAnswer
         { 
-            SessionId = sessionId,
+            SessionCode = sessionCode,
             UserId = Guid.NewGuid(),
             QuestionId = question!.Id,
             AnswerId = question.Answers.Last().Id
@@ -111,7 +111,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         mockAnswersSender
             .Verify(x => 
                 x.Send(
-                    It.Is<Guid>(g => g.Equals(sessionId)), 
+                    It.Is<string>(g => g.Equals(sessionCode)), 
                     It.Is<Question>(q => q.Id.Equals(question!.Id)), 
                     It.Is<Dictionary<int, int>>(a=> 
                         a.GetValueOrDefault(question!.Answers.First().Id) == 1 && 

@@ -19,11 +19,11 @@ public class SessionService(
     public int CurrentQuestionIndex => _sessionData?.CurrentQuestionIndex ?? -1;
     public int NumberOfQuestions => _sessionData?.Questions?.Count ?? 0;
 
-    public async Task<Guid> Start(string sessionName, List<Question?> questions)
+    public async Task<string> Start(string sessionName, List<Question?> questions)
     {
         _sessionData = new SessionData
         {
-            SessionId = Guid.NewGuid(),
+            SessionCode = CodeGenerator.GenerateCode(),
             SessionName = sessionName,
             Questions = questions,
             CurrentQuestionIndex = -1,
@@ -36,12 +36,12 @@ public class SessionService(
 
         await _sessionState.FireAsync(SessionTrigger.Start);
         
-        return _sessionData.SessionId;
+        return _sessionData.SessionCode;
     }
 
-    public async Task Restore(Guid sessionId)
+    public async Task Restore(string sessionCode)
     {
-        _sessionData = await _sessionDataRepository!.Retrieve(sessionId);
+        _sessionData = await _sessionDataRepository!.Retrieve(sessionCode);
         _sessionState = new StateMachine<SessionState, SessionTrigger>(_sessionData!.CurrentState);
         ConfigureStateMachine();
     }
@@ -77,7 +77,7 @@ public class SessionService(
     {
         if (_sessionData!.CurrentQuestionIndex > -1 && _sessionData.CurrentQuestionIndex < _sessionData.Questions.Count)
         {
-            await questionSender.Send(_sessionData!.SessionId, _sessionData!.Questions[CurrentQuestionIndex]!);
+            await questionSender.Send(_sessionData!.SessionCode, _sessionData!.Questions[CurrentQuestionIndex]!);
             await _sessionState!.FireAsync(SessionTrigger.AskQuestion);
         }
         else throw new InvalidOperationException("A question must be selected before asking.");
@@ -85,7 +85,7 @@ public class SessionService(
 
     public async Task RevealAnswers()
     {
-        await answersSender.Send(_sessionData!.SessionId, _sessionData!.Questions[CurrentQuestionIndex]!, _sessionData!.GetAnswersCount());
+        await answersSender.Send(_sessionData!.SessionCode, _sessionData!.Questions[CurrentQuestionIndex]!, _sessionData!.GetAnswersCount());
         await _sessionState!.FireAsync(SessionTrigger.RevealAnswers);
     }
 

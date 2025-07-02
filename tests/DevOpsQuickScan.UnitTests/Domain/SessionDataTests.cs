@@ -9,10 +9,9 @@ public class SessionDataTests
     public void CanCountVotes(HashSet<UserAnswer> answers)
     {
         // Arrange
-        var sessionId = Guid.NewGuid();
         var sessionData = new SessionData
         {
-            SessionId = sessionId,
+            SessionCode = CodeGenerator.GenerateCode(),
             UserAnswers = new(),
             Questions = TestQuestionRepository.Questions!,
             CurrentQuestionIndex = 0
@@ -31,7 +30,7 @@ public class SessionDataTests
 
     public static IEnumerable<object[]> GetData(int numTests)
     {
-        var sessionId = Guid.NewGuid();
+        var sessionCode = string.Empty;
         var allData = new List<object[]>
         {
             new object[]
@@ -40,28 +39,28 @@ public class SessionDataTests
                 {
                     new UserAnswer
                     {
-                        SessionId = sessionId, 
+                        SessionCode = sessionCode, 
                         UserId = Guid.NewGuid(),
                         QuestionId = 1,
                         AnswerId = 1
                     },
                     new UserAnswer
                     {
-                        SessionId = sessionId,
+                        SessionCode = sessionCode,
                         UserId = Guid.NewGuid(),
                         QuestionId = 1,
                         AnswerId = 1
                     },
                     new UserAnswer
                     {
-                        SessionId = sessionId,
+                        SessionCode = sessionCode,
                         UserId = Guid.NewGuid(),
                         QuestionId = 1,
                         AnswerId = 2
                     },
                     new UserAnswer
                     {
-                        SessionId = sessionId,
+                        SessionCode = sessionCode,
                         UserId = Guid.NewGuid(),
                         QuestionId = 1,
                         AnswerId = 5

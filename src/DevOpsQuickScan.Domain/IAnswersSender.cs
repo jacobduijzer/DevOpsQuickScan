@@ -2,5 +2,5 @@ namespace DevOpsQuickScan.Domain;
 
 public interface IAnswersSender
 {
-    Task Send(Guid sessionId, Question question, Dictionary<int, int> answers);
+    Task Send(string sessionCode, Question question, Dictionary<int, int> answers);
 }

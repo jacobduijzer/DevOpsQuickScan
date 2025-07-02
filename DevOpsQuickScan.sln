@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Api", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Domain", "src\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj", "{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Application", "src\DevOpsQuickScan.Application\DevOpsQuickScan.Application.csproj", "{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Infrastructure", "src\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj", "{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,5 +54,13 @@ Global
 		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
