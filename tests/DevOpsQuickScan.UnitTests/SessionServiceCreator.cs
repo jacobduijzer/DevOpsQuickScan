@@ -6,11 +6,15 @@ namespace DevOpsQuickScan.UnitTests;
 
 public static class SessionServiceCreator
 {
-   public static SessionService Create(ILogger<SessionService> logger, ISessionDataRepository sessionDataRepository = null)
+   public static SessionService Create(
+      ILogger<SessionService> logger, 
+      IQuestionSender questionSender = null,
+      IAnswersSender answersSender = null,
+      ISessionDataRepository sessionDataRepository = null)
    {
-      if(sessionDataRepository == null)
-         return new SessionService(new Mock<ISessionDataRepository>().Object, logger);
-
-      return new SessionService(sessionDataRepository, logger);
+      return new SessionService(
+            questionSender ?? new Mock<IQuestionSender>().Object,
+            answersSender ?? new Mock<IAnswersSender>().Object,
+            sessionDataRepository ?? new Mock<ISessionDataRepository>().Object, logger);
    }
 }
