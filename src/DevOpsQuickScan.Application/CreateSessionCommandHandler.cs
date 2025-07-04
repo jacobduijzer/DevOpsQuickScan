@@ -1,10 +1,12 @@
 using DevOpsQuickScan.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace DevOpsQuickScan.Application;
 
-public class CreateSessionUseCase(
+public class CreateSessionCommandHandler(
     SessionService sessionService,
-    IQuestionsRepository questionses)
+    IQuestionsRepository questionses,
+    ILogger<CreateSessionCommandHandler> logger)
 {
     public record CreateSessionCommand(string SessionName);
 

@@ -73,14 +73,16 @@ public class SessionService(
 
     public string GetStateGraph() => MermaidGraph.Format(_sessionState!.GetInfo());
 
-    public async Task AskQuestion()
+    public async Task<Question> AskQuestion()
     {
         if (_sessionData!.CurrentQuestionIndex > -1 && _sessionData.CurrentQuestionIndex < _sessionData.Questions.Count)
         {
             await questionSender.Send(_sessionData!.SessionCode, _sessionData!.Questions[CurrentQuestionIndex]!);
             await _sessionState!.FireAsync(SessionTrigger.AskQuestion);
+            return _sessionData!.Questions[CurrentQuestionIndex]!;
         }
-        else throw new InvalidOperationException("A question must be selected before asking.");
+        
+        throw new InvalidOperationException("A question must be selected before asking.");
     }
 
     public async Task RevealAnswers()
@@ -94,21 +96,23 @@ public class SessionService(
         await _sessionState!.FireAsync(SessionTrigger.Finish);
     }
 
-    public Question? NextQuestion()
+    public async Task<Question?> NextQuestion()
     {
         if (CurrentQuestionIndex >= _sessionData!.Questions.Count - 1)
             return null;
 
         _sessionData!.CurrentQuestionIndex++;
+        await SaveState();
         return _sessionData.Questions[CurrentQuestionIndex];
     }
 
-    public Question? PreviousQuestion()
+    public async Task<Question?> PreviousQuestion()
     {
         if (CurrentQuestionIndex <= 0)
             return null;
 
         _sessionData!.CurrentQuestionIndex--;
+        await SaveState();
         return _sessionData.Questions[CurrentQuestionIndex];
     }
 

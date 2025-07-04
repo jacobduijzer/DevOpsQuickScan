@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();
 
 builder.Services
-    .AddScoped<CreateSessionUseCase>()
+    .AddScoped<CreateSessionCommandHandler>()
+    .AddScoped<NextQuestionQueryHandler>()
+    .AddScoped<PreviousQuestionQueryHandler>()
+    .AddScoped<AskQuestionCommandHandler>()
     .AddScoped<SessionService>()
     .AddScoped<IQuestionSender, QuestionSender>()
     .AddScoped<IAnswersSender, AnswerSender>()
@@ -16,6 +19,7 @@ builder.Services
 
 builder.Services
     .AddGraphQLServer()
+    .AddType<QuestionType>()    
     .AddQueryType(q => q.Name("queries"))
     .AddType<SessionQueries>()
     .AddMutationType(m => m.Name("mutations"))

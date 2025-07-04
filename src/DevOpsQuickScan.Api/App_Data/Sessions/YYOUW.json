@@ -1,0 +1,39 @@
+{
+  "SessionCode": "YYOUW",
+  "SessionName": "session",
+  "Questions": [
+    {
+      "Id": 1,
+      "Text": "What is your favorite color?",
+      "Link": null,
+      "Answers": [
+        {
+          "Id": 1,
+          "Text": "Green"
+        },
+        {
+          "Id": 2,
+          "Text": "Blue"
+        }
+      ]
+    },
+    {
+      "Id": 2,
+      "Text": "What is your favorite food?",
+      "Link": null,
+      "Answers": [
+        {
+          "Id": 1,
+          "Text": "Pizza"
+        },
+        {
+          "Id": 2,
+          "Text": "Sushi"
+        }
+      ]
+    }
+  ],
+  "CurrentQuestionIndex": -1,
+  "CurrentState": 1,
+  "UserAnswers": []
+}

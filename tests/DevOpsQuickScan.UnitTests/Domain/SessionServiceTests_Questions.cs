@@ -14,7 +14,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
 
         // ACT
-        var question = sessionService.PreviousQuestion();
+        var question = await sessionService.PreviousQuestion();
 
         // ASSERT
         Assert.Null(question);
@@ -27,11 +27,11 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         // ARRANGE
         SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper));
         await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        sessionService.NextQuestion();
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
+        await sessionService.NextQuestion();
 
         // ACT
-        var question = sessionService.NextQuestion();
+        var question = await sessionService.NextQuestion();
 
         // ASSERT
         Assert.Null(question);
@@ -46,7 +46,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
         
         // ACT
-        var question = sessionService.NextQuestion();
+        var question = await sessionService.NextQuestion();
         
         // ASSERT
         Assert.NotNull(question);
@@ -61,7 +61,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         var mockQuestionSender = new Mock<IQuestionSender>();
         SessionService sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper), mockQuestionSender.Object);
         var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
         
         // ACT
         await sessionService.AskQuestion();
@@ -84,7 +84,7 @@ public class SessionServiceTests_Questions(ITestOutputHelper outputHelper)
         var mockAnswersSender = new Mock<IAnswersSender>();
         var sessionService = SessionServiceCreator.Create(new XunitLogger<SessionService>(outputHelper), mockQuestionSender.Object, mockAnswersSender.Object);
         var sessionCode = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        var question = sessionService.NextQuestion();
+        var question = await sessionService.NextQuestion();
         await sessionService.AskQuestion();
         
         await sessionService.AddAnswer(new UserAnswer

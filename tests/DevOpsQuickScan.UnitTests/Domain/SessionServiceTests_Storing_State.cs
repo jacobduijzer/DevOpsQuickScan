@@ -15,7 +15,7 @@ public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
         var mockAnswersSender = new Mock<IAnswersSender>();
         SessionService sessionService = new(mockQuestionSender.Object, mockAnswersSender.Object, fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
         var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
         await sessionService.AskQuestion();
         
         // Act
@@ -40,9 +40,9 @@ public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
         var mockAnswersSender = new Mock<IAnswersSender>();
         SessionService sessionService = new(mockQuestionSender.Object, mockAnswersSender.Object, fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
         var sessionCode = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
         await sessionService.AskQuestion();
-        var question = sessionService.NextQuestion();
+        var question = await sessionService.NextQuestion();
         await sessionService.AskQuestion();
         await sessionService.AddAnswer(new UserAnswer
         { 
@@ -75,9 +75,9 @@ public class SessionServiceTests_Storing_State(ITestOutputHelper outputHelper)
         var mockAnswersSender = new Mock<IAnswersSender>();
         SessionService sessionService = new(mockQuestionSender.Object, mockAnswersSender.Object, fakeSessionDataRepository, new XunitLogger<SessionService>(outputHelper));
         var sessionId = await sessionService.Start("Test Session", TestQuestionRepository.Questions!);
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
         await sessionService.AskQuestion();
-        sessionService.NextQuestion();
+        await sessionService.NextQuestion();
         await sessionService.AskQuestion();
         await sessionService.Finish();
         
