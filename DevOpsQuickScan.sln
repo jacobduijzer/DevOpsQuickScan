@@ -3,27 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A104EE05-EF1E-400D-B8BC-8C60866DDED9}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-		Dockerfile = Dockerfile
-		docker-compose.yml = docker-compose.yml
-		assets\questions.json = assets\questions.json
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.BlazorApp", "src\DevOpsQuickScan.BlazorApp\DevOpsQuickScan.BlazorApp.csproj", "{90540749-75D4-4BD6-875C-3ADD06A75C19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.AppHost", "src\DevOpsQuickScan.AppHost\DevOpsQuickScan.AppHost.csproj", "{6DAB764C-8F17-4AFD-9528-D4575EADA387}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.ServiceDefaults", "src\DevOpsQuickScan.ServiceDefaults\DevOpsQuickScan.ServiceDefaults.csproj", "{3B68DFA4-BB2C-4414-BAE4-04DC22F86AA7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.UnitTests", "tests\DevOpsQuickScan.UnitTests\DevOpsQuickScan.UnitTests.csproj", "{97B077E0-FAC6-4B9C-916D-7695FFCD345A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Api", "src\DevOpsQuickScan.Api\DevOpsQuickScan.Api.csproj", "{2DD1DEDD-C197-40AB-AC5A-6CBF6046A5F1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Domain", "src\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj", "{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Application", "src\DevOpsQuickScan.Application\DevOpsQuickScan.Application.csproj", "{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Infrastructure", "src\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj", "{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Core", "src\DevOpsQuickScan.Core\DevOpsQuickScan.Core.csproj", "{92EB2C3D-61CE-4F94-9551-ECE93839820D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,33 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6DAB764C-8F17-4AFD-9528-D4575EADA387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DAB764C-8F17-4AFD-9528-D4575EADA387}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DAB764C-8F17-4AFD-9528-D4575EADA387}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DAB764C-8F17-4AFD-9528-D4575EADA387}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3B68DFA4-BB2C-4414-BAE4-04DC22F86AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B68DFA4-BB2C-4414-BAE4-04DC22F86AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B68DFA4-BB2C-4414-BAE4-04DC22F86AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B68DFA4-BB2C-4414-BAE4-04DC22F86AA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97B077E0-FAC6-4B9C-916D-7695FFCD345A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97B077E0-FAC6-4B9C-916D-7695FFCD345A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97B077E0-FAC6-4B9C-916D-7695FFCD345A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97B077E0-FAC6-4B9C-916D-7695FFCD345A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DD1DEDD-C197-40AB-AC5A-6CBF6046A5F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DD1DEDD-C197-40AB-AC5A-6CBF6046A5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DD1DEDD-C197-40AB-AC5A-6CBF6046A5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DD1DEDD-C197-40AB-AC5A-6CBF6046A5F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{558CCFB3-EDA6-4F6F-8735-A4A90227E15B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5247A2B3-C347-4FDD-A8AB-8BED2082AA85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73902BF8-5B2D-4AB8-A5BD-5E20A15A7A52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90540749-75D4-4BD6-875C-3ADD06A75C19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90540749-75D4-4BD6-875C-3ADD06A75C19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90540749-75D4-4BD6-875C-3ADD06A75C19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90540749-75D4-4BD6-875C-3ADD06A75C19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

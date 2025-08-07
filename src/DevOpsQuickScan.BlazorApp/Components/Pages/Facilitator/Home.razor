@@ -1,0 +1,45 @@
+﻿@page "/facilitator"
+@using DevOpsQuickScan.Core
+@inject QuestionsService Questions
+@inject SessionService Session
+
+<PageTitle>Facilitation</PageTitle>
+
+<h2>Facilitator Panel</h2>
+
+@foreach(var question in _questions!)
+{
+    <div class="question-block" style="margin-bottom: 1.5rem;">
+        <strong>@question.Text</strong>
+        <ul>
+            @foreach (var answer in question.Answers)
+            {
+                <li>@answer</li>
+            }
+        </ul>
+        <button @onclick="() => AskQuestion(question)">Ask</button>
+        <button @onclick="() => RevealAnswers(question)">Reveal</button>
+    </div>
+}
+
+@code {
+    private List<Question>? _questions = [];
+
+    protected override void OnInitialized()
+    {
+        _questions = Questions.All;
+    }
+    
+    private void AskQuestion(Question question)
+    {
+        Session.CurrentQuestion = question;
+        Session.Answers.Clear();
+    }
+
+    private void RevealAnswers(Question question)
+    {
+        // LastResults = Session.Answers
+            // .GroupBy(kvp => kvp.Value)
+            // .ToDictionary(g => g.Key, g => g.Count());
+    }
+}

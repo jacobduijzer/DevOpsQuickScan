@@ -1,0 +1,48 @@
+﻿@page "/"
+@using DevOpsQuickScan.Core
+@inject UserIdService UserIdService
+@inject SessionService Session
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app, person with id @_userId.
+
+@if (_currentQuestion != null)
+{
+    <div class="question-block" style="margin-bottom: 1.5rem;">
+        <strong>@_currentQuestion.Text</strong>
+        <ul>
+            @foreach (var answer in _currentQuestion.Answers)
+            {
+                <li>@answer.Text</li>
+            }
+        </ul>
+        @* <button @onclick="() => AskQuestion(question)">Ask</button> *@
+        @* <button @onclick="() => RevealAnswers(question)">Reveal</button> *@
+    </div>
+}
+
+@code {
+
+    private string? _userId = null;
+
+    private Question? _currentQuestion = null;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        _userId = await UserIdService.GetUserIdAsync();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Session.OnQuestionChanged += async () =>
+        {
+            _currentQuestion = Session.CurrentQuestion;
+            await InvokeAsync(StateHasChanged);
+        };
+    }
+
+}
