@@ -58,3 +58,22 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+.answer-button {
+    margin: 0.25rem;
+    padding: 0.5rem 1rem;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.answer-button:hover {
+    background-color: #e6e6e6;
+}
+
+.answer-button.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}

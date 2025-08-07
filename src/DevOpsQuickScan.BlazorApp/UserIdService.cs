@@ -12,7 +12,7 @@ public class UserIdService
         _js = js;
     }
 
-    public async Task<string> GetUserIdAsync()
+    public async Task<string> GetAsync()
     {
         if (UserId is not null)
             return UserId;

@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using DevOpsQuickScan.Core
-@inject UserIdService UserIdService
+@inject UserIdService UserId
 @inject SessionService Session
 
 <PageTitle>Home</PageTitle>
@@ -9,40 +9,98 @@
 
 Welcome to your new app, person with id @_userId.
 
-@if (_currentQuestion != null)
+@if (Session.CurrentQuestion != null)
 {
     <div class="question-block" style="margin-bottom: 1.5rem;">
-        <strong>@_currentQuestion.Text</strong>
+        <strong>@Session.CurrentQuestion.Text</strong>
         <ul>
-            @foreach (var answer in _currentQuestion.Answers)
+            @foreach (var answer in Session.CurrentQuestion.Answers)
             {
-                <li>@answer.Text</li>
+                bool isSelected = answer.Id == selectedAnswer;
+                <button class="answer-button @(isSelected ? "selected" : "")"
+                        @onclick="@(() => SelectAnswer(answer))"
+                        disabled="@hasSubmitted">
+                    @answer.Text
+                </button>
             }
+            
+            <div style="margin-top: 1rem;">
+                <button @onclick="SubmitAnswer"
+                        disabled="@(!CanSubmit)">
+                    Submit Answer
+                </button>
+            </div>
+
+            @if (hasSubmitted)
+            {
+                <p><em>Waiting for results…</em></p>
+            }
+            
         </ul>
-        @* <button @onclick="() => AskQuestion(question)">Ask</button> *@
-        @* <button @onclick="() => RevealAnswers(question)">Reveal</button> *@
     </div>
+}
+else
+{
+    <p>No question is currently being asked.</p>
 }
 
 @code {
 
     private string? _userId = null;
-
-    private Question? _currentQuestion = null;
+    private int? selectedAnswer;
+    private bool hasSubmitted = false;
+    private bool CanSubmit => selectedAnswer is not null && !hasSubmitted;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _userId = await UserIdService.GetUserIdAsync();
+        _userId = await UserId.GetAsync();
+        
+        if (Session.HasAnsweredCurrentQuestion(_userId!))
+        {
+            selectedAnswer = Session.GetAnswer(_userId!);
+            hasSubmitted = true;
+        }
+        
         await InvokeAsync(StateHasChanged);
+        
+        
+        
     }
 
     protected override async Task OnInitializedAsync()
     {
+        // is current question answered by me?
         Session.OnQuestionChanged += async () =>
         {
-            _currentQuestion = Session.CurrentQuestion;
+            selectedAnswer = null;
+            hasSubmitted = false;
             await InvokeAsync(StateHasChanged);
-        };
+        }; 
+
+        // var state = Session.GetParticipantState(userId);
+        // selectedAnswer = state?.SelectedAnswer;
+        // hasSubmitted = state?.HasSubmitted ?? false;
+
+        
+        // Session.OnQuestionChanged += async () =>
+        // {
+        //     // _currentQuestion = Session.CurrentQuestion;
+        //     await InvokeAsync(StateHasChanged);
+        // };
+    }
+    
+    private void SelectAnswer(Answer answer)
+    {
+        if (!hasSubmitted)
+            selectedAnswer = answer.Id;
+    }
+
+    private void SubmitAnswer()
+    {
+        if (hasSubmitted || selectedAnswer is null) return;
+        
+        Session.AnswerQuestion(_userId!, selectedAnswer.Value);
+        hasSubmitted = true;
     }
 
 }
