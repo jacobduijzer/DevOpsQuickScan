@@ -1,0 +1,50 @@
+﻿@page "/"
+@using DevOpsQuickScan.Core
+@using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject UserIdService UserId
+@inject SessionService Session
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app, person with id @_userId.
+
+@switch (Session.CurrentState)
+{
+    case SessionState.AnsweringQuestions:
+        <QuestionComponent @key="@_questionId"
+                           UserId="@_userId" 
+                           SessionService="@Session" 
+                           QuestionId="@_questionId"/>
+        
+        break;
+    case SessionState.RevealingAnswers:
+        <RevealComponent @key="@_questionId"
+                         SessionService="@Session" 
+                         QuestionId="@_questionId"/>
+        break;
+    case SessionState.NotStarted:
+    default:
+        <p>No question is currently being asked.</p>
+        break;
+}
+
+@code {
+
+    private string? _userId;
+    private int _questionId;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender) =>
+        _userId = await UserId.GetAsync();
+
+    protected override void OnInitialized()
+    {
+        Session.OnSessionStateChanged += async (state, questionId) =>
+        {
+            _questionId = questionId;
+            await InvokeAsync(StateHasChanged);
+        }; 
+    }
+    
+}
