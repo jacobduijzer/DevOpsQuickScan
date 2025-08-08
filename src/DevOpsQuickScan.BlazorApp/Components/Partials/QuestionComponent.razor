@@ -33,31 +33,27 @@
 
 @code {
 
-    [Parameter] public string? UserId { get; set; }
-    [Parameter] public SessionService? SessionService { get; set; }
+    [Parameter] public required string UserId { get; set; }
+    [Parameter] public required SessionService SessionService { get; set; }
+    [Parameter] public required int QuestionId { get; set; }
 
     private Question? _currentQuestion;
+    
     private int? _selectedAnswer;
     private bool _hasSubmitted = false;
     private bool CanSubmit => _selectedAnswer is not null && !_hasSubmitted;
     
-    protected override void OnInitialized()
-    {
-        LoadQuestion(SessionService!.CurrentQuestion);
-        SessionService!.OnQuestionChanged += async question =>
-        {
-            LoadQuestion(question);
-            await InvokeAsync(StateHasChanged);
-        };
-    }
+    
+    protected override void OnInitialized() =>
+        LoadQuestion(QuestionId);
 
-    private void LoadQuestion(Question? question)
+    private void LoadQuestion(int questionId)
     {
-        _currentQuestion = question;
+        _currentQuestion = SessionService.Questions.First(q => q.Id == questionId);
             
-        if(SessionService!.HasAnsweredCurrentQuestion(UserId!))
+        if(SessionService!.HasAnsweredCurrentQuestion(UserId!, _currentQuestion!.Id))
         {
-            _selectedAnswer = SessionService.GetAnswer(UserId!);
+            _selectedAnswer = SessionService.GetAnswer(UserId!, _currentQuestion!.Id);
             _hasSubmitted = true;
         }
         else
@@ -75,9 +71,10 @@
 
     private void SubmitAnswer()
     {
-        if (_hasSubmitted || _selectedAnswer is null) return;
+        if (_hasSubmitted || _currentQuestion is null || _selectedAnswer is null) 
+            return;
 
-        SessionService!.AnswerQuestion(UserId!, _selectedAnswer.Value);
+        SessionService!.AnswerQuestion(UserId!, _currentQuestion.Id, _selectedAnswer.Value);
         _hasSubmitted = true;
     }
 

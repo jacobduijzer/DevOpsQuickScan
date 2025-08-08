@@ -1,20 +1,22 @@
 @using DevOpsQuickScan.Core
 
-<strong>@Question!.Text</strong>
+<strong>@_question!.Text</strong>
 <ul>
-    @foreach (var answer in Question.Answers)
+    @foreach (var answer in _question.Answers)
     {
-        var count = SessionService!.Submissions.Count(x => x.QuestionId == Question.Id && x.AnswerId == answer.Id); 
-                
         <div>
-            <label>@answer.Text (@count)</label>
-            <div style="background: lightblue; width:@(count * 20)px; height: 20px;"></div>
+            <label>@answer.Text (@SessionService.NumberOfAnswers(_question.Id, answer.Id))</label>
+            <div style="background: lightblue; width:@(SessionService.NumberOfAnswers(_question.Id, answer.Id) * 20)px; height: 20px;"></div>
         </div>
     }
 </ul>
 
 @code {
-    
-    [Parameter] public SessionService? SessionService { get; set; }
-    [Parameter] public Question? Question { get; set; }
+    [Parameter] public required SessionService SessionService { get; set; }
+    [Parameter] public required int QuestionId { get; set; }
+
+    private Question? _question;
+
+    protected override void OnInitialized() =>
+        _question = SessionService.Questions.First(q => q.Id == QuestionId);
 }

@@ -10,42 +10,41 @@
 
 Welcome to your new app, person with id @_userId.
 
-@if (_currentQuestion != null)
+@switch (Session.CurrentState)
 {
-    <QuestionComponent UserId="@_userId" 
-                       SessionService="@Session" />
-}
-else
-{
-    <p>No question is currently being asked.</p>
+    case SessionState.AnsweringQuestions:
+        <QuestionComponent @key="@_questionId"
+                           UserId="@_userId" 
+                           SessionService="@Session" 
+                           QuestionId="@_questionId"/>
+        
+        break;
+    case SessionState.RevealingAnswers:
+        <RevealComponent @key="@_questionId"
+                         SessionService="@Session" 
+                         QuestionId="@_questionId"/>
+        break;
+    case SessionState.NotStarted:
+    default:
+        <p>No question is currently being asked.</p>
+        break;
 }
 
 @code {
 
-    private string? _userId = null;
+    private string? _userId;
+    private int _questionId;
 
-    private Question? _currentQuestion = null;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    protected override async Task OnAfterRenderAsync(bool firstRender) =>
         _userId = await UserId.GetAsync();
-        _currentQuestion = Session.CurrentQuestion;
-
-        // if (Session.HasAnsweredCurrentQuestion(_userId!))
-        // {
-        //     selectedAnswer = Session.GetAnswer(_userId!);
-        //     hasSubmitted = true;
-        // }
-
-        await InvokeAsync(StateHasChanged);
-    }
 
     protected override void OnInitialized()
     {
-        Session.OnQuestionChanged += (question) =>
+        Session.OnSessionStateChanged += async (state, questionId) =>
         {
-            _currentQuestion = question;
-            InvokeAsync(StateHasChanged);
-        };
+            _questionId = questionId;
+            await InvokeAsync(StateHasChanged);
+        }; 
     }
+    
 }

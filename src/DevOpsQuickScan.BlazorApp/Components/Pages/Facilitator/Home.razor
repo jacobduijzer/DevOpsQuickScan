@@ -1,7 +1,6 @@
 ﻿@page "/facilitator"
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
-@inject QuestionsService Questions
 @inject UserIdService UserId
 @inject SessionService Session
 
@@ -10,11 +9,10 @@
 <h2>Facilitator Panel</h2>
 <p>User / Session Id: @_userId</p>
 
-@foreach (var question in _questions!)
+@foreach (var question in Session.Questions)
 {
     <div class="question-block" style="margin-bottom: 1.5rem;">
-        
-        <RevealComponent Question="@question" SessionService="@Session" />
+        <RevealComponent SessionService="@Session" QuestionId="@question.Id" />
         
         <button @onclick="() => AskQuestion(question)" disabled="@question.IsRevealed">Ask</button>
         <button @onclick="() => RevealAnswers(question)">Reveal</button>
@@ -26,34 +24,24 @@
     private string? _userId = null;
     private List<Question>? _questions = [];
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
+    protected override async Task OnAfterRenderAsync(bool firstRender) =>
         _userId = await UserId.GetAsync();
-        await InvokeAsync(StateHasChanged);
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        _questions = Questions.All;
-        
         Session.OnAnswerReceived += async () =>
             await InvokeAsync(StateHasChanged);
+
+        await InvokeAsync(StateHasChanged);
     }
 
-    private void AskQuestion(Question question)
-    {
-        Session.CurrentQuestion = question;
-    }
 
-    private void RevealAnswers(Question question)
-    {
-        Questions.RevealQuestion(question.Id);
+    private void AskQuestion(Question question) =>
+        Session.AskQuestion(question.Id);
+
+    private void RevealAnswers(Question question) =>
         Session.RevealQuestion(question.Id);
-    }
     
-    private void ResetQuestion(Question question)
-    {
-        Questions.ResetQuestion(question.Id);
+    private void ResetQuestion(Question question) =>
         Session.ResetQuestion(question.Id);
-    }
 }

@@ -20,26 +20,26 @@ public class QuestionsService
 
     private List<Question> _questions =
     [
-        new Question(1, "What is your primary programming language?", [
-            new Answer(1, "C#"),
-            new Answer(2, "Java"),
-            new Answer(3, "JavaScript"),
-            new Answer(4, "Python"),
-            new Answer(5, "Other")
+        new Question(1, "How does your team ensure that code remains maintainable over time?", [
+            new Answer(1, "We don’t have a defined approach"),
+            new Answer(2, "We use basic linting and formatting tools"),
+            new Answer(3, "We follow code review and documentation guidelines"),
+            new Answer(4, "We apply automated maintainability checks and refactoring practices"),
+            new Answer(5, "We have a culture of continuous refactoring and evolutionary architecture")
         ]),
-        new Question(2, "What is your preferred development environment?", [
-            new Answer(1, "Visual Studio"),
-            new Answer(2, "Eclipse"),
-            new Answer(3, "IntelliJ IDEA"),
-            new Answer(4, "VS Code"),
-            new Answer(5, "Other")
+        new Question(2, "How does your team ensure that documentation remains accurate, useful, and up to date?", [
+            new Answer(1, "We don’t have much documentation"),
+            new Answer(2, "We document as needed, but it’s inconsistent"),
+            new Answer(3, "We have clear documentation practices"),
+            new Answer(4, "We use automated tools and structured processes"),
+            new Answer(5, "We treat documentation as a first-class citizen")
         ]),
-        new Question(3, "What is your favorite food?", [
-            new Answer(1, "Pizza"),
-            new Answer(2, "Sushi"),
-            new Answer(3, "Burgers"),
-            new Answer(4, "Salad"),
-            new Answer(5, "Other")
+        new Question(3, "How empowered is your team to choose the tools and technologies you use?", [
+            new Answer(1, "We have no say in tool selection"),
+            new Answer(2, "We can suggest tools, but decisions are made elsewhere"),
+            new Answer(3, "We can suggest tools, but decisions are made elsewhere"),
+            new Answer(4, "We have significant influence over our tools"),
+            new Answer(5, "We fully own our tooling decisions")
         ]),
     ];
 }
