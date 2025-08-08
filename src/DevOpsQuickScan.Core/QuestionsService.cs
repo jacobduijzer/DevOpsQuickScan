@@ -2,14 +2,23 @@ namespace DevOpsQuickScan.Core;
 
 public class QuestionsService
 {
+    public List<Question> All => _questions;
+    
     public void RevealQuestion(int questionId)
     {
-        var question = All.FirstOrDefault(q => q.Id == questionId);
+        var question = _questions.FirstOrDefault(q => q.Id == questionId);
         if (question is not null)
             question.IsRevealed = true;
     }
     
-    public List<Question> All =>
+    public void ResetQuestion(int questionId)
+    {
+        var question = _questions.FirstOrDefault(q => q.Id == questionId);
+        if (question is not null)
+            question.IsRevealed = false;
+    }
+
+    private List<Question> _questions =
     [
         new Question(1, "What is your primary programming language?", [
             new Answer(1, "C#"),

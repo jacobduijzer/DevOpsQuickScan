@@ -1,5 +1,6 @@
 ﻿@page "/facilitator"
 @using DevOpsQuickScan.Core
+@using DevOpsQuickScan.BlazorApp.Components.Partials
 @inject QuestionsService Questions
 @inject UserIdService UserId
 @inject SessionService Session
@@ -12,19 +13,10 @@
 @foreach (var question in _questions!)
 {
     <div class="question-block" style="margin-bottom: 1.5rem;">
-        <strong>@question.Text</strong>
-        <ul>
-            @foreach (var answer in question.Answers)
-            {
-                var count = Session.Submissions.Count(x => x.QuestionId == question.Id && x.AnswerId == answer.Id); 
-                
-                <div>
-                    <label>@answer.Text (@count)</label>
-                    <div style="background: lightblue; width:@(count * 20)px; height: 20px;"></div>
-                </div>
-            }
-        </ul>
-        <button @onclick="() => AskQuestion(question)">Ask</button>
+        
+        <RevealComponent Question="@question" SessionService="@Session" />
+        
+        <button @onclick="() => AskQuestion(question)" disabled="@question.IsRevealed">Ask</button>
         <button @onclick="() => RevealAnswers(question)">Reveal</button>
         <button @onclick="() => ResetQuestion(question)">Reset </button>
     </div>
@@ -61,6 +53,7 @@
     
     private void ResetQuestion(Question question)
     {
+        Questions.ResetQuestion(question.Id);
         Session.ResetQuestion(question.Id);
     }
 }

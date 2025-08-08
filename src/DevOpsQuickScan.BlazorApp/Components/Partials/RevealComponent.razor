@@ -1,0 +1,20 @@
+@using DevOpsQuickScan.Core
+
+<strong>@Question!.Text</strong>
+<ul>
+    @foreach (var answer in Question.Answers)
+    {
+        var count = SessionService!.Submissions.Count(x => x.QuestionId == Question.Id && x.AnswerId == answer.Id); 
+                
+        <div>
+            <label>@answer.Text (@count)</label>
+            <div style="background: lightblue; width:@(count * 20)px; height: 20px;"></div>
+        </div>
+    }
+</ul>
+
+@code {
+    
+    [Parameter] public SessionService? SessionService { get; set; }
+    [Parameter] public Question? Question { get; set; }
+}
