@@ -1,0 +1,84 @@
+@using DevOpsQuickScan.Core
+
+@if (_currentQuestion is not null)
+{
+    <div class="question-block" style="margin-bottom: 1.5rem;">
+        <strong>@_currentQuestion.Text</strong>
+        <ul>
+            @foreach (var answer in @_currentQuestion.Answers)
+            {
+                bool isSelected = answer.Id == _selectedAnswer;
+                <button class="answer-button @(isSelected ? "selected" : "")"
+                        @onclick="@(() => SelectAnswer(answer))"
+                        disabled="@_hasSubmitted">
+                    @answer.Text
+                </button>
+            }
+
+            <div style="margin-top: 1rem;">
+                <button @onclick="SubmitAnswer"
+                        disabled="@(!CanSubmit)">
+                    Submit Answer
+                </button>
+            </div>
+
+            @if (_hasSubmitted)
+            {
+                <p><em>Waiting for results…</em></p>
+            }
+
+        </ul>
+    </div>
+}
+
+@code {
+
+    [Parameter] public string? UserId { get; set; }
+    [Parameter] public SessionService? SessionService { get; set; }
+
+    private Question? _currentQuestion;
+    private int? _selectedAnswer;
+    private bool _hasSubmitted = false;
+    private bool CanSubmit => _selectedAnswer is not null && !_hasSubmitted;
+    
+    protected override void OnInitialized()
+    {
+        LoadQuestion(SessionService!.CurrentQuestion);
+        SessionService!.OnQuestionChanged += async question =>
+        {
+            LoadQuestion(question);
+            await InvokeAsync(StateHasChanged);
+        };
+    }
+
+    private void LoadQuestion(Question? question)
+    {
+        _currentQuestion = question;
+            
+        if(SessionService!.HasAnsweredCurrentQuestion(UserId!))
+        {
+            _selectedAnswer = SessionService.GetAnswer(UserId!);
+            _hasSubmitted = true;
+        }
+        else
+        {
+            _selectedAnswer = null;
+            _hasSubmitted = false;
+        } 
+    }
+
+    private void SelectAnswer(Answer answer)
+    {
+        if (!_hasSubmitted)
+            _selectedAnswer = answer.Id;
+    }
+
+    private void SubmitAnswer()
+    {
+        if (_hasSubmitted || _selectedAnswer is null) return;
+
+        SessionService!.AnswerQuestion(UserId!, _selectedAnswer.Value);
+        _hasSubmitted = true;
+    }
+
+}

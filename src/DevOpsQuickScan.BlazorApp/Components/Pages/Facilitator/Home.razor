@@ -1,6 +1,5 @@
 ﻿@page "/facilitator"
 @using DevOpsQuickScan.Core
-@using Microsoft.AspNetCore.Server.HttpSys
 @inject QuestionsService Questions
 @inject UserIdService UserId
 @inject SessionService Session
@@ -27,7 +26,7 @@
         </ul>
         <button @onclick="() => AskQuestion(question)">Ask</button>
         <button @onclick="() => RevealAnswers(question)">Reveal</button>
-        <button>Reset (TODO)</button>
+        <button @onclick="() => ResetQuestion(question)">Reset </button>
     </div>
 }
 
@@ -44,27 +43,24 @@
     protected override async Task OnInitializedAsync()
     {
         _questions = Questions.All;
-        // await InvokeAsync(StateHasChanged);
         
         Session.OnAnswerReceived += async () =>
-        {
-            // selectedAnswer = null;
-            // hasSubmitted = false;
             await InvokeAsync(StateHasChanged);
-        };
     }
 
     private void AskQuestion(Question question)
     {
         Session.CurrentQuestion = question;
-        // Session.Answers.Clear();
     }
 
     private void RevealAnswers(Question question)
     {
-        // LastResults = Session.Answers
-        // .GroupBy(kvp => kvp.Value)
-        // .ToDictionary(g => g.Key, g => g.Count());
+        Questions.RevealQuestion(question.Id);
+        Session.RevealQuestion(question.Id);
     }
-
+    
+    private void ResetQuestion(Question question)
+    {
+        Session.ResetQuestion(question.Id);
+    }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.BlazorApp",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Core", "src\DevOpsQuickScan.Core\DevOpsQuickScan.Core.csproj", "{92EB2C3D-61CE-4F94-9551-ECE93839820D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Tests", "tests\DevOpsQuickScan.Tests\DevOpsQuickScan.Tests.csproj", "{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92EB2C3D-61CE-4F94-9551-ECE93839820D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

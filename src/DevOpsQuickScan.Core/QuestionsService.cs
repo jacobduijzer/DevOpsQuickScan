@@ -2,6 +2,13 @@ namespace DevOpsQuickScan.Core;
 
 public class QuestionsService
 {
+    public void RevealQuestion(int questionId)
+    {
+        var question = All.FirstOrDefault(q => q.Id == questionId);
+        if (question is not null)
+            question.IsRevealed = true;
+    }
+    
     public List<Question> All =>
     [
         new Question(1, "What is your primary programming language?", [
