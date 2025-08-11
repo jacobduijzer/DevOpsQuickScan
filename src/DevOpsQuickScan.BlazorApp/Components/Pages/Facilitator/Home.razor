@@ -12,27 +12,31 @@
 @foreach (var question in Session.Questions)
 {
     <div class="question-block" style="margin-bottom: 1.5rem;">
-        <RevealComponent SessionService="@Session" QuestionId="@question.Id" />
-        
+        @{ _revealedQuestion = Session.RevealedQuestion(question.Id);}
+        <RevealComponent RevealedQuestion="@_revealedQuestion"/>
+
         <button @onclick="() => AskQuestion(question)" disabled="@question.IsRevealed">Ask</button>
         <button @onclick="() => RevealAnswers(question)">Reveal</button>
-        <button @onclick="() => ResetQuestion(question)">Reset </button>
+        <button @onclick="() => ResetQuestion(question)">Reset</button>
     </div>
 }
 
 @code {
     private string? _userId = null;
-    private List<Question>? _questions = [];
+    private RevealedQuestion? _revealedQuestion;
 
     protected override async Task OnAfterRenderAsync(bool firstRender) =>
         _userId = await UserId.GetAsync();
 
     protected override async Task OnInitializedAsync()
     {
-        Session.OnAnswerReceived += async () =>
+        Session.OnAnswerReceived += async (revealedQuestion) =>
+        {
+            _revealedQuestion = revealedQuestion;
             await InvokeAsync(StateHasChanged);
+        };
 
-        await InvokeAsync(StateHasChanged);
+        // await InvokeAsync(StateHasChanged);
     }
 
 
@@ -41,7 +45,8 @@
 
     private void RevealAnswers(Question question) =>
         Session.RevealQuestion(question.Id);
-    
+
     private void ResetQuestion(Question question) =>
         Session.ResetQuestion(question.Id);
+
 }

@@ -1,6 +1,3 @@
-HEADERnamespace a;
+namespace DevOpsQuickScan.Core;
 
-public class QuestionAnsweredDto
-{
-    
-}
+public record QuestionAnsweredDto(int QuestionId, int AnswerId);

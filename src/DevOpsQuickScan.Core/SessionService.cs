@@ -1,9 +1,12 @@
+using System.Data;
+
 namespace DevOpsQuickScan.Core;
 
 public class SessionService(QuestionsService questions)
 {
-    public event Action? OnAnswerReceived;
-    public event Action<SessionState, int>? OnSessionStateChanged;
+    public event Action<RevealedQuestion>? OnAnswerReceived;
+    public event Action<SessionState, Question>? OnQuestionAsked;
+    public event Action<SessionState, RevealedQuestion>? OnAnswersRevealed;
 
     public SessionState CurrentState { get; private set; }
     public Question? CurrentQuestion { get; private set; }
@@ -17,11 +20,10 @@ public class SessionService(QuestionsService questions)
         if (CurrentQuestion?.Id == questionId)
             return;
 
-        CurrentQuestion = questions.All.FirstOrDefault(x => x.Id == questionId);
+        CurrentQuestion = questions.All.First(x => x.Id == questionId);
         CurrentState = SessionState.AnsweringQuestions;
-        OnSessionStateChanged?.Invoke(CurrentState, questionId);
+        OnQuestionAsked?.Invoke(CurrentState, CurrentQuestion);
     }
-
 
     public void AnswerQuestion(string userId, int questionId, int answerId)
     {
@@ -29,43 +31,43 @@ public class SessionService(QuestionsService questions)
             return;
 
         _submissions.Add(new AnswerSubmission(userId, questionId, answerId));
-        OnAnswerReceived?.Invoke();
+        var revealedQuestion = RevealedQuestion(questionId);
+        OnAnswerReceived?.Invoke(revealedQuestion);
     }
 
-    public bool HasAnsweredCurrentQuestion(string userId, int questionId) =>
+    private bool HasAnsweredCurrentQuestion(string userId, int questionId) =>
         _submissions.Any(x => x.UserId == userId && x.QuestionId == questionId);
 
-    public int GetAnswer(string userId, int questionId) =>
-        (int)_submissions.FirstOrDefault(x => x.UserId == userId && x.QuestionId == questionId)?.AnswerId!;
+    public int? GetAnswer(string userId, int questionId) =>
+        _submissions.FirstOrDefault(x => x.UserId == userId && x.QuestionId == questionId)?.AnswerId;
 
     public void RevealQuestion(int questionId)
     {
         questions.RevealQuestion(questionId);
+        
+        var revealedQuestion = RevealedQuestion(questionId);
+
         CurrentState = SessionState.RevealingAnswers;
-        OnSessionStateChanged?.Invoke(CurrentState, questionId);
+        OnAnswersRevealed?.Invoke(CurrentState, revealedQuestion);
     }
-    
+
+    public RevealedQuestion RevealedQuestion(int questionId)
+    {
+        var question = questions.All.First(x => x.Id == questionId);
+        var revealedQuestion = new RevealedQuestion
+        {
+            Question = question.Text,
+            Answers = question.Answers.Select(a => new RevealedAnswer
+            {
+                Text = a.Text,
+                Count = NumberOfAnswers(questionId, a.Id)
+            }).ToList()
+        };
+        return revealedQuestion;
+    }
+
     public int NumberOfAnswers(int questionId, int answerId) =>
         _submissions.Count(submission => submission.QuestionId == questionId && submission.AnswerId == answerId);
-    
-    // public RevealDto RevealData(int questionId)
-    // {
-    //     var question = questions.All.FirstOrDefault(x => x.Id == questionId);
-    //     if (question is null || !question.IsRevealed)
-    //         return new RevealDto(); // throw?
-    //
-    //     return new RevealDto
-    //     {
-    //         QuestionText = question.Text,
-    //         Answers = question.Answers
-    //             .Select(answer => new AnswerDto
-    //             {
-    //                 Text = answer.Text,
-    //                 NumberOfVotes = _submissions.Count(submission =>
-    //                     submission.QuestionId == questionId && submission.AnswerId == answer.Id)
-    //             }).ToList()
-    //     };
-    // }
 
     public void ResetQuestion(int questionId)
     {
