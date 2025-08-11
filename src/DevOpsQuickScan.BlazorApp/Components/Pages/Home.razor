@@ -6,9 +6,7 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app, person with id @_userId.
 
 @switch (Session.CurrentState)
 {
@@ -30,7 +28,8 @@ Welcome to your new app, person with id @_userId.
         break;
     case SessionState.NotStarted:
     default:
-        <p>No question is currently being asked.</p>
+        <img src="@Assets["/img/logo.jpg"]" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
+        <p>Welcome to DevOps Quick-scan. Please wait for the first question.</p>
         break;
 }
 

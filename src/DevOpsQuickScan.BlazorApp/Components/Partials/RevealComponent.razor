@@ -1,12 +1,12 @@
 @using DevOpsQuickScan.Core
 
-<strong>@RevealedQuestion!.Question</strong>
+<strong>@RevealedQuestion!.Question <a href="@RevealedQuestion.Link" target="_blank"><i class="fa-solid fa-circle-info"></i></a></strong>
 <ul>
     @foreach (var answer in RevealedQuestion.Answers)
     {
         <div>
-            <label>@answer.Text (@RevealedQuestion.Answers.Sum(x => x.Count))</label>
-            <div style="background: lightblue; width:@(answer.Count * 20)px; height: 20px;"></div>
+            <label>@answer.Text (@answer.NumberOfVotes)</label>
+            <div style="background: lightblue; width:@(answer.NumberOfVotes * 20)px; height: 20px;"></div>
         </div>
     }
 </ul>

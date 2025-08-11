@@ -57,16 +57,17 @@ public class SessionService(QuestionsService questions)
         var revealedQuestion = new RevealedQuestion
         {
             Question = question.Text,
-            Answers = question.Answers.Select(a => new RevealedAnswer
+            Link = question.Link,
+            Answers = question.Answers.Select(answer => new RevealedAnswer
             {
-                Text = a.Text,
-                Count = NumberOfAnswers(questionId, a.Id)
+                Text = answer.Text,
+                NumberOfVotes = NumberOfAnswers(questionId, answer.Id)
             }).ToList()
         };
         return revealedQuestion;
     }
 
-    public int NumberOfAnswers(int questionId, int answerId) =>
+    private int NumberOfAnswers(int questionId, int answerId) =>
         _submissions.Count(submission => submission.QuestionId == questionId && submission.AnswerId == answerId);
 
     public void ResetQuestion(int questionId)
