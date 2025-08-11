@@ -1,16 +1,19 @@
 ﻿@page "/facilitator"
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
-@inject UserIdService UserId
 @inject SessionService Session
 
 <PageTitle>Facilitation</PageTitle>
 
 <h2>Facilitator Panel</h2>
-<p>User / Session Id: @_userId</p>
 
 @foreach (var question in Session.Questions)
 {
+    if (_category != question.Category)
+    {
+        _category = question.Category;
+        <h3>@_category</h3>
+    }
     <div class="question-block" style="margin-bottom: 1.5rem;">
         @{ _revealedQuestion = Session.RevealedQuestion(question.Id);}
         <RevealComponent RevealedQuestion="@_revealedQuestion"/>
@@ -22,13 +25,12 @@
 }
 
 @code {
-    private string? _userId = null;
+
+    private string _category = string.Empty;
     private RevealedQuestion? _revealedQuestion;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender) =>
-        _userId = await UserId.GetAsync();
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         Session.OnAnswerReceived += async (revealedQuestion) =>
         {

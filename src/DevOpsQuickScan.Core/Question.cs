@@ -1,10 +1,12 @@
 namespace DevOpsQuickScan.Core;
 
-public class Question(int id, string text, string link, List<Answer> answers)
+public class Question(int id, string text, string category, string link, List<Answer> answers)
 {
     public int Id => id;
 
     public string Text = text;
+    
+    public string Category = category;
 
     public string Link = link;
 
