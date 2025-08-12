@@ -33,7 +33,7 @@
     <div class="card-footer d-flex justify-content-between align-items-center">
         <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
         <div class="btn-group" role="group">
-            <button class="btn btn-primary"
+            <button class="btn @(IsCurrent ? "btn-danger" : "btn-primary")"
                     @onclick="@(async () => await AskQuestion(@RevealedQuestion.Question))" disabled="@RevealedQuestion.Question.IsRevealed">Ask</button>
             <button class="btn btn-primary"
                     @onclick="@(async () => await RevealAnswers(@RevealedQuestion.Question))">Reveal</button>
@@ -45,6 +45,7 @@
 
 @code {
     [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
+    [Parameter] public bool IsCurrent { get; set; }
     [Parameter] public required EventCallback<Question> OnQuestionAsked { get; set; }
     [Parameter] public required EventCallback<Question> OnAnswersRevealed { get; set; }
     [Parameter] public required EventCallback<Question> OnResetQuestion { get; set; }

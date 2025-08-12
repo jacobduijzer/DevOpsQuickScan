@@ -28,7 +28,6 @@
         break;
     case SessionState.NotStarted:
     default:
-        <img src="@Assets["/img/logo.jpg"]" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
         <p>Welcome to DevOps Quick-scan. Please wait for the first question.</p>
         break;
 }
@@ -68,9 +67,6 @@
         };
     }
     
-    private void AnswerQuestion(QuestionAnsweredDto answer)
-    {
+    private void AnswerQuestion(QuestionAnsweredDto answer) =>
         Session.AnswerQuestion(_userId!, answer.QuestionId, answer.AnswerId);
-    }
-
 }

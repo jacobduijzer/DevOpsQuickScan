@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace DevOpsQuickScan.Core;
 
 public class SessionService(QuestionsService questions)
@@ -5,11 +7,9 @@ public class SessionService(QuestionsService questions)
     public event Action<RevealedQuestion>? OnAnswerReceived;
     public event Action<SessionState, Question>? OnQuestionAsked;
     public event Action<SessionState, RevealedQuestion>? OnAnswersRevealed;
-    public event Action OnParticipantJoined;
-
+    public event Action? OnParticipantJoined;
     public SessionState CurrentState { get; private set; }
     public Question? CurrentQuestion { get; private set; }
-
     public List<Question> Questions { get; private set; } = [];
 
     private readonly List<AnswerSubmission> _submissions = [];
@@ -98,6 +98,41 @@ public class SessionService(QuestionsService questions)
         if (question is not null)
             question.IsRevealed = false;
         
+        CurrentQuestion = null;
         _submissions.RemoveAll(x => x.QuestionId == questionId);
+    }
+    
+    public string ExportSessionReportCsv()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("QuestionText,Answer 1,Votes,Answer 2, Votes, Answer 3, Votes, Answer 4, Votes, Answer 5, Votes, Total Votes");
+       
+        foreach (var question in Questions)
+        {
+            var line = $"{EscapeCsv(question.Text)}";
+            foreach (var answer in question.Answers)
+            {
+                var numberOfVotes = NumberOfAnswers(question.Id, answer.Id);
+                line += $",{EscapeCsv(answer.Text)},{numberOfVotes}";
+            }
+
+            line += $",{_submissions.Count(q => q.QuestionId == question.Id)}";
+
+            sb.AppendLine(line);
+        }
+
+        return sb.ToString();
+    }
+
+    private string EscapeCsv(string? value) =>
+        value is null ? "" : $"\"{value.Replace("\"", "\"\"")}\"";
+
+    public void Reset()
+    {
+        CurrentState = SessionState.NotStarted;
+        CurrentQuestion = null;
+        _submissions.Clear();
+        Participants.Clear();
+        OnQuestionAsked?.Invoke(CurrentState, null);
     }
 }

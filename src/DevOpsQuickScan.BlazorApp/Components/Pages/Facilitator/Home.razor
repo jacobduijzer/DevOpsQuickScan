@@ -1,6 +1,8 @@
 ﻿@page "/facilitator"
+@using System.Text
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject IJSRuntime JS
 @inject UserIdService UserId
 @inject SessionService Session
 
@@ -10,18 +12,27 @@
 {
     <div class="container px-4 py-5" id="featured-3">
         <h2 class="pb-2 border-bottom border-primary">@category</h2>
-            @foreach (var question in Session.Questions.Where(c => c.Category.Equals(category)))
-            {
-                <div class="question-block" style="margin-bottom: 1.5rem;">
-                    @{ _revealedQuestion = Session.RevealedQuestion(question.Id); }
-                    <FacilitatorQuestionComponent RevealedQuestion="@_revealedQuestion"
-                                                  OnQuestionAsked="AskQuestion"
-                                                  OnAnswersRevealed="RevealAnswers"
-                                                  OnResetQuestion="ResetQuestion"/>
+        @foreach (var question in Session.Questions.Where(c => c.Category.Equals(category)))
+        {
+            <div class="question-block" style="margin-bottom: 1.5rem;">
+                @{ _revealedQuestion = Session.RevealedQuestion(question.Id); }
+                <FacilitatorQuestionComponent RevealedQuestion="@_revealedQuestion"
+                                              IsCurrent="@(_revealedQuestion.Question.Id == Session.CurrentQuestion?.Id)"
+                                              OnQuestionAsked="AskQuestion"
+                                              OnAnswersRevealed="RevealAnswers"
+                                              OnResetQuestion="ResetQuestion"/>
+            </div>
+        }
 
+        <h2 class="pb-2 border-bottom border-primary">Management</h2>
 
-                </div>
-            }
+        <div class="question-block" style="margin-bottom: 1.5rem;">
+            <div class="btn-group" role="group">
+                <button class="btn btn-primary" @onclick="DownloadFileFromStream">Download results</button>
+                <button class="btn btn-danger" @onclick="@(async () => await ResetSession())">Reset session</button>
+            </div> 
+        </div>
+
     </div>
 }
 
@@ -39,7 +50,7 @@
             _userId = await UserId.GetAsync();
             _initialized = true;
             Session.Remove(_userId);
-            StateHasChanged(); 
+            StateHasChanged();
         }
     }
 
@@ -62,5 +73,32 @@
 
     private void ResetQuestion(Question question) =>
         Session.ResetQuestion(question.Id);
+    
+    private async Task DownloadFileFromStream()
+    {
+        var fileStream = GetFileStream();
+        var fileName = "session-report.csv";
+
+        using var streamRef = new DotNetStreamReference(stream: fileStream);
+
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+    
+    private Stream GetFileStream()
+    {
+        var csv = Session.ExportSessionReportCsv();
+        var bytes = Encoding.UTF8.GetBytes(csv);
+        var fileStream = new MemoryStream(bytes);
+        return fileStream;
+    }
+
+
+    private async Task ResetSession()
+    {
+        Session.Reset();
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    
 
 }
