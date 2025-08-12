@@ -6,7 +6,7 @@
     </h5>
         
     <div class="card-body d-flex justify-content-center align-items-center">
-        <img src="@QrCodeHelper.GenerateQrPngDataUrl(Url)" 
+        <img src="@QrCodeHelper.GenerateQrPngDataUrl(_joinUrl!)" 
              class="img-fluid" 
              style="max-width: 100%; height: auto;" 
              alt="Join QR code" />
@@ -17,6 +17,14 @@
 </div>   
 
 @code {
+    private string? _joinUrl;
 
     [Parameter] public required string Url { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        var uri = new Uri(Url);
+        _joinUrl = $"{uri.Scheme}://{uri.Host}";
+    }
+
 }
