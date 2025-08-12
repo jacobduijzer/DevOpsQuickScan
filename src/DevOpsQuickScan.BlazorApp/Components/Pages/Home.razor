@@ -1,0 +1,75 @@
+﻿@page "/"
+@using DevOpsQuickScan.Core
+@using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject UserIdService UserId
+@inject SessionService Session
+
+<PageTitle>Home</PageTitle>
+
+
+
+@switch (Session.CurrentState)
+{
+    case SessionState.AnsweringQuestions:
+        @if (_currentQuestion is not null && _userId is not null)
+        {
+            var prevAnswer = Session.GetAnswer(_userId, _currentQuestion.Id);
+
+            <QuestionComponent Question="@_currentQuestion" 
+                               PreviousAnswer="@prevAnswer"
+                               OnQuestionAnswered="@AnswerQuestion"/>
+        }
+        break;
+    case SessionState.RevealingAnswers:
+        @if (_revealedQuestion is not null)
+        {
+            <RevealComponent RevealedQuestion="@_revealedQuestion" />
+        }
+        break;
+    case SessionState.NotStarted:
+    default:
+        <img src="@Assets["/img/logo.jpg"]" alt="DevOps Quickscan Logo" class="quickscan-logo"/>
+        <p>Welcome to DevOps Quick-scan. Please wait for the first question.</p>
+        break;
+}
+
+@code {
+
+    private string? _userId;
+    private bool _initialized = false;
+    private Question? _currentQuestion;
+    private RevealedQuestion? _revealedQuestion;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_initialized)
+        {
+            _userId = await UserId.GetAsync();
+            _initialized = true;
+            StateHasChanged(); 
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        _currentQuestion = Session.CurrentQuestion;
+      
+        Session.OnQuestionAsked += async (state, question) =>
+        {
+            _currentQuestion = question;
+            await InvokeAsync(StateHasChanged);
+        };
+
+        Session.OnAnswersRevealed += async (state, question) =>
+        {
+            _revealedQuestion = question;
+            await InvokeAsync(StateHasChanged);
+        };
+    }
+    
+    private void AnswerQuestion(QuestionAnsweredDto answer)
+    {
+        Session.AnswerQuestion(_userId!, answer.QuestionId, answer.AnswerId);
+    }
+
+}

@@ -1,0 +1,79 @@
+@using DevOpsQuickScan.Core
+
+<div class="card">
+    <h5 class="card-header d-flex align-items-center">
+        <span>Question</span>
+        <a href="@Question.Link" target="_blank" class="ms-auto">
+            <i class="fa-solid fa-circle-info"></i>
+        </a>
+    </h5>
+    <div class="card-body">
+        <h5 class="card-title">@Question.Text </h5>
+        
+        <div class="list-group list-group-flush overflow-hidden">
+            @foreach (var answer in @Question.Answers)
+            {
+                var isSelected = answer.Id == _selectedAnswer;
+                
+                <label class="card-text list-group-item d-flex justify-content-between align-items-center option-item @(isSelected ? "selected" : "")">
+                    <span class="flex-grow-1">@answer.Text</span>
+                    <input class="form-check-input me-3"
+                           type="radio"
+                           name="answer"
+                           value="@answer.Id"
+                           checked="@isSelected"
+                           disabled="@_hasSubmitted"
+                           @onclick="@(() => SelectAnswer(answer))" />
+                </label>
+            }
+        </div> 
+        
+        <p></p>
+        
+        @if (!_hasSubmitted)
+        {
+            <button class="btn btn-primary"
+                    @onclick="SubmitAnswer"
+                    disabled="@(!CanSubmit)">
+                Submit Answer
+            </button>
+        }
+        else 
+        {
+            <p><em>Answer submitted, waiting for results…</em></p>
+        }
+        
+    </div>
+</div>
+
+   
+
+@code {
+
+    [Parameter] public required Question Question { get; set; }
+    [Parameter] public int? PreviousAnswer { get; set; }
+    [Parameter] public required EventCallback<QuestionAnsweredDto> OnQuestionAnswered { get; set; }
+
+    private int? _selectedAnswer;
+    private bool _hasSubmitted = false;
+    private bool CanSubmit => _selectedAnswer is not null && !_hasSubmitted;
+
+    protected override void OnParametersSet()
+    {
+        _selectedAnswer = PreviousAnswer;
+        _hasSubmitted = PreviousAnswer != null;
+    }
+
+    private void SelectAnswer(Answer answer)
+    {
+        if (!_hasSubmitted)
+            _selectedAnswer = answer.Id;
+    }
+
+    private async Task SubmitAnswer()
+    {
+        await OnQuestionAnswered.InvokeAsync(new QuestionAnsweredDto(Question.Id, _selectedAnswer!.Value));
+        _hasSubmitted = true;
+    }
+
+}

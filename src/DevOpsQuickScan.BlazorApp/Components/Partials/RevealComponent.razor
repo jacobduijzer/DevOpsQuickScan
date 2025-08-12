@@ -1,0 +1,16 @@
+@using DevOpsQuickScan.Core
+
+<strong>@RevealedQuestion!.Question <a href="@RevealedQuestion.Link" target="_blank"><i class="fa-solid fa-circle-info"></i></a></strong>
+<ul>
+    @foreach (var answer in RevealedQuestion.Answers)
+    {
+        <div>
+            <label>@answer.Text (@answer.NumberOfVotes)</label>
+            <div style="background: lightblue; width:@(answer.NumberOfVotes * 20)px; height: 20px;"></div>
+        </div>
+    }
+</ul>
+
+@code {
+    [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
+}

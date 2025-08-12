@@ -1,0 +1,52 @@
+﻿@page "/facilitator"
+@using DevOpsQuickScan.Core
+@using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject SessionService Session
+
+<PageTitle>Facilitation</PageTitle>
+
+<h2>Facilitator Panel</h2>
+
+@foreach (var question in Session.Questions)
+{
+    if (_category != question.Category)
+    {
+        _category = question.Category;
+        <h3>@_category</h3>
+    }
+    <div class="question-block" style="margin-bottom: 1.5rem;">
+        @{ _revealedQuestion = Session.RevealedQuestion(question.Id);}
+        <RevealComponent RevealedQuestion="@_revealedQuestion"/>
+
+        <button @onclick="() => AskQuestion(question)" disabled="@question.IsRevealed">Ask</button>
+        <button @onclick="() => RevealAnswers(question)">Reveal</button>
+        <button @onclick="() => ResetQuestion(question)">Reset</button>
+    </div>
+}
+
+@code {
+
+    private string _category = string.Empty;
+    private RevealedQuestion? _revealedQuestion;
+
+
+    protected override void OnInitialized()
+    {
+        Session.OnAnswerReceived += async (revealedQuestion) =>
+        {
+            _revealedQuestion = revealedQuestion;
+            await InvokeAsync(StateHasChanged);
+        };
+    }
+
+
+    private void AskQuestion(Question question) =>
+        Session.AskQuestion(question.Id);
+
+    private void RevealAnswers(Question question) =>
+        Session.RevealQuestion(question.Id);
+
+    private void ResetQuestion(Question question) =>
+        Session.ResetQuestion(question.Id);
+
+}

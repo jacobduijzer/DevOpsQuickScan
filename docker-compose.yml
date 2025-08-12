@@ -1,5 +1,11 @@
 services:
-  app:
-    build: .
+  devopsquickscan.api:
+    container_name: devopsquickscan.api
     ports:
-      - "5000:8080"
+      - 5000:5000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:5000
+    restart: always
