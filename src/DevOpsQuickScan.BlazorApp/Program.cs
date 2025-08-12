@@ -9,7 +9,11 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services
-    .AddSingleton<QuestionsService>()
+    .AddSingleton<QuestionsService>(sp =>
+    {
+        var webrootPath = sp.GetRequiredService<IWebHostEnvironment>().WebRootPath;
+        return new QuestionsService(webrootPath);
+    })
     .AddSingleton<SessionService>()
     .AddScoped<UserIdService>();
 

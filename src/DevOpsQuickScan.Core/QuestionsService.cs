@@ -1,9 +1,8 @@
 using System.Text.Json;
-using Microsoft.AspNetCore.Hosting;
 
 namespace DevOpsQuickScan.Core;
 
-public class QuestionsService(IWebHostEnvironment env)
+public class QuestionsService(string webrootPath)
 {
     private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true, WriteIndented = true };
 
@@ -11,7 +10,7 @@ public class QuestionsService(IWebHostEnvironment env)
 
     public async Task<List<Question>> Load()
     {
-        var path = Path.Combine(env.WebRootPath, "content", "questions.json");
+        var path = Path.Combine(webrootPath, "content", "questions.json");
         if (!File.Exists(path)) 
             throw new Exception("Questions file not found");
         
@@ -19,18 +18,4 @@ public class QuestionsService(IWebHostEnvironment env)
         _all = await JsonSerializer.DeserializeAsync<List<Question>>(stream, _jsonOptions) ?? [];
         return _all;
     }
-    
-    // public void RevealQuestion(int questionId)
-    // {
-    //     var question = _all.FirstOrDefault(q => q.Id == questionId);
-    //     if (question is not null)
-    //         question.IsRevealed = true;
-    // }
-    //
-    // public void ResetQuestion(int questionId)
-    // {
-    //     var question = _all.FirstOrDefault(q => q.Id == questionId);
-    //     if (question is not null)
-    //         question.IsRevealed = false;
-    // }
 }
