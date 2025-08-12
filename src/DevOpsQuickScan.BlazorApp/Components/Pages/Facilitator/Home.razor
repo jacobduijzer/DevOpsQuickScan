@@ -23,18 +23,17 @@
                                               OnResetQuestion="ResetQuestion"/>
             </div>
         }
-
-        <h2 class="pb-2 border-bottom border-primary">Management</h2>
-
-        <div class="question-block" style="margin-bottom: 1.5rem;">
-            <div class="btn-group" role="group">
-                <button class="btn btn-primary" @onclick="DownloadFileFromStream">Download results</button>
-                <button class="btn btn-danger" @onclick="@(async () => await ResetSession())">Reset session</button>
-            </div> 
-        </div>
-
     </div>
 }
+
+<h2 class="pb-2 border-bottom border-primary">Management</h2>
+
+<div class="question-block" style="margin-bottom: 1.5rem;">
+    <div class="btn-group" role="group">
+        <button class="btn btn-primary" @onclick="DownloadFileFromStream">Download results</button>
+        <button class="btn btn-danger" @onclick="@(async () => await ResetSession())">Reset session</button>
+    </div> 
+</div>
 
 @code {
 
