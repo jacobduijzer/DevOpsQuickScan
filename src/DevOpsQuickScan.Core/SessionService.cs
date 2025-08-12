@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace DevOpsQuickScan.Core;
 
 public class SessionService(QuestionsService questions)
@@ -7,20 +5,44 @@ public class SessionService(QuestionsService questions)
     public event Action<RevealedQuestion>? OnAnswerReceived;
     public event Action<SessionState, Question>? OnQuestionAsked;
     public event Action<SessionState, RevealedQuestion>? OnAnswersRevealed;
+    public event Action OnParticipantJoined;
 
     public SessionState CurrentState { get; private set; }
     public Question? CurrentQuestion { get; private set; }
 
-    public List<Question> Questions => questions.All;
+    public List<Question> Questions { get; private set; } = [];
 
-    private List<AnswerSubmission> _submissions = [];
+    private readonly List<AnswerSubmission> _submissions = [];
+
+    public List<string> Participants { get; private set; } = [];
+
+    public async Task Initialize() =>
+        Questions = await questions.Load();
+    
+    public void Join(string userId) 
+    {
+        if (Participants.Contains(userId))
+            return;
+
+        Participants.Add(userId);
+        OnParticipantJoined?.Invoke();
+    }
+    
+    public void Remove(string userId) 
+    {
+        if (!Participants.Contains(userId))
+            return;
+
+        Participants.Remove(userId);
+        OnParticipantJoined?.Invoke();
+    }
 
     public void AskQuestion(int questionId)
     {
         if (CurrentQuestion?.Id == questionId)
             return;
 
-        CurrentQuestion = questions.All.First(x => x.Id == questionId);
+        CurrentQuestion = Questions.First(x => x.Id == questionId);
         CurrentState = SessionState.AnsweringQuestions;
         OnQuestionAsked?.Invoke(CurrentState, CurrentQuestion);
     }
@@ -43,7 +65,9 @@ public class SessionService(QuestionsService questions)
 
     public void RevealQuestion(int questionId)
     {
-        questions.RevealQuestion(questionId);
+        var question = Questions.FirstOrDefault(q => q.Id == questionId);
+        if (question is not null)
+            question.IsRevealed = true;
         
         var revealedQuestion = RevealedQuestion(questionId);
 
@@ -53,11 +77,9 @@ public class SessionService(QuestionsService questions)
 
     public RevealedQuestion RevealedQuestion(int questionId)
     {
-        var question = questions.All.First(x => x.Id == questionId);
-        var revealedQuestion = new RevealedQuestion
+        var question = Questions.First(x => x.Id == questionId);
+        var revealedQuestion = new RevealedQuestion(question)
         {
-            Question = question.Text,
-            Link = question.Link,
             Answers = question.Answers.Select(answer => new RevealedAnswer
             {
                 Text = answer.Text,
@@ -72,7 +94,10 @@ public class SessionService(QuestionsService questions)
 
     public void ResetQuestion(int questionId)
     {
-        questions.ResetQuestion(questionId);
+        var question = Questions.FirstOrDefault(q => q.Id == questionId);
+        if (question is not null)
+            question.IsRevealed = false;
+        
         _submissions.RemoveAll(x => x.QuestionId == questionId);
     }
 }

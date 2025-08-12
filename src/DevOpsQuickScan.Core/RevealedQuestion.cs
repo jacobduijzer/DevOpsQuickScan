@@ -1,8 +1,8 @@
 namespace DevOpsQuickScan.Core;
 
-public class RevealedQuestion
+public class RevealedQuestion(Question question)
 {
-    public string Question { get; set; }
+    public readonly Question Question = question;
     public string Link { get; set; }
     public List<RevealedAnswer> Answers { get; set; }
 }

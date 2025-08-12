@@ -96,7 +96,14 @@ h1:focus {
     background-color: #f8f9fa; /* light gray hover */
 }
 
+.option-item input[type="radio"] {
+    display: none;
+}
+
 .option-item.selected {
-    border-left: 4px solid #0d6efd;
-    background-color: #e9ecef; /* slightly darker when selected */
+    background: #e3f2fd;
+    border-color: #90caf9;
+    border-left: 4px solid #0d6efd; /* Bootstrap primary color */
+    font-weight: 500;
+    cursor: pointer;
 }

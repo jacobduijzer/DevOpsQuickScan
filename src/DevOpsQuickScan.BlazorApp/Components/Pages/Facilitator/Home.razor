@@ -1,44 +1,58 @@
 ﻿@page "/facilitator"
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject UserIdService UserId
 @inject SessionService Session
 
 <PageTitle>Facilitation</PageTitle>
 
-<h2>Facilitator Panel</h2>
-
-@foreach (var question in Session.Questions)
+@foreach (var category in Session.Questions.Select(q => q.Category).Distinct())
 {
-    if (_category != question.Category)
-    {
-        _category = question.Category;
-        <h3>@_category</h3>
-    }
-    <div class="question-block" style="margin-bottom: 1.5rem;">
-        @{ _revealedQuestion = Session.RevealedQuestion(question.Id);}
-        <RevealComponent RevealedQuestion="@_revealedQuestion"/>
+    <div class="container px-4 py-5" id="featured-3">
+        <h2 class="pb-2 border-bottom border-primary">@category</h2>
+            @foreach (var question in Session.Questions.Where(c => c.Category.Equals(category)))
+            {
+                <div class="question-block" style="margin-bottom: 1.5rem;">
+                    @{ _revealedQuestion = Session.RevealedQuestion(question.Id); }
+                    <FacilitatorQuestionComponent RevealedQuestion="@_revealedQuestion"
+                                                  OnQuestionAsked="AskQuestion"
+                                                  OnAnswersRevealed="RevealAnswers"
+                                                  OnResetQuestion="ResetQuestion"/>
 
-        <button @onclick="() => AskQuestion(question)" disabled="@question.IsRevealed">Ask</button>
-        <button @onclick="() => RevealAnswers(question)">Reveal</button>
-        <button @onclick="() => ResetQuestion(question)">Reset</button>
+
+                </div>
+            }
     </div>
 }
 
 @code {
 
-    private string _category = string.Empty;
+    private string? _userId;
+    private bool _initialized = false;
+
     private RevealedQuestion? _revealedQuestion;
 
-
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if (firstRender && !_initialized)
+        {
+            _userId = await UserId.GetAsync();
+            _initialized = true;
+            Session.Remove(_userId);
+            StateHasChanged(); 
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Session.Initialize();
+
         Session.OnAnswerReceived += async (revealedQuestion) =>
         {
             _revealedQuestion = revealedQuestion;
             await InvokeAsync(StateHasChanged);
         };
     }
-
 
     private void AskQuestion(Question question) =>
         Session.AskQuestion(question.Id);

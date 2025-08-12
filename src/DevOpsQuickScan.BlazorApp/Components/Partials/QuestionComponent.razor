@@ -3,9 +3,12 @@
 <div class="card">
     <h5 class="card-header d-flex align-items-center">
         <span>Question</span>
-        <a href="@Question.Link" target="_blank" class="ms-auto">
-            <i class="fa-solid fa-circle-info"></i>
-        </a>
+        <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
+            <span class="me-2">@Question.Category</span>
+            <a href="@Question.Link" target="_blank">
+                <i class="fa-solid fa-circle-info"></i>
+            </a>
+        </span>
     </h5>
     <div class="card-body">
         <h5 class="card-title">@Question.Text </h5>
@@ -28,8 +31,12 @@
             }
         </div> 
         
-        <p></p>
         
+        
+    </div>
+    
+    <div class="card-footer text-end">
+
         @if (!_hasSubmitted)
         {
             <button class="btn btn-primary"
@@ -40,9 +47,8 @@
         }
         else 
         {
-            <p><em>Answer submitted, waiting for results…</em></p>
+            <span><em>Answer submitted, waiting for results…</em></span>
         }
-        
     </div>
 </div>
 

@@ -1,0 +1,22 @@
+@using DevOpsQuickScan.Core
+
+<div class="card h-100">
+    <h5 class="card-header d-flex align-items-center">
+        <span>Join session</span>
+    </h5>
+        
+    <div class="card-body d-flex justify-content-center align-items-center">
+        <img src="@QrCodeHelper.GenerateQrPngDataUrl(Url)" 
+             class="img-fluid" 
+             style="max-width: 100%; height: auto;" 
+             alt="Join QR code" />
+    </div>
+    
+    <div class="card-footer text-end">
+    </div>
+</div>   
+
+@code {
+
+    [Parameter] public required string Url { get; set; }
+}

@@ -45,6 +45,7 @@
         if (firstRender && !_initialized)
         {
             _userId = await UserId.GetAsync();
+            Session.Join(_userId);
             _initialized = true;
             StateHasChanged(); 
         }

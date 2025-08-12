@@ -1,14 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    @* <div class="sidebar"> *@
-    @*     <NavMenu/> *@
-    @* </div> *@
 
     <main>
-        <div class="px-4 d-flex align-items-center justify-content-between">
+        <div class="px-4 d-flex align-items-center justify-content-between" style="background: #fafafa;">
             <a href="/"><img src="@Assets["/img/logo.jpg"]" height="50" alt="Logo" class="logo" /></a>
-            <a href="/about">About</a>
+            <a href="/about" class="text-decoration-none" style="color: #888;">
+                <i class="fa-solid fa-circle-info"></i>
+            </a>
         </div>
 
         <article class="content px-4">

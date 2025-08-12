@@ -2,17 +2,14 @@
 
 <div class="card">
     <h5 class="card-header d-flex align-items-center">
-        <span>Results</span>
+        <span>@RevealedQuestion.Question.Text</span>
         <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
-            <span class="me-2">@RevealedQuestion.Question.Category</span>
             <a href="@RevealedQuestion.Question.Link" target="_blank">
                 <i class="fa-solid fa-circle-info"></i>
             </a>
         </span>
     </h5>
     <div class="card-body">
-        <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
-        
         <div class="list-group list-group-flush overflow-hidden">
             @foreach (var answer in @RevealedQuestion.Answers)
             {
@@ -31,14 +28,34 @@
                 </div>
             }
         </div> 
-        
-        <div class="text-muted small mt-3">
-            @RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total
+    </div>
+    
+    <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
+        <div class="btn-group" role="group">
+            <button class="btn btn-primary"
+                    @onclick="@(async () => await AskQuestion(@RevealedQuestion.Question))" disabled="@RevealedQuestion.Question.IsRevealed">Ask</button>
+            <button class="btn btn-primary"
+                    @onclick="@(async () => await RevealAnswers(@RevealedQuestion.Question))">Reveal</button>
+            <button class="btn btn-primary"
+                    @onclick="@(async () => await ResetQuestion(@RevealedQuestion.Question))">Reset</button>
         </div>
-        
     </div>
 </div>
 
 @code {
     [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
+    [Parameter] public required EventCallback<Question> OnQuestionAsked { get; set; }
+    [Parameter] public required EventCallback<Question> OnAnswersRevealed { get; set; }
+    [Parameter] public required EventCallback<Question> OnResetQuestion { get; set; }
+
+
+    private async Task AskQuestion(Question question) =>
+        await OnQuestionAsked.InvokeAsync(question);
+
+    private async Task RevealAnswers(Question question) =>
+        await OnAnswersRevealed.InvokeAsync(question);
+
+    private async Task ResetQuestion(Question question) =>
+        await OnResetQuestion.InvokeAsync(question);
 }

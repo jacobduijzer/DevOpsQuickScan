@@ -1,0 +1,812 @@
+[{
+  "id": 1,
+  "text": "How does your team ensure that code remains maintainable over time?",
+  "link": "https://dora.dev/capabilities/code-maintainability/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+        {
+        "id": 1,
+        "text": "We don’t have a defined approach"
+        },
+        {
+        "id": 2,
+        "text": "We use basic linting and formatting tools"
+        },
+        {
+        "id": 3,
+        "text": "We follow code review and documentation guidelines"
+        },
+        {
+        "id": 4,
+        "text": "We apply automated maintainability checks and refactoring practices"
+        },
+        {
+        "id": 5,
+        "text": "We have a culture of continuous refactoring and evolutionary architecture"
+        }
+  ]},
+  {
+    "id": 2,
+    "text": "How does your team ensure the quality and usefulness of documentation?",
+    "link": "https://dora.dev/capabilities/documentation-quality/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We rarely document or our documentation is outdated"
+      },
+      {
+        "id": 2,
+        "text": "We create basic documentation for major features when needed"
+      },
+      {
+        "id": 3,
+        "text": "We maintain up-to-date documentation for key systems and processes"
+      },
+      {
+        "id": 4,
+        "text": "We have standards for documentation quality and regularly review it"
+      },
+      {
+        "id": 5,
+        "text": "We treat documentation as a core deliverable, with clear ownership, continuous improvement, and easy discoverability"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "text": "To what extent is your team empowered to choose the tools they use?",
+    "link": "https://dora.dev/capabilities/teams-empowered-to-choose-tools/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We have no say in tool selection and must use what is mandated"
+      },
+      {
+        "id": 2,
+        "text": "We can suggest tools, but adoption requires lengthy approval"
+      },
+      {
+        "id": 3,
+        "text": "We can choose some tools within predefined organizational guidelines"
+      },
+      {
+        "id": 4,
+        "text": "We are free to choose most of our tools, with coordination for compatibility"
+      },
+      {
+        "id": 5,
+        "text": "We have full autonomy to choose and adapt our tools to meet our needs, while sharing best practices across teams"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "text": "How would you describe your organization's culture in terms of trust, collaboration, and information sharing?",
+    "link": "https://dora.dev/capabilities/generative-organizational-culture/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Our culture is low trust, with limited collaboration and information kept siloed"
+      },
+      {
+        "id": 2,
+        "text": "Some teams collaborate, but information is mostly shared on a need-to-know basis"
+      },
+      {
+        "id": 3,
+        "text": "We have a generally cooperative culture, but information flow can be inconsistent"
+      },
+      {
+        "id": 4,
+        "text": "We have high trust and open communication, with regular cross-team collaboration"
+      },
+      {
+        "id": 5,
+        "text": "We have a high-trust, generative culture where information flows freely, collaboration is the norm, and people feel safe to share ideas and learn from mistakes"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "text": "How satisfied are you with your job and work environment?",
+    "link": "https://dora.dev/capabilities/job-satisfaction/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "I am generally dissatisfied with my job and work environment"
+      },
+      {
+        "id": 2,
+        "text": "I experience occasional satisfaction, but issues often outweigh the positives"
+      },
+      {
+        "id": 3,
+        "text": "I am mostly satisfied, though there are some recurring challenges"
+      },
+      {
+        "id": 4,
+        "text": "I am satisfied with my job, my work environment, and the support I receive"
+      },
+      {
+        "id": 5,
+        "text": "I am highly satisfied and feel motivated, supported, and fulfilled in my work"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "text": "How would you describe your team's culture around learning and skill development?",
+    "link": "https://dora.dev/capabilities/learning-culture/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Learning is not prioritized and rarely happens during work hours"
+      },
+      {
+        "id": 2,
+        "text": "Learning happens occasionally, but mostly driven by individual initiative"
+      },
+      {
+        "id": 3,
+        "text": "Learning is encouraged, with some structured opportunities provided"
+      },
+      {
+        "id": 4,
+        "text": "We actively support continuous learning with regular time and resources dedicated"
+      },
+      {
+        "id": 5,
+        "text": "We have a strong learning culture where continuous improvement, knowledge sharing, and experimentation are part of everyday work"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "text": "How often does your team run experiments to improve processes, tools, or outcomes?",
+    "link": "https://dora.dev/capabilities/team-experimentation/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We rarely or never run experiments"
+      },
+      {
+        "id": 2,
+        "text": "We occasionally try new things, but without a structured approach"
+      },
+      {
+        "id": 3,
+        "text": "We experiment periodically and sometimes measure the results"
+      },
+      {
+        "id": 4,
+        "text": "We regularly run experiments with clear goals and evaluate outcomes"
+      },
+      {
+        "id": 5,
+        "text": "Experimentation is part of our culture, with frequent, data-driven trials that inform continuous improvement"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "text": "How would you describe the leadership style in your organization?",
+    "link": "https://dora.dev/capabilities/transformational-leadership/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Leaders focus mainly on tasks and short-term results, with little inspiration or vision"
+      },
+      {
+        "id": 2,
+        "text": "Leaders occasionally provide vision or motivation, but mostly manage day-to-day work"
+      },
+      {
+        "id": 3,
+        "text": "Leaders set a clear direction and provide support, but may not consistently inspire or challenge the team"
+      },
+      {
+        "id": 4,
+        "text": "Leaders inspire, motivate, and support growth, fostering a shared sense of purpose"
+      },
+      {
+        "id": 5,
+        "text": "Leaders consistently demonstrate transformational leadership—sharing a compelling vision, encouraging innovation, empowering people, and leading by example"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "text": "How well does your organization support your well-being and work-life balance?",
+    "link": "https://dora.dev/capabilities/well-being/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Well-being is not considered, and workloads are often unsustainable"
+      },
+      {
+        "id": 2,
+        "text": "Some attention is given to well-being, but long hours or stress are common"
+      },
+      {
+        "id": 3,
+        "text": "Well-being is valued, with occasional initiatives to support balance"
+      },
+      {
+        "id": 4,
+        "text": "Well-being is actively supported through policies, flexibility, and resources"
+      },
+      {
+        "id": 5,
+        "text": "Well-being is a core part of our culture, with sustainable workloads, strong support systems, and a healthy work-life balance"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "text": "How effectively does your team practice continuous delivery?",
+    "link": "https://dora.dev/capabilities/continuous-delivery/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We deploy infrequently, with manual processes and long lead times"
+      },
+      {
+        "id": 2,
+        "text": "We have some automation, but releases still require significant manual effort"
+      },
+      {
+        "id": 3,
+        "text": "We deploy regularly with mostly automated pipelines, though some manual steps remain"
+      },
+      {
+        "id": 4,
+        "text": "We have fully automated pipelines and can deploy to production on demand"
+      },
+      {
+        "id": 5,
+        "text": "We practice true continuous delivery, deploying small changes frequently and safely with rapid feedback loops"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "text": "How does your team manage database changes?",
+    "link": "https://dora.dev/capabilities/database-change-management/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Database changes are manual, risky, and often cause downtime"
+      },
+      {
+        "id": 2,
+        "text": "We have basic scripts for database changes, but testing is minimal"
+      },
+      {
+        "id": 3,
+        "text": "We version-control database changes and test them in non-production environments"
+      },
+      {
+        "id": 4,
+        "text": "We automate database change deployments with rollback strategies"
+      },
+      {
+        "id": 5,
+        "text": "We fully integrate automated, tested, and reversible database changes into our deployment pipeline"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "text": "How automated are your deployment processes?",
+    "link": "https://dora.dev/capabilities/deployment-automation/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Deployments are entirely manual and time-consuming"
+      },
+      {
+        "id": 2,
+        "text": "Some deployment steps are automated, but manual intervention is still required"
+      },
+      {
+        "id": 3,
+        "text": "Most deployment steps are automated, with occasional manual tasks"
+      },
+      {
+        "id": 4,
+        "text": "Deployments are fully automated and repeatable"
+      },
+      {
+        "id": 5,
+        "text": "Deployments are fully automated, fast, reliable, and can be triggered on demand with minimal risk"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "text": "How flexible and on-demand is your infrastructure provisioning?",
+    "link": "https://dora.dev/capabilities/flexible-infrastructure/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Infrastructure is fixed, slow to provision, and requires manual setup"
+      },
+      {
+        "id": 2,
+        "text": "Some infrastructure can be provisioned through tickets or requests, but it’s still slow"
+      },
+      {
+        "id": 3,
+        "text": "We use some infrastructure-as-code or scripts to provision environments"
+      },
+      {
+        "id": 4,
+        "text": "We have automated, self-service infrastructure provisioning through infrastructure-as-code"
+      },
+      {
+        "id": 5,
+        "text": "Infrastructure is fully automated, self-service, scalable on demand, and integrated into our delivery pipeline"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "text": "How independently can your team deliver and deploy changes without relying on other teams?",
+    "link": "https://dora.dev/capabilities/loosely-coupled-teams/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We are highly dependent on other teams for most changes"
+      },
+      {
+        "id": 2,
+        "text": "We can make some changes independently, but often require coordination with others"
+      },
+      {
+        "id": 3,
+        "text": "We can deliver many changes on our own, but still have some key dependencies"
+      },
+      {
+        "id": 4,
+        "text": "We are largely independent, with minimal dependencies on other teams"
+      },
+      {
+        "id": 5,
+        "text": "We are fully autonomous, able to design, build, test, and deploy changes without external dependencies"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "text": "How streamlined is your change approval process?",
+    "link": "https://dora.dev/capabilities/streamlining-change-approval/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Change approvals are slow, manual, and require multiple layers of review"
+      },
+      {
+        "id": 2,
+        "text": "Approvals are somewhat standardized but still require significant manual steps"
+      },
+      {
+        "id": 3,
+        "text": "We have clear approval guidelines and some automation in the process"
+      },
+      {
+        "id": 4,
+        "text": "Approvals are automated for low-risk changes and fast for others"
+      },
+      {
+        "id": 5,
+        "text": "We use automated, risk-based change approval with guardrails, enabling fast and safe deployments"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "text": "How closely does your team follow trunk-based development practices?",
+    "link": "https://dora.dev/capabilities/trunk-based-development/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We work on long-lived branches that are merged infrequently"
+      },
+      {
+        "id": 2,
+        "text": "We merge branches occasionally, but integration is often slow and causes conflicts"
+      },
+      {
+        "id": 3,
+        "text": "We integrate changes into the main branch at least once a week"
+      },
+      {
+        "id": 4,
+        "text": "We integrate changes into the main branch at least once a day"
+      },
+      {
+        "id": 5,
+        "text": "We commit small, frequent changes directly to the trunk or use short-lived branches merged multiple times per day"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "text": "How effectively does your team use version control for all production artifacts?",
+    "link": "https://dora.dev/capabilities/version-control/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We do not use version control consistently for our code or artifacts"
+      },
+      {
+        "id": 2,
+        "text": "We use version control for application code, but not for all artifacts"
+      },
+      {
+        "id": 3,
+        "text": "We version-control all code and some other production artifacts"
+      },
+      {
+        "id": 4,
+        "text": "We version-control all production artifacts, including code, configurations, and scripts"
+      },
+      {
+        "id": 5,
+        "text": "We version-control everything needed to recreate our environments, ensuring full reproducibility"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "text": "How effectively does your team use visual management to track work and progress?",
+    "link": "https://dora.dev/capabilities/visual-management/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We have little to no visual tracking of work"
+      },
+      {
+        "id": 2,
+        "text": "We use basic boards or lists, but they are often outdated or incomplete"
+      },
+      {
+        "id": 3,
+        "text": "We maintain visual boards that are generally up to date and visible to the team"
+      },
+      {
+        "id": 4,
+        "text": "We use well-maintained, visible boards that help manage flow and identify bottlenecks"
+      },
+      {
+        "id": 5,
+        "text": "We have highly visible, real-time visual management systems that guide decision-making, improve flow, and make work status clear to all stakeholders"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "text": "How does your team manage work in progress (WIP) limits?",
+    "link": "https://dora.dev/capabilities/wip-limits/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We do not set or track WIP limits"
+      },
+      {
+        "id": 2,
+        "text": "We occasionally set WIP limits, but they are not consistently followed"
+      },
+      {
+        "id": 3,
+        "text": "We set WIP limits for some work items and review them periodically"
+      },
+      {
+        "id": 4,
+        "text": "We set and consistently enforce WIP limits to maintain flow"
+      },
+      {
+        "id": 5,
+        "text": "We actively manage and adjust WIP limits based on team capacity and flow metrics to optimize delivery"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "text": "How consistently does your team work in small batches?",
+    "link": "https://dora.dev/capabilities/working-in-small-batches/",
+    "category": "Capabilities that enable Fast Delivery",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We typically work on large batches that take weeks or months to complete"
+      },
+      {
+        "id": 2,
+        "text": "We sometimes break work into smaller pieces, but large batches are still common"
+      },
+      {
+        "id": 3,
+        "text": "We regularly work in moderately sized batches to reduce risk"
+      },
+      {
+        "id": 4,
+        "text": "We consistently work in small batches that can be delivered in days"
+      },
+      {
+        "id": 5,
+        "text": "We always work in very small batches, enabling rapid feedback, quick delivery, and minimal risk"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "text": "How effectively does your team practice continuous integration?",
+    "link": "https://dora.dev/capabilities/continuous-integration/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We integrate code infrequently, leading to large and risky merges"
+      },
+      {
+        "id": 2,
+        "text": "We integrate code occasionally, but with minimal automated testing"
+      },
+      {
+        "id": 3,
+        "text": "We integrate code at least daily, with automated builds and basic tests"
+      },
+      {
+        "id": 4,
+        "text": "We integrate code multiple times per day with comprehensive automated tests"
+      },
+      {
+        "id": 5,
+        "text": "We practice true continuous integration with frequent merges, fast automated feedback, and fixes for broken builds immediately prioritized"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "text": "How frequently and effectively does your team gather and use customer feedback?",
+    "link": "https://dora.dev/capabilities/customer-feedback/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We rarely gather customer feedback"
+      },
+      {
+        "id": 2,
+        "text": "We gather feedback occasionally, but it is not systematically used"
+      },
+      {
+        "id": 3,
+        "text": "We regularly gather feedback and sometimes use it to inform decisions"
+      },
+      {
+        "id": 4,
+        "text": "We gather feedback frequently and use it to guide product improvements"
+      },
+      {
+        "id": 5,
+        "text": "We have continuous feedback loops where customer input directly drives ongoing product and delivery decisions"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "text": "How effectively does your team monitor systems and use observability to detect and resolve issues?",
+    "link": "https://dora.dev/capabilities/monitoring-and-observability/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We have little to no monitoring, and issues are often found by customers"
+      },
+      {
+        "id": 2,
+        "text": "We have basic monitoring, but it only covers some systems or key metrics"
+      },
+      {
+        "id": 3,
+        "text": "We have monitoring for most systems and use it to detect and troubleshoot issues"
+      },
+      {
+        "id": 4,
+        "text": "We have comprehensive monitoring and observability, enabling rapid detection and resolution"
+      },
+      {
+        "id": 5,
+        "text": "We have proactive, automated observability with actionable alerts and deep insights that prevent issues before they impact customers"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "text": "How effectively does your team monitor system health and performance?",
+    "link": "https://dora.dev/capabilities/monitoring-systems/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We have little to no monitoring, and problems are usually reported by users"
+      },
+      {
+        "id": 2,
+        "text": "We have basic monitoring that covers only a few key systems or metrics"
+      },
+      {
+        "id": 3,
+        "text": "We monitor most systems and can detect many issues before they escalate"
+      },
+      {
+        "id": 4,
+        "text": "We have comprehensive, automated monitoring with clear alerting for critical issues"
+      },
+      {
+        "id": 5,
+        "text": "We have proactive monitoring across all systems, with intelligent alerts and actionable insights that help prevent incidents"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "text": "How well is security integrated into your software delivery process?",
+    "link": "https://dora.dev/capabilities/pervasive-security/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Security is handled separately and only at the end of development"
+      },
+      {
+        "id": 2,
+        "text": "Security reviews happen occasionally, often late in the process"
+      },
+      {
+        "id": 3,
+        "text": "Security is considered during development, with some automated checks"
+      },
+      {
+        "id": 4,
+        "text": "Security practices and tools are integrated throughout the development lifecycle"
+      },
+      {
+        "id": 5,
+        "text": "Security is pervasive, automated, and embedded in every stage of development, with a strong culture of shared responsibility"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "text": "How effectively are failures detected and communicated to the right people?",
+    "link": "https://dora.dev/capabilities/proactive-failure-notification/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Failures are usually found by customers or go unnoticed for long periods"
+      },
+      {
+        "id": 2,
+        "text": "We sometimes detect failures internally, but alerts are inconsistent or delayed"
+      },
+      {
+        "id": 3,
+        "text": "We detect most failures internally and notify relevant people in a timely manner"
+      },
+      {
+        "id": 4,
+        "text": "We proactively detect and communicate failures quickly to the right stakeholders"
+      },
+      {
+        "id": 5,
+        "text": "We have automated, proactive failure detection and instant, targeted notifications that enable rapid response before customers are impacted"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "text": "How effectively does your team use automated testing?",
+    "link": "https://dora.dev/capabilities/test-automation/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We rely almost entirely on manual testing"
+      },
+      {
+        "id": 2,
+        "text": "We have some automated tests, but coverage is low and maintenance is inconsistent"
+      },
+      {
+        "id": 3,
+        "text": "We have a good level of automated test coverage for critical functionality"
+      },
+      {
+        "id": 4,
+        "text": "We have comprehensive automated tests across multiple levels (unit, integration, end-to-end)"
+      },
+      {
+        "id": 5,
+        "text": "We have extensive, reliable, and fast automated tests that run continuously and provide rapid feedback to prevent defects"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "text": "How does your team manage test data for automated and manual testing?",
+    "link": "https://dora.dev/capabilities/test-data-management/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Test data is created manually and inconsistently, often slowing down testing"
+      },
+      {
+        "id": 2,
+        "text": "We have some shared test data sets, but they are hard to maintain or reuse"
+      },
+      {
+        "id": 3,
+        "text": "We maintain version-controlled test data for key scenarios"
+      },
+      {
+        "id": 4,
+        "text": "We have automated processes for creating, managing, and refreshing test data"
+      },
+      {
+        "id": 5,
+        "text": "We manage test data automatically, with self-service, on-demand generation and anonymization that supports fast, reliable, and compliant testing"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "text": "How visible is work across your entire value stream, from idea to delivery?",
+    "link": "https://dora.dev/capabilities/work-visibility-in-value-stream/",
+    "category": "Capabilities that enable Fast Feedback",
+    "answers": [
+      {
+        "id": 1,
+        "text": "Work is largely invisible beyond individual teams or functions"
+      },
+      {
+        "id": 2,
+        "text": "Some work is tracked across stages, but visibility is fragmented"
+      },
+      {
+        "id": 3,
+        "text": "We have tools or dashboards showing work across most of the value stream"
+      },
+      {
+        "id": 4,
+        "text": "We have clear, real-time visibility into work across the entire value stream"
+      },
+      {
+        "id": 5,
+        "text": "We have full, real-time transparency across the value stream, enabling data-driven decisions and continuous improvement"
+      }
+    ]
+  }
+]

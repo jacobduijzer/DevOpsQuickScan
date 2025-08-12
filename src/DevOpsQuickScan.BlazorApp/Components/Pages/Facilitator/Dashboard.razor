@@ -1,0 +1,78 @@
+﻿@page "/dashboard"
+@using DevOpsQuickScan.Core
+@using DevOpsQuickScan.BlazorApp.Components.Partials
+@inject NavigationManager Navigation
+@inject SessionService Session
+
+<PageTitle>Dashboard</PageTitle>
+
+<div class="container py-3">
+  <!-- TOP: Active participants -->
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="card shadow-sm border-0">
+        <div class="card-body d-flex align-items-center justify-content-between">
+          <div>
+            <div class="text-uppercase small text-muted">Active participants</div>
+            <div class="display-5 fw-bold">@Session.Participants.Count</div>
+          </div>
+          <i class="bi bi-people display-6 text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-lg-8">
+      
+    @switch (Session.CurrentState)
+    {
+      case SessionState.AnsweringQuestions:
+        @if (Session.CurrentQuestion is not null)
+        {
+          <DashboardQuestionComponent RevealedQuestion="@Session.RevealedQuestion(Session.CurrentQuestion.Id)"/>
+        }
+        break;
+      case SessionState.RevealingAnswers:
+        @if (_revealedQuestion is not null)
+        {  
+          <RevealComponent RevealedQuestion="_revealedQuestion" />
+        }
+        break;
+      case SessionState.NotStarted:
+      default:
+        <p>Welcome to DevOps Quick-scan. Please wait for the first question.</p>
+        break;
+    }
+    
+    </div>
+
+    <div class="col-lg-4">
+      <QrCodeComponent Url="@Navigation.Uri" />
+    </div>
+  </div>
+</div>
+
+
+@code {
+  
+  private RevealedQuestion? _revealedQuestion;
+
+  protected override void OnInitialized()
+  {
+    Session.OnParticipantJoined += async () =>
+      await InvokeAsync(StateHasChanged);
+
+    Session.OnQuestionAsked += async (state, question) =>
+      await InvokeAsync(StateHasChanged);
+
+    Session.OnAnswerReceived += async (revealedQuestion) =>
+      await InvokeAsync(StateHasChanged);
+
+    Session.OnAnswersRevealed += async (state, revealedQuestion) =>
+    {
+      _revealedQuestion = revealedQuestion;
+      await InvokeAsync(StateHasChanged);
+    };
+  }
+}

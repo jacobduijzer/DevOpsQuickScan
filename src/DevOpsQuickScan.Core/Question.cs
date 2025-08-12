@@ -1,16 +1,16 @@
 namespace DevOpsQuickScan.Core;
 
-public class Question(int id, string text, string category, string link, List<Answer> answers)
+public class Question
 {
-    public int Id => id;
+    public int Id { get; set; }
 
-    public string Text = text;
+    public string Text { get; set; }
     
-    public string Category = category;
+    public string Category { get; set; }
 
-    public string Link = link;
+    public string Link { get; set; }
 
-    public List<Answer> Answers = answers;
+    public List<Answer> Answers { get; set; }
     
     public bool IsRevealed { get; set; } = false;
 }

@@ -10,4 +10,8 @@
       <ProjectReference Include="..\DevOpsQuickScan.Core\DevOpsQuickScan.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Data\questions.json" />
+    </ItemGroup>
+
 </Project>
