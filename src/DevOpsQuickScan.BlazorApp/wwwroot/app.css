@@ -77,3 +77,26 @@ h1:focus {
     color: white;
     border-color: #007bff;
 }
+
+.list-group-item {
+    cursor: pointer;
+}
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.option-item {
+    border-left: 4px solid transparent;
+    transition: border-color 0.2s, background-color 0.2s;
+    cursor: pointer;
+}
+
+.option-item:hover {
+    border-left: 4px solid #0d6efd; /* Bootstrap primary color */
+    background-color: #f8f9fa; /* light gray hover */
+}
+
+.option-item.selected {
+    border-left: 4px solid #0d6efd;
+    background-color: #e9ecef; /* slightly darker when selected */
+}
