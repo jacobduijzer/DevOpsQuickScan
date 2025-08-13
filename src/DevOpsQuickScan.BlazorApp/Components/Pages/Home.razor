@@ -11,9 +11,9 @@
 @switch (Session.CurrentState)
 {
     case SessionState.AnsweringQuestions:
-        @if (_currentQuestion is not null && _userId is not null)
+        @if (_currentQuestion is not null && _participantId is not null)
         {
-            var prevAnswer = Session.GetAnswer(_userId, _currentQuestion.Id);
+            var prevAnswer = Session.GetAnswerId(_participantId, _currentQuestion.Id);
 
             <QuestionComponent Question="@_currentQuestion" 
                                PreviousAnswer="@prevAnswer"
@@ -34,7 +34,7 @@
 
 @code {
 
-    private string? _userId;
+    private string? _participantId;
     private bool _initialized = false;
     private Question? _currentQuestion;
     private RevealedQuestion? _revealedQuestion;
@@ -43,8 +43,8 @@
     {
         if (firstRender && !_initialized)
         {
-            _userId = await UserId.GetAsync();
-            Session.Join(_userId);
+            _participantId = await UserId.GetAsync();
+            Session.Join(_participantId);
             _initialized = true;
             StateHasChanged(); 
         }
@@ -68,5 +68,5 @@
     }
     
     private void AnswerQuestion(QuestionAnsweredDto answer) =>
-        Session.AnswerQuestion(_userId!, answer.QuestionId, answer.AnswerId);
+        Session.AnswerQuestion(_participantId!, answer.QuestionId, answer.AnswerId);
 }

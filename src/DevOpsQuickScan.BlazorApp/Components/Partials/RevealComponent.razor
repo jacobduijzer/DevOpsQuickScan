@@ -1,43 +1,48 @@
 @using DevOpsQuickScan.Core
 
-<div class="card">
-    <h5 class="card-header d-flex align-items-center">
-        <span>Results</span>
-        <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
-            <span class="me-2">@RevealedQuestion.Question.Category</span>
-            <a href="@RevealedQuestion.Question.Link" target="_blank">
-                <i class="fa-solid fa-circle-info"></i>
-            </a>
-        </span>
-    </h5>
-    <div class="card-body">
-        <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
-        
-        <div class="list-group list-group-flush overflow-hidden">
-            @foreach (var answer in @RevealedQuestion.Answers)
-            {
-                var percentage = @RevealedQuestion.Answers.Sum(a => a.NumberOfVotes) > 0 ? (answer.NumberOfVotes * 100 / RevealedQuestion.Answers.Sum(a => a.NumberOfVotes)) : 0;
-                <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-1">
-                        <span>@RevealedQuestion.Question.Answers.First(a => a.Id == answer.AnswerId).Text</span>
-                        <span>@percentage%</span>
-                    </div>
-                    <div class="progress" style="height: 1.5rem;">
-                        <div class="progress-bar" role="progressbar"
-                             style="width: @percentage%;" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
-                            @answer.NumberOfVotes @((answer.NumberOfVotes == 1) ? "vote" : "votes")
+@if (RevealedQuestion is not null)
+{
+    <div class="card">
+        <h5 class="card-header d-flex align-items-center">
+            <span>Results</span>
+            <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
+                <span class="me-2">@RevealedQuestion.Question.Category</span>
+                <a href="@RevealedQuestion.Question.Link" target="_blank">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+            </span>
+        </h5>
+        <div class="card-body">
+            <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
+
+            <div class="list-group list-group-flush overflow-hidden">
+                @foreach (var answer in @RevealedQuestion.Question.Answers)
+                {
+                    var totalVotes = @RevealedQuestion.Answers.Sum(a => a.NumberOfVotes);
+                    var answered = @RevealedQuestion.Answers.FirstOrDefault(x => x.AnswerId == answer.Id)?.NumberOfVotes ?? 0;
+                    var percentage = totalVotes > 0 ? (answered * 100 / totalVotes) : 0;
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>@RevealedQuestion.Question.Answers.First(a => a.Id == answer.Id).Text</span>
+                            <span>@percentage%</span>
+                        </div>
+                        <div class="progress" style="height: 1.5rem;">
+                            <div class="progress-bar" role="progressbar"
+                                 style="width: @percentage%;" aria-valuenow="@percentage" aria-valuemin="0"
+                                 aria-valuemax="100">
+                                @answered @((answered == 1) ? "vote" : "votes")
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div> 
-        
-        <div class="text-muted small mt-3">
-            @RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total
+                }
+            </div>
         </div>
-        
+
+        <div class="card-footer text-end">
+            <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
+        </div>
     </div>
-</div>
+}
 
 @code {
     [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }

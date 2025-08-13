@@ -14,26 +14,26 @@ public class SessionService(QuestionsService questions)
 
     private readonly List<AnswerSubmission> _submissions = [];
 
-    public List<string> Participants { get; private set; } = [];
+    public List<string> Participants { get; } = [];
 
     public async Task Initialize() =>
         Questions = await questions.Load();
     
-    public void Join(string userId) 
+    public void Join(string participantId) 
     {
-        if (Participants.Contains(userId))
+        if (Participants.Contains(participantId))
             return;
 
-        Participants.Add(userId);
+        Participants.Add(participantId);
         OnParticipantJoined?.Invoke();
     }
     
-    public void Remove(string userId) 
+    public void Remove(string participantId) 
     {
-        if (!Participants.Contains(userId))
+        if (!Participants.Contains(participantId))
             return;
 
-        Participants.Remove(userId);
+        Participants.Remove(participantId);
         OnParticipantJoined?.Invoke();
     }
 
@@ -47,21 +47,21 @@ public class SessionService(QuestionsService questions)
         OnQuestionAsked?.Invoke(CurrentState, CurrentQuestion);
     }
 
-    public void AnswerQuestion(string userId, int questionId, int answerId)
+    public void AnswerQuestion(string participantId, int questionId, int answerId)
     {
-        if (CurrentQuestion!.IsRevealed || HasAnsweredCurrentQuestion(userId, questionId))
+        if (CurrentQuestion!.IsRevealed || HasAnsweredCurrentQuestion(participantId, questionId))
             return;
 
-        _submissions.Add(new AnswerSubmission(userId, questionId, answerId));
+        _submissions.Add(new AnswerSubmission(participantId, questionId, answerId));
         var revealedQuestion = RevealedQuestion(questionId);
         OnAnswerReceived?.Invoke(revealedQuestion);
     }
 
-    private bool HasAnsweredCurrentQuestion(string userId, int questionId) =>
-        _submissions.Any(x => x.UserId == userId && x.QuestionId == questionId);
+    private bool HasAnsweredCurrentQuestion(string participantId, int questionId) =>
+        _submissions.Any(x => x.ParticipantId == participantId && x.QuestionId == questionId);
 
-    public int? GetAnswer(string userId, int questionId) =>
-        _submissions.FirstOrDefault(x => x.UserId == userId && x.QuestionId == questionId)?.AnswerId;
+    public int? GetAnswerId(string participantId, int questionId) =>
+        _submissions.FirstOrDefault(x => x.ParticipantId == participantId && x.QuestionId == questionId)?.AnswerId;
 
     public void RevealQuestion(int questionId)
     {
@@ -130,7 +130,7 @@ public class SessionService(QuestionsService questions)
         return sb.ToString();
     }
 
-    private string EscapeCsv(string? value) =>
+    private static string EscapeCsv(string? value) =>
         value is null ? "" : $"\"{value.Replace("\"", "\"\"")}\"";
 
     public void Reset()

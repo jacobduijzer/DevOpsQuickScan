@@ -29,4 +29,10 @@
       <ProjectReference Include="..\..\src\DevOpsQuickScan.BlazorApp\DevOpsQuickScan.BlazorApp.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Core\content\questions.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

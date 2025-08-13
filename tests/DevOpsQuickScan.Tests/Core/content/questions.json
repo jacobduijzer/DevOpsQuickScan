@@ -1,0 +1,56 @@
+[{
+  "id": 1,
+  "text": "How does your team ensure that code remains maintainable over time?",
+  "link": "https://dora.dev/capabilities/code-maintainability/",
+  "category": "Capabilities that enable a Climate for Learning",
+  "answers": [
+    {
+      "id": 1,
+      "text": "We don’t have a defined approach"
+    },
+    {
+      "id": 2,
+      "text": "We use basic linting and formatting tools"
+    },
+    {
+      "id": 3,
+      "text": "We follow code review and documentation guidelines"
+    },
+    {
+      "id": 4,
+      "text": "We apply automated maintainability checks and refactoring practices"
+    },
+    {
+      "id": 5,
+      "text": "We have a culture of continuous refactoring and evolutionary architecture"
+    }
+  ]},
+  {
+    "id": 2,
+    "text": "How does your team ensure the quality and usefulness of documentation?",
+    "link": "https://dora.dev/capabilities/documentation-quality/",
+    "category": "Capabilities that enable a Climate for Learning",
+    "answers": [
+      {
+        "id": 1,
+        "text": "We rarely document or our documentation is outdated"
+      },
+      {
+        "id": 2,
+        "text": "We create basic documentation for major features when needed"
+      },
+      {
+        "id": 3,
+        "text": "We maintain up-to-date documentation for key systems and processes"
+      },
+      {
+        "id": 4,
+        "text": "We have standards for documentation quality and regularly review it"
+      },
+      {
+        "id": 5,
+        "text": "We treat documentation as a core deliverable, with clear ownership, continuous improvement, and easy discoverability"
+      }
+    ]
+  }
+]

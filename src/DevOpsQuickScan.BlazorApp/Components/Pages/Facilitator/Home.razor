@@ -38,7 +38,7 @@
 
 @code {
 
-    private string? _userId;
+    private string? _participantId;
     private bool _initialized = false;
 
     private RevealedQuestion? _revealedQuestion;
@@ -47,9 +47,9 @@
     {
         if (firstRender && !_initialized)
         {
-            _userId = await UserId.GetAsync();
+            _participantId = await UserId.GetAsync();
             _initialized = true;
-            Session.Remove(_userId);
+            Session.Remove(_participantId);
             StateHasChanged();
         }
     }
