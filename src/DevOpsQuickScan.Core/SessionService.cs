@@ -82,7 +82,7 @@ public class SessionService(QuestionsService questions)
         {
             Answers = question.Answers.Select(answer => new RevealedAnswer
             {
-                Text = answer.Text,
+                AnswerId = answer.Id,
                 NumberOfVotes = NumberOfAnswers(questionId, answer.Id)
             }).ToList()
         };

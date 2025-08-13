@@ -18,43 +18,44 @@ public class QuestionComponentTests : TestContext
             Text = "What is your favorite color?",
             Category = "Interests",
             Link = "http://link",
-            Answers = [
+            Answers =
+            [
                 new Answer(1, "Red"),
                 new Answer(2, "Orange"),
                 new Answer(3, "Yellow"),
                 new Answer(4, "Green"),
                 new Answer(5, "Purple")
-                ]
+            ]
         };
-        
+
         // ACT 
         var component = RenderComponent<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
-            parameters.Add(p => p.OnQuestionAnswered, EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ =>
-            {
-            }));
+            parameters.Add(p => p.OnQuestionAnswered,
+                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
         });
-    
+
         // ASSERT
         Assert.Equal("Interests", component.Find("span.me-2").TextContent);
         Assert.Equal("http://link", component.Find("a").GetAttribute("href"));
-        
-        var inputs = component.FindAll("input"); 
+        Assert.Equal("What is your favorite color?", component.Find("h5.card-title").TextContent);
+
+        var inputs = component.FindAll("input");
         Assert.Equal(5, inputs.Count);
         Assert.Equal("1", inputs[0].GetAttribute("value"));
         Assert.Equal("2", inputs[1].GetAttribute("value"));
         Assert.Equal("3", inputs[2].GetAttribute("value"));
         Assert.Equal("4", inputs[3].GetAttribute("value"));
         Assert.Equal("5", inputs[4].GetAttribute("value"));
-        
+
         Assert.False(inputs[0].IsChecked());
         Assert.False(inputs[1].IsChecked());
         Assert.False(inputs[2].IsChecked());
         Assert.False(inputs[3].IsChecked());
         Assert.False(inputs[4].IsChecked());
-        
+
         var labels = component.FindAll("span.flex-grow-1");
         Assert.Equal(5, labels.Count);
         Assert.Equal("Red", labels[0].TextContent);
@@ -68,16 +69,32 @@ public class QuestionComponentTests : TestContext
     }
 
     [Fact]
+    public void RenderingWithoutQuestionWillNotCrash()
+    {
+        // ACT
+        var component = RenderComponent<QuestionComponent>(parameters =>
+        {
+            parameters.Add(p => p.Question, null);
+            parameters.Add(p => p.PreviousAnswer, null);
+            parameters.Add(p => p.OnQuestionAnswered,
+                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
+        });
+
+        // ASSERT
+        Assert.NotNull(component);
+    }
+
+    [Fact]
     public void SelectingAnswerEnablesButton()
     {
-        
         var question = new Question()
         {
             Id = 1,
             Text = "What is your favorite color?",
             Category = "Interests",
             Link = "http://link",
-            Answers = [
+            Answers =
+            [
                 new Answer(1, "Red"),
                 new Answer(2, "Orange"),
                 new Answer(3, "Yellow"),
@@ -85,19 +102,18 @@ public class QuestionComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        
+
         var component = RenderComponent<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
-            parameters.Add(p => p.OnQuestionAnswered, EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ =>
-            {
-            }));
+            parameters.Add(p => p.OnQuestionAnswered,
+                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
         });
-        
+
         // ACT
         component.Find("input[value='3']").Click();
-        
+
         // ASSERT
         Assert.True(component.Find("input[value='3']").IsChecked());
         Assert.False(component.Find("button").IsDisabled());
@@ -112,7 +128,8 @@ public class QuestionComponentTests : TestContext
             Text = "What is your favorite color?",
             Category = "Interests",
             Link = "http://link",
-            Answers = [
+            Answers =
+            [
                 new Answer(1, "Red"),
                 new Answer(2, "Orange"),
                 new Answer(3, "Yellow"),
@@ -122,24 +139,22 @@ public class QuestionComponentTests : TestContext
         };
 
         QuestionAnsweredDto? answeredQuestion = null;
-        
+
         var component = RenderComponent<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
-            parameters.Add(p => p.OnQuestionAnswered, EventCallback.Factory.Create<QuestionAnsweredDto>(this, result =>
-            {
-                answeredQuestion = result;
-            }));
+            parameters.Add(p => p.OnQuestionAnswered,
+                EventCallback.Factory.Create<QuestionAnsweredDto>(this, result => { answeredQuestion = result; }));
         });
         var input = component.Find("input[value='3']");
         var button = component.Find("button");
-        
+
         // ACT 
         input.Click();
         button.Click();
         component.Render();
- 
+
         // ASSERT
         Assert.NotNull(answeredQuestion);
         Assert.Equal(1, answeredQuestion.QuestionId);
@@ -157,7 +172,8 @@ public class QuestionComponentTests : TestContext
             Text = "What is your favorite color?",
             Category = "Interests",
             Link = "http://link",
-            Answers = [
+            Answers =
+            [
                 new Answer(1, "Red"),
                 new Answer(2, "Orange"),
                 new Answer(3, "Yellow"),
@@ -165,17 +181,16 @@ public class QuestionComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        
+
         // ACT 
         var component = RenderComponent<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, 3);
-            parameters.Add(p => p.OnQuestionAnswered, EventCallback.Factory.Create<QuestionAnsweredDto>(this, result =>
-            {
-            }));
+            parameters.Add(p => p.OnQuestionAnswered,
+                EventCallback.Factory.Create<QuestionAnsweredDto>(this, result => { }));
         });
- 
+
         // ASSERT
         Assert.True(component.Find("input[value='3']").IsChecked());
         Assert.Throws<ElementNotFoundException>(() => component.Find("button"));

@@ -19,7 +19,7 @@
                 var percentage = @RevealedQuestion.Answers.Sum(a => a.NumberOfVotes) > 0 ? (answer.NumberOfVotes * 100 / RevealedQuestion.Answers.Sum(a => a.NumberOfVotes)) : 0;
                 <div class="mb-3">
                     <div class="d-flex justify-content-between mb-1">
-                        <span>@answer.Text</span>
+                        <span>@RevealedQuestion.Question.Answers.First(a => a.Id == answer.AnswerId).Text</span>
                         <span>@percentage%</span>
                     </div>
                     <div class="progress" style="height: 1.5rem;">

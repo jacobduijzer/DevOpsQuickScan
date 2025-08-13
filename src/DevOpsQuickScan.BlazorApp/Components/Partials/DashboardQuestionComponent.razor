@@ -1,36 +1,36 @@
 @using DevOpsQuickScan.Core
 
-<div class="card">
-    <h5 class="card-header d-flex align-items-center">
-        <span>Question</span>
-        <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
-            <span class="me-2">@RevealedQuestion.Question.Category</span>
-            <a href="@RevealedQuestion.Question.Link" target="_blank">
-                <i class="fa-solid fa-circle-info"></i>
-            </a>
-        </span>
-    </h5>
-    <div class="card-body">
-        <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
-        
-        <div class="list-group list-group-flush overflow-hidden">
-            @foreach (var answer in @RevealedQuestion.Question.Answers)
-            {
-                <label class="card-text list-group-item d-flex justify-content-between align-items-center option-item">
-                    <span class="flex-grow-1">@answer.Text</span>
-                </label>
-            }
-        </div> 
-    </div>
-    
-    <div class="card-footer text-end">
-        <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
-    </div>
-</div>
+@if (RevealedQuestion is not null)
+{
+    <div class="card">
+        <h5 class="card-header d-flex align-items-center">
+            <span>Question</span>
+            <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
+                <span class="me-2">@RevealedQuestion.Question.Category</span>
+                <a href="@RevealedQuestion.Question.Link" target="_blank">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+            </span>
+        </h5>
+        <div class="card-body">
+            <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
 
-   
+            <div class="list-group list-group-flush overflow-hidden">
+                @foreach (var answer in @RevealedQuestion.Question.Answers)
+                {
+                    <label class="card-text list-group-item d-flex justify-content-between align-items-center option-item">
+                        <span class="flex-grow-1">@answer.Text</span>
+                    </label>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+            <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
+        </div>
+    </div>
+}
 
 @code {
-
     [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
 }
