@@ -2,22 +2,16 @@ using Microsoft.JSInterop;
 
 namespace DevOpsQuickScan.BlazorApp;
 
-public class UserIdService
+public class UserIdService(IJSRuntime js)
 {
-    private readonly IJSRuntime _js;
-    public string? UserId { get; private set; }
-
-    public UserIdService(IJSRuntime js)
-    {
-        _js = js;
-    }
+    private string? _userId;
 
     public async Task<string> GetAsync()
     {
-        if (UserId is not null)
-            return UserId;
+        if (_userId is not null)
+            return _userId;
 
-        UserId = await _js.InvokeAsync<string>("userStorage.getOrCreateUserId");
-        return UserId;
+        _userId = await js.InvokeAsync<string>("userStorage.getOrCreateUserId");
+        return _userId;
     }
 }
