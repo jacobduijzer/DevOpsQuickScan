@@ -1,60 +1,59 @@
 # DevOps QuickScan
 
-## Introduction
-
-This application can be used as a driver for conversations regarding the state of DevOps within your team(s) or your organization. You can use it when you are starting as a new Engineer, as a Agile or DevOps Coach, as an Engineering Manager, or as a Staff Engineer. 
-
-The goal is to have good conversations around the capabilities as defined by [DORA](https://dora.dev). 
+A lightweight, real-time questionnaire tool to spark meaningful conversations and improvements in your engineering
+team—based on the DORA.dev capabilities.
 
 ## Features
 
-* The application can run from Docker, or as a web application.
-* There is no storage, the results can be exported as a report.
-* Questions can be changed, added, or removed, by simply editing a json file.
+* ✅ Real-time feedback with SignalR
+* 📊 Five-point Likert scale questions (from “bad” to “very good”)
+* 🔗 Linked to official DORA capabilities
+* 🧰 Easy to self-host via Docker
+* 🖥️ Built with .NET + Razor
 
-## Glossary
+## Use Cases
 
-- Survey: a set of questions and answers. These survey can be used to start a new session, where participants can answer the questions.
-- Session: a session is a live activity where a group of participants answer a predefined set of questions (a survey) together.
-- Participant: a participant is a person participating in a session, answering the questions from a survey together.
-- Facilitator: a facilitator can create surveys, start sessions, invite participants, and, in the future, create reports and compare the results of sessions.
+* Engineering team off-sites
+* Internal DevOps health checks
+* Retrospectives
+* Continuous improvement rituals
 
-## Architecture
+## Getting Started
 
-### System Context
+Prerequisites
 
-![Software System Context](./docs/context_diagram.png)
+* .NET 8 SDK
+* Docker
+* (Optional) Azure for deployment
 
-### Container Diagram
+### Local run
 
-![Container Diagram](./docs/container_diagram.png)
+```bash
+    cd src/DevOpsQuickScan.BlazorApp
+    dotnet run
+```
 
-### Component Diagram
+Then open the appropriate URL based on your role:
 
-![Component Diagram](./docs/component_diagram.png)
+| Role        | Url                               | Description                                                                                  |
+|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:5119/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:5119/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:5119/            | Where team members answer the questions and see live results.                                |
 
-## State diagram
+### Docker
 
-![Application States](./docs/assets/application_states.png)
+```bash
+    docker build -t devops-quickscan .
+    docker run -p 8080:8080 devops-quickscan
+```
 
-## The flow of the application
+| Role        | Url                               | Description                                                                                  |
+|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:8080/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:8080/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:8080/            | Where team members answer the questions and see live results.                                |
 
-![Application flow](./docs/assets/application_flow.png)
+## Inspired By
 
-## Ideas
-
-Hosting in Azure / Cloud environment, with a light-weight data solution.
-Storing questions and sessions together.
-Admin can create a session, adds questions, invite people.
-People can answer questions, admin can see answers and reveal answers.
-People can rejoin by using the link.
-Admin is in control of which question is visible and if the answers are visible.
-
-![Screen](./docs/images/visual-01.png)
-
-## TODO List
-
-- [ ] Reveal answers
-- [ ] Admin start session? Or request the current question when joining
-- [ ] 
-
+* [DORA.dev](https://dora.dev) - DevOps Research and Assessment Website
