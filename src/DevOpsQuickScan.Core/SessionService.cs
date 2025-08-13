@@ -96,10 +96,16 @@ public class SessionService(QuestionsService questions)
     {
         var question = Questions.FirstOrDefault(q => q.Id == questionId);
         if (question is not null)
+        {
             question.IsRevealed = false;
+            _submissions.RemoveAll(x => x.QuestionId == questionId);
+        }
+
+        if (CurrentQuestion?.Id != questionId) return;
         
+        CurrentState = SessionState.NotStarted;
         CurrentQuestion = null;
-        _submissions.RemoveAll(x => x.QuestionId == questionId);
+        OnQuestionAsked?.Invoke(CurrentState, null);
     }
     
     public string ExportSessionReportCsv()

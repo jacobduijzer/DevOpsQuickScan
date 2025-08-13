@@ -30,7 +30,8 @@
 
 <div class="question-block" style="margin-bottom: 1.5rem;">
     <div class="btn-group" role="group">
-        <button class="btn btn-primary" @onclick="DownloadFileFromStream">Download results</button>
+        <a href="/dashboard" class="btn btn-primary" target="_blank">Dashboard</a>
+        <button class="btn btn-secondary" @onclick="DownloadFileFromStream">Download results</button>
         <button class="btn btn-danger" @onclick="@(async () => await ResetSession())">Reset session</button>
     </div> 
 </div>
