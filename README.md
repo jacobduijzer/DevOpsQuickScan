@@ -29,9 +29,14 @@ Prerequisites
 ### Docker
 
 ```bash
-    docker pull jacobduijzer/devops-quickscan:latest
     docker run -p 8080:8080 jacobduijzer/devops-quickscan:latest
 ```
+
+| Role        | Url                               | Description                                                                                  |
+|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:8080/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:8080/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:8080/            | Where team members answer the questions and see live results.                                |
 
 ### Local run
 
@@ -60,6 +65,12 @@ Then open the appropriate URL based on your role:
 | Facilitator | http://localhost:8080/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
 | Dashboard   | http://localhost:8080/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
 | Participant | http://localhost:8080/            | Where team members answer the questions and see live results.                                |
+
+## Todo / Wishlist
+
+- [ ] Create documentation about how to use your own questions
+- [ ] Store sessions, to continue later
+- [ ] Support multiple sessions simultaneously
 
 ## Inspired By
 
