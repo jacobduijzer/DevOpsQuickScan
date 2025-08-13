@@ -22,9 +22,16 @@ team—based on the DORA.dev capabilities.
 
 Prerequisites
 
-* .NET 8 SDK
+* .NET 8 SDK (for development only)
 * Docker
 * (Optional) Azure for deployment
+
+### Docker
+
+```bash
+    docker pull jacobduijzer/devops-quickscan:latest
+    docker run -p 8080:8080 jacobduijzer/devops-quickscan:latest
+```
 
 ### Local run
 
@@ -41,7 +48,7 @@ Then open the appropriate URL based on your role:
 | Dashboard   | http://localhost:5119/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
 | Participant | http://localhost:5119/            | Where team members answer the questions and see live results.                                |
 
-### Docker
+### Local Docker
 
 ```bash
     docker build -t devops-quickscan .
