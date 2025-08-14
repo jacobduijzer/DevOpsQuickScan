@@ -34,7 +34,7 @@ public class QuestionComponentTests : TestContext
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
             parameters.Add(p => p.OnQuestionAnswered,
-                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
+                EventCallback.Factory.Create<QuestionAnswered>(this, _ => { }));
         });
 
         // ASSERT
@@ -77,7 +77,7 @@ public class QuestionComponentTests : TestContext
             parameters.Add(p => p.Question, null);
             parameters.Add(p => p.PreviousAnswer, null);
             parameters.Add(p => p.OnQuestionAnswered,
-                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
+                EventCallback.Factory.Create<QuestionAnswered>(this, _ => { }));
         });
 
         // ASSERT
@@ -108,7 +108,7 @@ public class QuestionComponentTests : TestContext
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
             parameters.Add(p => p.OnQuestionAnswered,
-                EventCallback.Factory.Create<QuestionAnsweredDto>(this, _ => { }));
+                EventCallback.Factory.Create<QuestionAnswered>(this, _ => { }));
         });
 
         // ACT
@@ -138,14 +138,14 @@ public class QuestionComponentTests : TestContext
             ]
         };
 
-        QuestionAnsweredDto? answeredQuestion = null;
+        QuestionAnswered? answeredQuestion = null;
 
         var component = RenderComponent<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
             parameters.Add(p => p.OnQuestionAnswered,
-                EventCallback.Factory.Create<QuestionAnsweredDto>(this, result => { answeredQuestion = result; }));
+                EventCallback.Factory.Create<QuestionAnswered>(this, result => { answeredQuestion = result; }));
         });
         var input = component.Find("input[value='3']");
         var button = component.Find("button");
@@ -188,7 +188,7 @@ public class QuestionComponentTests : TestContext
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, 3);
             parameters.Add(p => p.OnQuestionAnswered,
-                EventCallback.Factory.Create<QuestionAnsweredDto>(this, result => { }));
+                EventCallback.Factory.Create<QuestionAnswered>(this, result => { }));
         });
 
         // ASSERT
