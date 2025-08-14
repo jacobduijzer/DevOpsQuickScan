@@ -65,6 +65,6 @@
         };
     }
     
-    private void AnswerQuestion(QuestionAnsweredDto answer) =>
+    private void AnswerQuestion(QuestionAnswered answer) =>
         Session.AnswerQuestion(_participantId!, answer.QuestionId, answer.AnswerId);
 }
