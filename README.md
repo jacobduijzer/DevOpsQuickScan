@@ -1,4 +1,4 @@
-[![CI](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml/badge.svg)](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml)
+[![CI](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml/badge.svg)](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml) [![Deploy Bicep to Azure](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/infra-as-code.yml/badge.svg)](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/infra-as-code.yml)
 
 # DevOps QuickScan
 
