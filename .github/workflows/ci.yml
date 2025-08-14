@@ -1,18 +1,9 @@
 name: CI
 
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - "DevOpsQuickScan.sln"
-      - "src/**"
-      - "tests/**"
   pull_request:
-    branches: [ "main" ]  
-    paths:
-      - "DevOpsQuickScan.sln"
-      - "src/**"
-      - "tests/**"
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:

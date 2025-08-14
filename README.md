@@ -73,6 +73,8 @@ Then open the appropriate URL based on your role:
 - [ ] Create documentation about how to use your own questions
 - [ ] Store sessions, to continue later
 - [ ] Support multiple sessions simultaneously
+- [ ] Protect the facilitator page(s)
+- [ ] Better reporting
 
 ## Inspired By
 
