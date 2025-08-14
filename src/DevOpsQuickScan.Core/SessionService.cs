@@ -2,11 +2,11 @@ using System.Text;
 
 namespace DevOpsQuickScan.Core;
 
-public class SessionService(QuestionsService questions)
+public class SessionService(QuestionsService questions, ExportService exports)
 {
-    public event Action<RevealedQuestion>? OnAnswerReceived;
-    public event Action<SessionState, Question>? OnQuestionAsked;
-    public event Action<SessionState, RevealedQuestion>? OnAnswersRevealed;
+    public event Action<QuestionWithAnswers>? OnAnswerReceived;
+    public event Action<SessionState, Question?>? OnQuestionAsked;
+    public event Action<SessionState, QuestionWithAnswers>? OnAnswersRevealed;
     public event Action? OnParticipantJoined;
     public SessionState CurrentState { get; private set; }
     public Question? CurrentQuestion { get; private set; }
@@ -18,8 +18,8 @@ public class SessionService(QuestionsService questions)
 
     public async Task Initialize() =>
         Questions = await questions.Load();
-    
-    public void Join(string participantId) 
+
+    public void Join(string participantId)
     {
         if (Participants.Contains(participantId))
             return;
@@ -27,8 +27,8 @@ public class SessionService(QuestionsService questions)
         Participants.Add(participantId);
         OnParticipantJoined?.Invoke();
     }
-    
-    public void Remove(string participantId) 
+
+    public void Remove(string participantId)
     {
         if (!Participants.Contains(participantId))
             return;
@@ -53,8 +53,8 @@ public class SessionService(QuestionsService questions)
             return;
 
         _submissions.Add(new AnswerSubmission(participantId, questionId, answerId));
-        var revealedQuestion = RevealedQuestion(questionId);
-        OnAnswerReceived?.Invoke(revealedQuestion);
+        var questionWithAnswers = QuestionWithAnswers(questionId);
+        OnAnswerReceived?.Invoke(questionWithAnswers);
     }
 
     private bool HasAnsweredCurrentQuestion(string participantId, int questionId) =>
@@ -65,20 +65,22 @@ public class SessionService(QuestionsService questions)
 
     public void RevealQuestion(int questionId)
     {
-        var question = Questions.FirstOrDefault(q => q.Id == questionId);
-        if (question is not null)
-            question.IsRevealed = true;
-        
-        var revealedQuestion = RevealedQuestion(questionId);
+        // TODO: Check if question is already revealed
+        // Currently not possible, we are not keeping track of revealed questions
+        var question = Questions.First(q => q.Id == questionId);
+
+        question.IsRevealed = true;
+
+        var questionWithAnswers = QuestionWithAnswers(questionId);
 
         CurrentState = SessionState.RevealingAnswers;
-        OnAnswersRevealed?.Invoke(CurrentState, revealedQuestion);
+        OnAnswersRevealed?.Invoke(CurrentState, questionWithAnswers);
     }
 
-    public RevealedQuestion RevealedQuestion(int questionId)
+    public QuestionWithAnswers QuestionWithAnswers(int questionId)
     {
         var question = Questions.First(x => x.Id == questionId);
-        var revealedQuestion = new RevealedQuestion(question)
+        var revealedQuestion = new QuestionWithAnswers(question)
         {
             Answers = question.Answers.Select(answer => new RevealedAnswer
             {
@@ -94,44 +96,19 @@ public class SessionService(QuestionsService questions)
 
     public void ResetQuestion(int questionId)
     {
-        var question = Questions.FirstOrDefault(q => q.Id == questionId);
-        if (question is not null)
-        {
-            question.IsRevealed = false;
-            _submissions.RemoveAll(x => x.QuestionId == questionId);
-        }
+        var question = Questions.First(q => q.Id == questionId);
+        question.IsRevealed = false;
+        _submissions.RemoveAll(x => x.QuestionId == questionId);
 
         if (CurrentQuestion?.Id != questionId) return;
-        
+
         CurrentState = SessionState.NotStarted;
         CurrentQuestion = null;
         OnQuestionAsked?.Invoke(CurrentState, null);
     }
-    
-    public string ExportSessionReportCsv()
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine("QuestionText,Answer 1,Votes,Answer 2, Votes, Answer 3, Votes, Answer 4, Votes, Answer 5, Votes, Total Votes");
-       
-        foreach (var question in Questions)
-        {
-            var line = $"{EscapeCsv(question.Text)}";
-            foreach (var answer in question.Answers)
-            {
-                var numberOfVotes = NumberOfAnswers(question.Id, answer.Id);
-                line += $",{EscapeCsv(answer.Text)},{numberOfVotes}";
-            }
 
-            line += $",{_submissions.Count(q => q.QuestionId == question.Id)}";
-
-            sb.AppendLine(line);
-        }
-
-        return sb.ToString();
-    }
-
-    private static string EscapeCsv(string? value) =>
-        value is null ? "" : $"\"{value.Replace("\"", "\"\"")}\"";
+    public string ExportSessionReportCsv() =>
+        exports.ExportToCsv(Questions, _submissions);
 
     public void Reset()
     {

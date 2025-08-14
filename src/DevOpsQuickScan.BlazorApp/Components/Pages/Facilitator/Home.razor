@@ -2,7 +2,7 @@
 @using System.Text
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
-@inject IJSRuntime JS
+@inject IJSRuntime Js
 @inject UserIdService UserId
 @inject SessionService Session
 
@@ -15,9 +15,9 @@
         @foreach (var question in Session.Questions.Where(c => c.Category.Equals(category)))
         {
             <div class="question-block" style="margin-bottom: 1.5rem;">
-                @{ _revealedQuestion = Session.RevealedQuestion(question.Id); }
-                <FacilitatorQuestionComponent RevealedQuestion="@_revealedQuestion"
-                                              IsCurrent="@(_revealedQuestion.Question.Id == Session.CurrentQuestion?.Id)"
+                @{ _questionWithAnswers = Session.QuestionWithAnswers(question.Id); }
+                <FacilitatorQuestionComponent QuestionWithAnswers="@_questionWithAnswers"
+                                              IsCurrent="@(_questionWithAnswers.Question.Id == Session.CurrentQuestion?.Id)"
                                               OnQuestionAsked="AskQuestion"
                                               OnAnswersRevealed="RevealAnswers"
                                               OnResetQuestion="ResetQuestion"/>
@@ -41,7 +41,7 @@
     private string? _participantId;
     private bool _initialized = false;
 
-    private RevealedQuestion? _revealedQuestion;
+    private QuestionWithAnswers? _questionWithAnswers;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -58,9 +58,9 @@
     {
         await Session.Initialize();
 
-        Session.OnAnswerReceived += async (revealedQuestion) =>
+        Session.OnAnswerReceived += async (questionWithAnswers) =>
         {
-            _revealedQuestion = revealedQuestion;
+            _questionWithAnswers = questionWithAnswers;
             await InvokeAsync(StateHasChanged);
         };
     }
@@ -81,7 +81,7 @@
 
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
-        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        await Js.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
     }
     
     private Stream GetFileStream()

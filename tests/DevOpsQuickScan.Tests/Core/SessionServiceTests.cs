@@ -35,6 +35,27 @@ public class SessionServiceTests
         Assert.Contains(participantId, sessionService.Participants);
         Assert.Equal(1, onParticipantJoinedCalled);
     }
+    
+    [Fact]
+    public async Task CanNotJoinSessionTwice()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        var onParticipantJoinedCalled = 0;
+        sessionService.OnParticipantJoined += () =>
+        {
+            onParticipantJoinedCalled++;
+        };
+        var participantId = Guid.NewGuid().ToString();
+        sessionService.Join(participantId);
+        
+        // ACT
+        sessionService.Join(participantId);
+        
+        // ASSERT
+        Assert.Contains(participantId, sessionService.Participants);
+        Assert.Equal(1, onParticipantJoinedCalled);
+    }
 
     [Fact]
     public async Task CanRemoveUserFromSession()
@@ -130,7 +151,7 @@ public class SessionServiceTests
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
-        RevealedQuestion? answeredQuestion = null;
+        QuestionWithAnswers? answeredQuestion = null;
         sessionService.OnAnswerReceived += question =>
         {
             answeredQuestion = question;
@@ -170,10 +191,162 @@ public class SessionServiceTests
         Assert.Equal(1, onAnsweredCalled); 
     }
 
+    [Fact]
+    public async Task CanRevealAnsweredQuestion()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        var participantId = Guid.NewGuid().ToString();
+        
+        SessionState? sessionState = null;
+        QuestionWithAnswers? revealedQuestion = null;
+        sessionService.OnAnswersRevealed += (state, question) =>
+        {
+            sessionState = state;
+            revealedQuestion = question;
+        };
+        sessionService.Join(participantId);
+        sessionService.AskQuestion(1);
+        sessionService.AnswerQuestion(participantId, 1, 2);
+
+        // ACT
+        sessionService.RevealQuestion(1); 
+
+        // ASSERT
+        Assert.Equal(sessionState, SessionState.RevealingAnswers);
+        Assert.NotNull(revealedQuestion);
+        Assert.Equal(1, revealedQuestion.Question.Id);
+        Assert.True(sessionService.Questions.First(q => q.Id == 1).IsRevealed);
+    }
+
+    [Fact]
+    public async Task CanGetQuestionWithAnswers()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        var participantId = Guid.NewGuid().ToString();
+        sessionService.Join(participantId);
+        sessionService.AskQuestion(1);
+        sessionService.AnswerQuestion(participantId, 1, 2);
+
+        // ACT
+        var questionWithAnswers = sessionService.QuestionWithAnswers(1);
+
+        // ASSERT
+        Assert.Equal(1, questionWithAnswers.Question.Id);
+        Assert.Equal(0, questionWithAnswers.Answers.First(a => a.AnswerId == 1).NumberOfVotes);
+        Assert.Equal(1, questionWithAnswers.Answers.First(a => a.AnswerId == 2).NumberOfVotes);
+        Assert.Equal(0, questionWithAnswers.Answers.First(a => a.AnswerId == 3).NumberOfVotes);
+        Assert.Equal(0, questionWithAnswers.Answers.First(a => a.AnswerId == 4).NumberOfVotes);
+        Assert.Equal(0, questionWithAnswers.Answers.First(a => a.AnswerId == 5).NumberOfVotes);
+    }
+
+    [Fact]
+    public async Task CanResetQuestionWhenCurrentQuestion()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        SessionState? sessionState = null;
+        Question? currentQuestion = null;
+        sessionService.OnQuestionAsked += (state, question) =>
+        {
+            sessionState = state;
+            currentQuestion = question;
+        };
+        
+        var participantId = Guid.NewGuid().ToString();
+        sessionService.Join(participantId);
+        sessionService.AskQuestion(1);
+        sessionService.AnswerQuestion(participantId, 1, 2);
+        sessionService.RevealQuestion(1);
+        
+        // ACT
+        sessionService.ResetQuestion(1);
+        
+        // ASSERT
+        Assert.False(sessionService.Questions.First(q => q.Id == 1).IsRevealed);
+        
+        var questionWithAnswers = sessionService.QuestionWithAnswers(1);
+        Assert.DoesNotContain(questionWithAnswers.Answers, x => x.NumberOfVotes > 0);
+        Assert.Equal(SessionState.NotStarted, sessionService.CurrentState);
+        Assert.Null(sessionService.CurrentQuestion);
+        Assert.Equal(SessionState.NotStarted, sessionState);
+        Assert.Null(currentQuestion);
+    }
+    
+    [Fact]
+    public async Task CanResetQuestionWhenNotCurrentQuestion()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        SessionState? sessionState = null;
+        Question? currentQuestion = null;
+        sessionService.OnQuestionAsked += (state, question) =>
+        {
+            sessionState = state;
+            currentQuestion = question;
+        };
+        
+        var participantId = Guid.NewGuid().ToString();
+        sessionService.Join(participantId);
+        sessionService.AskQuestion(1);
+        sessionService.AnswerQuestion(participantId, 1, 2);
+        sessionService.RevealQuestion(1);
+        sessionService.AskQuestion(2);
+        
+        // ACT
+        sessionService.ResetQuestion(1);
+        
+        // ASSERT
+        Assert.False(sessionService.Questions.First(q => q.Id == 1).IsRevealed);
+        
+        var questionWithAnswers = sessionService.QuestionWithAnswers(1);
+        Assert.DoesNotContain(questionWithAnswers.Answers, x => x.NumberOfVotes > 0);
+        Assert.Equal(SessionState.AnsweringQuestions, sessionService.CurrentState);
+        Assert.NotNull(sessionService.CurrentQuestion);
+        Assert.Equal(2, sessionService.CurrentQuestion.Id);
+        Assert.Equal(SessionState.AnsweringQuestions, sessionState);
+        Assert.NotNull(currentQuestion);
+        Assert.Equal(2, currentQuestion.Id);
+    }
+
+    [Fact]
+    public async Task CanResetSession()
+    {
+        // ARRANGE
+        var sessionService = await InitializeSessionService();
+        SessionState? sessionState = null;
+        Question? currentQuestion = null;
+        sessionService.OnQuestionAsked += (state, question) =>
+        {
+            sessionState = state;
+            currentQuestion = question;
+        };
+        
+        var participantId = Guid.NewGuid().ToString();
+        sessionService.Join(participantId);
+        sessionService.AskQuestion(1);
+        sessionService.AnswerQuestion(participantId, 1, 2);
+        sessionService.RevealQuestion(1);
+        sessionService.AskQuestion(2);
+        
+        // ACT
+        sessionService.Reset();
+        
+        // ASSERT
+        Assert.Equal(SessionState.NotStarted, sessionService.CurrentState);
+        Assert.Equal(SessionState.NotStarted, sessionState);
+        
+        Assert.Null(sessionService.CurrentQuestion);
+        Assert.Null(currentQuestion);
+
+        Assert.Empty(sessionService.Participants);
+    }
+
     private async Task<SessionService> InitializeSessionService()
     {
         QuestionsService questionsService = new("Core");
-        SessionService sessionService = new(questionsService);
+        SessionService sessionService = new(questionsService, new ExportService());
         await sessionService.Initialize();
         return sessionService;
     }

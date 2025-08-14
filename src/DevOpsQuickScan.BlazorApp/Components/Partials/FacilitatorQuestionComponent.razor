@@ -2,21 +2,21 @@
 
 <div class="card">
     <h5 class="card-header d-flex align-items-center">
-        <span>@RevealedQuestion.Question.Text</span>
+        <span>@QuestionWithAnswers.Question.Text</span>
         <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
-            <a href="@RevealedQuestion.Question.Link" target="_blank">
+            <a href="@QuestionWithAnswers.Question.Link" target="_blank">
                 <i class="fa-solid fa-circle-info"></i>
             </a>
         </span>
     </h5>
     <div class="card-body">
         <div class="list-group list-group-flush overflow-hidden">
-            @foreach (var answer in @RevealedQuestion.Answers)
+            @foreach (var answer in QuestionWithAnswers.Answers)
             {
-                var percentage = @RevealedQuestion.Answers.Sum(a => a.NumberOfVotes) > 0 ? (answer.NumberOfVotes * 100 / RevealedQuestion.Answers.Sum(a => a.NumberOfVotes)) : 0;
+                var percentage = QuestionWithAnswers.Answers.Sum(a => a.NumberOfVotes) > 0 ? (answer.NumberOfVotes * 100 / QuestionWithAnswers.Answers.Sum(a => a.NumberOfVotes)) : 0;
                 <div class="mb-3">
                     <div class="d-flex justify-content-between mb-1">
-                        <span>@RevealedQuestion.Question.Answers.First(a => a.Id == answer.AnswerId).Text</span>
+                        <span>@QuestionWithAnswers.Question.Answers.First(a => a.Id == answer.AnswerId).Text</span>
                         <span>@percentage%</span>
                     </div>
                     <div class="progress" style="height: 1.5rem;">
@@ -31,20 +31,20 @@
     </div>
     
     <div class="card-footer d-flex justify-content-between align-items-center">
-        <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
+        <span class="text-muted">@QuestionWithAnswers.Answers.Sum(x => x.NumberOfVotes) votes total</span>
         <div class="btn-group" role="group">
             <button class="btn @(IsCurrent ? "btn-danger" : "btn-primary")"
-                    @onclick="@(async () => await AskQuestion(@RevealedQuestion.Question))" disabled="@RevealedQuestion.Question.IsRevealed">Ask</button>
+                    @onclick="@(async () => await AskQuestion(QuestionWithAnswers.Question))" disabled="@QuestionWithAnswers.Question.IsRevealed">Ask</button>
             <button class="btn btn-primary"
-                    @onclick="@(async () => await RevealAnswers(@RevealedQuestion.Question))">Reveal</button>
+                    @onclick="@(async () => await RevealAnswers(QuestionWithAnswers.Question))">Reveal</button>
             <button class="btn btn-primary"
-                    @onclick="@(async () => await ResetQuestion(@RevealedQuestion.Question))">Reset</button>
+                    @onclick="@(async () => await ResetQuestion(QuestionWithAnswers.Question))">Reset</button>
         </div>
     </div>
 </div>
 
 @code {
-    [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
+    [Parameter] public required QuestionWithAnswers QuestionWithAnswers { get; set; }
     [Parameter] public bool IsCurrent { get; set; }
     [Parameter] public required EventCallback<Question> OnQuestionAsked { get; set; }
     [Parameter] public required EventCallback<Question> OnAnswersRevealed { get; set; }

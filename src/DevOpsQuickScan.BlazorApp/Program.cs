@@ -15,6 +15,7 @@ builder.Services
         return new QuestionsService(webrootPath);
     })
     .AddSingleton<SessionService>()
+    .AddSingleton<ExportService>()
     .AddScoped<UserIdService>();
 
 var app = builder.Build();

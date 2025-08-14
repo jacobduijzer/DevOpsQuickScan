@@ -25,7 +25,7 @@ public class RevealComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        var revealedQuestion = new RevealedQuestion(question)
+        var revealedQuestion = new QuestionWithAnswers(question)
         {
             Answers =
             [
@@ -37,7 +37,7 @@ public class RevealComponentTests : TestContext
         // ACT 
         var component = RenderComponent<RevealComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, revealedQuestion);
+            parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         });
     
         // ASSERT
@@ -67,7 +67,7 @@ public class RevealComponentTests : TestContext
         // ACT 
         var component = RenderComponent<RevealComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, null);
+            parameters.Add(p => p.QuestionWithAnswers, null);
         });
         
         // ARRANGE
@@ -93,12 +93,12 @@ public class RevealComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        var revealedQuestion = new RevealedQuestion(question);
+        var revealedQuestion = new QuestionWithAnswers(question);
         
         // ACT 
         var component = RenderComponent<RevealComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, revealedQuestion);
+            parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         });
         
         // ARRANGE

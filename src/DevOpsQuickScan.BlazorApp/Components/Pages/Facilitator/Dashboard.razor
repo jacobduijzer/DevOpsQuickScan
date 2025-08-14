@@ -30,7 +30,7 @@
       case SessionState.AnsweringQuestions:
         @if (Session.CurrentQuestion is not null)
         {
-          <DashboardQuestionComponent RevealedQuestion="@Session.RevealedQuestion(Session.CurrentQuestion.Id)"/>
+          <DashboardQuestionComponent QuestionWithAnswers="@Session.QuestionWithAnswers(Session.CurrentQuestion.Id)"/>
         }
         break;
       case SessionState.RevealingAnswers:
@@ -56,7 +56,7 @@
 
 @code {
   
-  private RevealedQuestion? _revealedQuestion;
+  private QuestionWithAnswers? _revealedQuestion;
 
   protected override void OnInitialized()
   {

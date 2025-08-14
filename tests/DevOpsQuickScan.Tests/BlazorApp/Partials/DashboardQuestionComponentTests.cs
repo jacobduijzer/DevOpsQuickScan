@@ -24,7 +24,7 @@ public class DashboardQuestionComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        var revealedQuestion = new RevealedQuestion(question)
+        var revealedQuestion = new QuestionWithAnswers(question)
         {
             Answers =
             [
@@ -36,7 +36,7 @@ public class DashboardQuestionComponentTests : TestContext
         // ACT 
         var component = RenderComponent<DashboardQuestionComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, revealedQuestion);
+            parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         });
         
         // ASSERT
@@ -61,7 +61,7 @@ public class DashboardQuestionComponentTests : TestContext
         // ACT 
         var component = RenderComponent<DashboardQuestionComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, null);
+            parameters.Add(p => p.QuestionWithAnswers, null);
         }); 
         
         // ASSERT
@@ -86,12 +86,12 @@ public class DashboardQuestionComponentTests : TestContext
                 new Answer(5, "Purple")
             ]
         };
-        var revealedQuestion = new RevealedQuestion(question);
+        var revealedQuestion = new QuestionWithAnswers(question);
 
         // ACT 
         var component = RenderComponent<DashboardQuestionComponent>(parameters =>
         {
-            parameters.Add(p => p.RevealedQuestion, revealedQuestion);
+            parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         }); 
         
         // ASSERT

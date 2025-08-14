@@ -1,29 +1,29 @@
 @using DevOpsQuickScan.Core
 
-@if (RevealedQuestion is not null)
+@if (QuestionWithAnswers is not null)
 {
     <div class="card">
         <h5 class="card-header d-flex align-items-center">
             <span>Results</span>
             <span class="ms-auto d-flex align-items-center" style="font-size: 0.6em; color: #888;">
-                <span class="me-2">@RevealedQuestion.Question.Category</span>
-                <a href="@RevealedQuestion.Question.Link" target="_blank">
+                <span class="me-2">@QuestionWithAnswers.Question.Category</span>
+                <a href="@QuestionWithAnswers.Question.Link" target="_blank">
                     <i class="fa-solid fa-circle-info"></i>
                 </a>
             </span>
         </h5>
         <div class="card-body">
-            <h5 class="card-title">@RevealedQuestion.Question.Text </h5>
+            <h5 class="card-title">@QuestionWithAnswers.Question.Text </h5>
 
             <div class="list-group list-group-flush overflow-hidden">
-                @foreach (var answer in @RevealedQuestion.Question.Answers)
+                @foreach (var answer in QuestionWithAnswers.Question.Answers)
                 {
-                    var totalVotes = @RevealedQuestion.Answers.Sum(a => a.NumberOfVotes);
-                    var answered = @RevealedQuestion.Answers.FirstOrDefault(x => x.AnswerId == answer.Id)?.NumberOfVotes ?? 0;
+                    var totalVotes = QuestionWithAnswers.Answers.Sum(a => a.NumberOfVotes);
+                    var answered = QuestionWithAnswers.Answers.FirstOrDefault(x => x.AnswerId == answer.Id)?.NumberOfVotes ?? 0;
                     var percentage = totalVotes > 0 ? (answered * 100 / totalVotes) : 0;
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mb-1">
-                            <span>@RevealedQuestion.Question.Answers.First(a => a.Id == answer.Id).Text</span>
+                            <span>@QuestionWithAnswers.Question.Answers.First(a => a.Id == answer.Id).Text</span>
                             <span>@percentage%</span>
                         </div>
                         <div class="progress" style="height: 1.5rem;">
@@ -39,11 +39,11 @@
         </div>
 
         <div class="card-footer text-end">
-            <span class="text-muted">@RevealedQuestion.Answers.Sum(x => x.NumberOfVotes) votes total</span>
+            <span class="text-muted">@QuestionWithAnswers.Answers.Sum(x => x.NumberOfVotes) votes total</span>
         </div>
     </div>
 }
 
 @code {
-    [Parameter] public required RevealedQuestion RevealedQuestion { get; set; }
+    [Parameter] public required QuestionWithAnswers QuestionWithAnswers { get; set; }
 }
