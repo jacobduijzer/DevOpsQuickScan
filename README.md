@@ -1,3 +1,5 @@
+[![CI](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml/badge.svg)](https://github.com/jacobduijzer/DevOpsQuickScan/actions/workflows/ci.yml)
+
 # DevOps QuickScan
 
 A lightweight, real-time questionnaire tool to spark meaningful conversations and improvements in your engineering
