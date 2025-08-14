@@ -1,8 +1,9 @@
+using DevOpsQuickScan.Core;
 using Microsoft.JSInterop;
 
 namespace DevOpsQuickScan.BlazorApp;
 
-public class UserIdService(IJSRuntime js)
+public class UserIdService(IJSRuntime js) : IUserIdService
 {
     private string? _userId;
 

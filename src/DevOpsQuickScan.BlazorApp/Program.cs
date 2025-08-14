@@ -16,7 +16,7 @@ builder.Services
     })
     .AddSingleton<SessionService>()
     .AddSingleton<ExportService>()
-    .AddScoped<UserIdService>();
+    .AddScoped<IUserIdService, UserIdService>();
 
 var app = builder.Build();
 

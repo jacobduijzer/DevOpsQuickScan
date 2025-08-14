@@ -1,12 +1,10 @@
 ﻿@page "/"
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
-@inject UserIdService UserId
+@inject IUserIdService UserId
 @inject SessionService Session
 
 <PageTitle>Home</PageTitle>
-
-
 
 @switch (Session.CurrentState)
 {
