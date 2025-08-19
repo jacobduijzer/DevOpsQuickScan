@@ -122,6 +122,9 @@ module certificateBindings './bindCertificateToHostname.bicep' = {
     location: location
     webAppName: webApp.name
   }
+  dependsOn: [
+    domainBinding
+  ]
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
