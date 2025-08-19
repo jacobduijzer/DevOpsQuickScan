@@ -8,10 +8,10 @@ using Moq;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Pages;
 
-public class HomePageTests : TestContext
+public class HomePage_Should : TestContext
 {
     [Fact]
-    public void LoadHomePage()
+    public void Load()
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();
@@ -31,7 +31,7 @@ public class HomePageTests : TestContext
     }
 
     [Fact]
-    public async Task ShowsQuestionWhenQuestionIsAsked()
+    public async Task Show_Question_When_Question_Is_Asked()
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();
@@ -52,7 +52,7 @@ public class HomePageTests : TestContext
     }
 
     [Fact]
-    public async Task ShowsRevealComponentWhenAnswersAreRevealed()
+    public async Task Reveal_Answers_When_Question_Is_Revealed()
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();

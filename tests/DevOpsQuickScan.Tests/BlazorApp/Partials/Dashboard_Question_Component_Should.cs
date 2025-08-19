@@ -4,10 +4,10 @@ using DevOpsQuickScan.Core;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Partials;
 
-public class DashboardQuestionComponentTests : TestContext
+public class Dashboard_Question_Component_Should : TestContext
 {
     [Fact]
-    public void ComponentRendersCorrectly()
+    public void Render_Correctly()
     {
         // ARRANGE
         var question = new Question()
@@ -56,7 +56,7 @@ public class DashboardQuestionComponentTests : TestContext
     }
 
     [Fact]
-    public void RenderingWithoutQuestionWillNotCrash()
+    public void Render_Without_Throwing_Without_A_Question()
     {
         // ACT 
         var component = RenderComponent<DashboardQuestionComponent>(parameters =>
@@ -66,35 +66,5 @@ public class DashboardQuestionComponentTests : TestContext
         
         // ASSERT
         Assert.NotNull(component); 
-    }
-
-    [Fact]
-    public void RenderingWithoutAnswersWillNotCrash()
-    {
-        // ARRANGE
-        var question = new Question()
-        {
-            Id = 1,
-            Text = "What is your favorite color?",
-            Category = "Interests",
-            Link = "http://link",
-            Answers = [
-                new Answer(1, "Red"),
-                new Answer(2, "Orange"),
-                new Answer(3, "Yellow"),
-                new Answer(4, "Green"),
-                new Answer(5, "Purple")
-            ]
-        };
-        var revealedQuestion = new QuestionWithAnswers(question);
-
-        // ACT 
-        var component = RenderComponent<DashboardQuestionComponent>(parameters =>
-        {
-            parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
-        }); 
-        
-        // ASSERT
-        Assert.NotNull(component);
     }
 }

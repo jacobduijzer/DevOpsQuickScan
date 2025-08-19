@@ -2,10 +2,10 @@ using DevOpsQuickScan.Core;
 
 namespace DevOpsQuickScan.Tests.Core;
 
-public class ExportServiceTests
+public class Export_Service_Should
 {
     [Fact]
-    public async Task CanExportSessionDataToCsv()
+    public async Task Export_Session_Data_As_Csv()
     {
         // ARRANGE
         ExportService exportService = new();

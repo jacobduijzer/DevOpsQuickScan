@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace DevOpsQuickScan.Tests.Core;
 
-public class QuestionServiceTests
+public class Question_Service_Should
 {
     [Fact]
-    public async Task CanLoadQuestionsFromDisk()
+    public async Task Load_Questions_From_Disk()
     {
         // ARRANGE
         QuestionsService questionsService = new("Core");
@@ -20,7 +20,7 @@ public class QuestionServiceTests
     }
     
     [Fact]
-    public async Task ThrowsWhenFileCanNotBeFound()
+    public async Task Throw_Exception_When_File_Can_Not_Be_Found()
     {
         // ARRANGE
         QuestionsService questionsService = new("./");

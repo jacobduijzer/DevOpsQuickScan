@@ -2,10 +2,10 @@ using DevOpsQuickScan.Core;
 
 namespace DevOpsQuickScan.Tests.Core;
 
-public class SessionServiceTests
+public class Session_Service_Should
 {
     [Fact]
-    public async Task CanInitializeSessionService()
+    public async Task Initialize_Session_Service()
     {
         // ARRANGE & ACT
         var sessionService = await InitializeSessionService();
@@ -17,7 +17,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanJoinSession()
+    public async Task Accept_Participants()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -37,7 +37,7 @@ public class SessionServiceTests
     }
     
     [Fact]
-    public async Task CanNotJoinSessionTwice()
+    public async Task Not_Accept_Duplicate_Participants()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -58,7 +58,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanRemoveUserFromSession()
+    public async Task Be_Able_To_Remove_Participant_From_Session()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -79,7 +79,7 @@ public class SessionServiceTests
     }
     
     [Fact]
-    public async Task CannotRemoveUserFromSessionTwice()
+    public async Task Not_Be_Able_To_Remove_A_Participant_Twice()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -101,7 +101,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanAskQuestion()
+    public async Task Be_Able_To_Ask_Questions()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -125,7 +125,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanNotAskQuestionAgain()
+    public async Task Not_Be_Able_To_Ask_Question_Twice()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -147,7 +147,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task ParticipantCanAnswerQuestion()
+    public async Task Accept_Answers_From_Participants()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -171,7 +171,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanNotAnswerQuestionAgain()
+    public async Task Not_Accept_Answer_From_Participant_Twice()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -192,7 +192,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanRevealAnsweredQuestion()
+    public async Task Be_Able_To_Reveal_Answers()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -220,7 +220,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanGetQuestionWithAnswers()
+    public async Task Create_A_Question_With_The_Counted_Answers()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -242,7 +242,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanResetQuestionWhenCurrentQuestion()
+    public async Task Be_Able_To_Reset_An_Active_Question()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -275,7 +275,7 @@ public class SessionServiceTests
     }
     
     [Fact]
-    public async Task CanResetQuestionWhenNotCurrentQuestion()
+    public async Task Be_Able_To_Rename_An_Inactive_Question()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();
@@ -311,7 +311,7 @@ public class SessionServiceTests
     }
 
     [Fact]
-    public async Task CanResetSession()
+    public async Task Be_Able_To_Reset_The_Complete_Session()
     {
         // ARRANGE
         var sessionService = await InitializeSessionService();

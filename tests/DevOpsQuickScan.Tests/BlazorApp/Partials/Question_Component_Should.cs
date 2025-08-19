@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Partials;
 
-public class QuestionComponentTests : TestContext
+public class Question_Component_Should : TestContext
 {
     [Fact]
-    public void RendersQuestionCorrectly()
+    public void Render_Question_Correctly()
     {
         // ARRANGE
         var question = new Question()
@@ -69,7 +69,7 @@ public class QuestionComponentTests : TestContext
     }
 
     [Fact]
-    public void RenderingWithoutQuestionWillNotCrash()
+    public void Render_Correctly_Without_Question()
     {
         // ACT
         var component = RenderComponent<QuestionComponent>(parameters =>
@@ -85,7 +85,7 @@ public class QuestionComponentTests : TestContext
     }
 
     [Fact]
-    public void SelectingAnswerEnablesButton()
+    public void Enable_Button_When_Answer_Is_Selected()
     {
         var question = new Question()
         {
@@ -120,7 +120,7 @@ public class QuestionComponentTests : TestContext
     }
 
     [Fact]
-    public void CanSubmitAnswer()
+    public void Submit_Answers()
     {
         var question = new Question()
         {
@@ -163,7 +163,7 @@ public class QuestionComponentTests : TestContext
     }
 
     [Fact]
-    public void LoadingWithSelectionSelectsAnswerAndRemovesButton()
+    public void Load_With_Preselected_Answer_And_Disabled_Button()
     {
         // ARRANGE
         var question = new Question()
