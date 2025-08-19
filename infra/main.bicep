@@ -6,6 +6,9 @@ param location string = resourceGroup().location
 @description('The name of the Web App')
 param webAppName string
 
+@description('The subdomain to bind (e.g., app.example.com)')
+param customDomainName string
+
 @description('The name of the App Service plan')
 param hostingPlanName string = '${webAppName}-plan'
 
@@ -23,7 +26,6 @@ var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup(
 var storageAccountName = substring(baseStorageAccountName, 0, 24)
 var questionContainerName = 'questiondata'
 var sessionContainerName = 'sessiondata'
-
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
@@ -56,9 +58,6 @@ resource sessionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobService
   properties: {
     publicAccess: 'None'
   }
-  dependsOn: [
-    storageAccount
-  ]
 }
 
 resource questionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
@@ -66,9 +65,6 @@ resource questionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServic
   properties: {
     publicAccess: 'None'
   }
-  dependsOn: [
-    storageAccount
-  ]
 }
 
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
@@ -105,6 +101,16 @@ resource appSettings 'Microsoft.Web/sites/config@2024-04-01' = {
   name: 'appsettings'
   parent: webApp
   properties: appConfigNew
+}
+
+resource domainBinding 'Microsoft.Web/sites/hostNameBindings@2024-11-01' = {
+  name: customDomainName
+  parent: webApp
+  properties: {
+    siteName: webApp.name
+    hostNameType: 'Verified' // use 'Managed' for Azure DNS Zone
+    customHostNameDnsRecordType: 'CName'
+  }
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
