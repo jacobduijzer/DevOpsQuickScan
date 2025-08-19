@@ -110,8 +110,20 @@ resource domainBinding 'Microsoft.Web/sites/hostNameBindings@2024-11-01' = {
     siteName: webApp.name
     hostNameType: 'Verified' // use 'Managed' for Azure DNS Zone
     customHostNameDnsRecordType: 'CName'
+    sslState: 'Disabled'
   }
 }
+
+module certificateBindings './bindCertificateToHostname.bicep' = {
+  name: '${deployment().name}-ssl'
+  params: {
+    appServicePlanResourceId: hostingPlan.id
+    hostname: customDomainName
+    location: location
+    webAppName: webApp.name
+  }
+}
+
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
