@@ -55,7 +55,7 @@
 
     [Parameter] public required Question Question { get; set; }
     [Parameter] public int? PreviousAnswer { get; set; }
-    [Parameter] public required EventCallback<QuestionAnsweredDto> OnQuestionAnswered { get; set; }
+    [Parameter] public required EventCallback<QuestionAnswered> OnQuestionAnswered { get; set; }
 
     private int? _selectedAnswer;
     private bool _hasSubmitted = false;
@@ -75,7 +75,7 @@
 
     private async Task SubmitAnswer()
     {
-        await OnQuestionAnswered.InvokeAsync(new QuestionAnsweredDto(Question.Id, _selectedAnswer!.Value));
+        await OnQuestionAnswered.InvokeAsync(new QuestionAnswered(Question.Id, _selectedAnswer!.Value));
         _hasSubmitted = true;
     }
 
