@@ -76,6 +76,7 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   }
   properties: {
     serverFarmId: hostingPlan.id
+    httpsOnly: true
     siteConfig: {
       linuxFxVersion: 'DOCKER|${dockerHubUsername}/devops-quickscan:latest'
     }
