@@ -36,7 +36,7 @@
       case SessionState.RevealingAnswers:
         @if (_revealedQuestion is not null)
         {  
-          <RevealComponent RevealedQuestion="_revealedQuestion" />
+          <RevealComponent QuestionWithAnswers="_revealedQuestion" />
         }
         break;
       case SessionState.NotStarted:
