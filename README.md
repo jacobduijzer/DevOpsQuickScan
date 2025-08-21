@@ -20,6 +20,10 @@ team—based on the DORA.dev capabilities.
 * Retrospectives
 * Continuous improvement rituals
 
+## Architecture
+
+[Here](https://jacobduijzer.github.io/DevOpsQuickScan/) is a likec4 architectural overview.
+
 ## Getting Started
 
 Prerequisites
