@@ -1,0 +1,65 @@
+specification {
+    element actor
+    element system
+    element component
+}
+
+model {
+
+    actor facilitator {
+        title 'Facilitator'
+        description 'The person who facilitates the session. The facilitator selects the question, gives some background information. The facilitator also decides when to reveal the answers. Leads the discussions afterwards.'
+    }
+    actor participant {
+        title 'Participant'
+        description 'A person who participates in the session and answers the questions. Also participates in the discussions afterwards.'
+    }
+
+    quickscan = system 'QuickScan System' {
+        
+        description 'A system that allows a facilitator to ask questions to participants and receive answers. Participants can answer questions and view the current question and answers of others.'
+
+        component facilitation {
+            title 'Facilitation'
+            description 'Handles the sending of questions and receiving of answers.'
+        }
+
+        component dashboard {
+            title 'Dashboard'
+            description 'Shows the current question and the answers of the participants. Contains a QR code so participants can join the session. Can be used on a large screen.'
+        }
+
+        component participation {
+            title 'Participation'
+            description 'Shows current question or revealed answers.'
+        }
+
+        component filestorage {
+            title 'File Storage'
+            description 'Questions and sessions are stored in Json format on disk.'
+        }
+
+        facilitation -> dashboard 'Uses'
+        participant -> dashboard 'Viewing'
+
+        facilitation -> filestorage 'Stores'
+        filestorage -> facilitation 'Retrieves'
+
+        facilitator -> facilitation 'Uses'
+        participant -> participation 'Uses'
+
+        facilitation -> participation 'Question'
+        participation -> facilitation 'Answer'
+        facilitation -> participation 'Revealing answers'
+    }
+}
+
+views {
+    view index {
+        include *
+    }
+
+    view of quickscan {
+        include *
+    }
+}
