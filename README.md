@@ -50,6 +50,10 @@ They can see the overall results after each question is revealed.
 
 <a href="./docs/images/quickscan-participant-4.png"><img src="./docs/images/quickscan-participant-4.png" width="800"></a>
 
+## Architecture
+
+[Here](https://jacobduijzer.github.io/DevOpsQuickScan/) is a likec4 architectural overview.
+
 ## Getting Started
 
 Prerequisites
