@@ -5,6 +5,13 @@
 A lightweight, real-time questionnaire tool to spark meaningful conversations and improvements in your engineering
 team—based on the DORA.dev capabilities.
 
+## Use Cases
+
+* Engineering team off-sites
+* Internal DevOps health checks
+* Retrospectives
+* Continuous improvement rituals
+
 ## Features
 
 * ✅ Real-time feedback with SignalR
@@ -13,12 +20,35 @@ team—based on the DORA.dev capabilities.
 * 🧰 Easy to self-host via Docker
 * 🖥️ Built with .NET + Razor
 
-## Use Cases
+### Facilitator Views 
 
-* Engineering team off-sites
-* Internal DevOps health checks
-* Retrospectives
-* Continuous improvement rituals
+The facilitator can see al available questions, select them, control the flow of the session, reveal answers, and export results.
+
+<a href="./docs/images/quickscan-facilitator-1.png"><img src="./docs/images/quickscan-facilitator-1.png" width="800"></a>
+
+The facilitator can also see the answers coming in, in real-time, when participants are answering the questions.
+
+<a href="./docs/images/quickscan-facilitator-2.png"><img src="./docs/images/quickscan-facilitator-2.png" width="800"></a>
+
+### Dashboard View
+
+The dashboard view is designed for large screens, showing the current question or results with a QR code to join.
+
+<a href="./docs/images/quickscan-participant-2.png"><img src="./docs/images/quickscan-participant-2.png" width="800"></a>
+
+Revealed answers are shown in a clear and engaging manner, to help facilitate discussions.
+
+<a href="./docs/images/quickscan-participant-3.png"><img src="./docs/images/quickscan-participant-3.png" width="800"></a>
+
+### Participant Views
+
+Participants can view and answer questions on their own devices.
+
+<a href="./docs/images/quickscan-participant-1.png"><img src="./docs/images/quickscan-participant-1.png" width="800"></a>
+
+They can see the overall results after each question is revealed.
+
+<a href="./docs/images/quickscan-participant-4.png"><img src="./docs/images/quickscan-participant-4.png" width="800"></a>
 
 ## Getting Started
 
