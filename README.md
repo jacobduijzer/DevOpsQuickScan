@@ -20,9 +20,10 @@ team—based on the DORA.dev capabilities.
 * 🧰 Easy to self-host via Docker
 * 🖥️ Built with .NET + Razor
 
-### Facilitator Views 
+### Facilitator Views
 
-The facilitator can see al available questions, select them, control the flow of the session, reveal answers, and export results.
+The facilitator can see al available questions, select them, control the flow of the session, reveal answers, and export
+results.
 
 <a href="./docs/images/quickscan-facilitator-1.png"><img src="./docs/images/quickscan-facilitator-1.png" width="800"></a>
 
@@ -68,11 +69,11 @@ Prerequisites
     docker run -p 8080:8080 jacobduijzer/devops-quickscan:latest
 ```
 
-| Role        | Url                               | Description                                                                                  |
-|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| Facilitator | http://localhost:8080/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
-| Dashboard   | http://localhost:8080/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
-| Participant | http://localhost:8080/            | Where team members answer the questions and see live results.                                |
+| Role        | Url                                  | Description                                                                                  |
+|-------------|--------------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:8080/FacilitatorHub | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:8080/Dashboard      | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:8080/               | Where team members answer the questions and see live results.                                |
 
 ### Local run
 
@@ -83,11 +84,11 @@ Prerequisites
 
 Then open the appropriate URL based on your role:
 
-| Role        | Url                               | Description                                                                                  |
-|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| Facilitator | http://localhost:5119/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
-| Dashboard   | http://localhost:5119/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
-| Participant | http://localhost:5119/            | Where team members answer the questions and see live results.                                |
+| Role        | Url                                  | Description                                                                                  |
+|-------------|--------------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:5119/FacilitatorHub | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:5119/Dashboard      | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:5119/               | Where team members answer the questions and see live results.                                |
 
 ### Local Docker
 
@@ -96,11 +97,11 @@ Then open the appropriate URL based on your role:
     docker run -p 8080:8080 devops-quickscan
 ```
 
-| Role        | Url                               | Description                                                                                  |
-|-------------|-----------------------------------|----------------------------------------------------------------------------------------------|
-| Facilitator | http://localhost:8080/facilitator | Select questions, control the flow, reveal answers, and export results.                      |
-| Dashboard   | http://localhost:8080/dashboard   | A display for large screens, showing the current question or results with a QR code to join. |
-| Participant | http://localhost:8080/            | Where team members answer the questions and see live results.                                |
+| Role        | Url                                  | Description                                                                                  |
+|-------------|--------------------------------------|----------------------------------------------------------------------------------------------|
+| Facilitator | http://localhost:8080/FacilitatorHub | Select questions, control the flow, reveal answers, and export results.                      |
+| Dashboard   | http://localhost:8080/Dashboard      | A display for large screens, showing the current question or results with a QR code to join. |
+| Participant | http://localhost:8080/               | Where team members answer the questions and see live results.                                |
 
 ## Todo / Wishlist
 

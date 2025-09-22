@@ -1,4 +1,4 @@
-﻿@page "/facilitator"
+﻿@page "/FacilitatorHub"
 @using System.Text
 @using DevOpsQuickScan.Core
 @using DevOpsQuickScan.BlazorApp.Components.Partials
@@ -30,7 +30,6 @@
 
 <div class="question-block" style="margin-bottom: 1.5rem;">
     <div class="btn-group" role="group">
-        <a href="/dashboard" class="btn btn-primary" target="_blank">Dashboard</a>
         <button class="btn btn-secondary" @onclick="DownloadFileFromStream">Download results</button>
         <button class="btn btn-danger" @onclick="@(async () => await ResetSession())">Reset session</button>
     </div> 
@@ -92,13 +91,9 @@
         return fileStream;
     }
 
-
     private async Task ResetSession()
     {
         Session.Reset();
         await InvokeAsync(StateHasChanged);
     }
-    
-    
-
 }

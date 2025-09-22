@@ -107,3 +107,14 @@ h1:focus {
     font-weight: 500;
     cursor: pointer;
 }
+
+.nav-separator::after {
+    content: "|";
+    margin-left: 0.5rem; /* space after the item */
+    margin-right: 0.5rem; /* space after the item */
+    color: #6c757d;      /* optional: muted color */
+}
+
+.nav-separator:last-child::after {
+    content: "";          /* remove pipe for last item */
+}
