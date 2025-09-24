@@ -17,15 +17,13 @@ param appInsightsName string = '${webAppName}-appinsights'
 
 @description('Docker hub password')
 @secure()
-param dockerHubPassword string 
+param dockerHubPassword string
 
 @description('Docker hub username')
-param dockerHubUsername string 
+param dockerHubUsername string
 
 var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup().id)}')
 var storageAccountName = substring(baseStorageAccountName, 0, 24)
-var questionContainerName = 'questiondata'
-var sessionContainerName = 'sessiondata'
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
@@ -40,32 +38,18 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   }
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
-  name: storageAccountName
-  location: location
-  sku: {
-    name: 'Standard_LRS'
-  }
-  kind: 'StorageV2'
-  properties: {
-    accessTier: 'Hot'
-    supportsHttpsTrafficOnly: true
-  }
-}
-
-resource sessionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
-  name: '${storageAccount.name}/default/${questionContainerName}'
-  properties: {
-    publicAccess: 'None'
-  }
-}
-
-resource questionDataBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2024-01-01' = {
-  name: '${storageAccount.name}/default/${sessionContainerName}'
-  properties: {
-    publicAccess: 'None'
-  }
-}
+// resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
+//   name: storageAccountName
+//   location: location
+//   sku: {
+//     name: 'Standard_LRS'
+//   }
+//   kind: 'StorageV2'
+//   properties: {
+//     accessTier: 'Hot'
+//     supportsHttpsTrafficOnly: true
+//   }
+// }
 
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: webAppName
@@ -83,25 +67,19 @@ resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   }
 }
 
-var appConfigNew = {
-  DOCKER_ENABLE_CI: 'true'
-  DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
-  DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
-  DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
-  APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
-  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
-  BLOB_STORAGE_ACCOUNT_NAME: storageAccount.name
-  BLOB_STORAGE_SHARED_ACCESS_KEY: storageAccount.listKeys().keys[0].value
-  BLOG_STORAGE_QUESTIONS_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${questionContainerName}'
-  BLOG_STORAGE_SESSION_CONTAINER_URL: 'https://${storageAccount.name}.blob.core.windows.net/${sessionContainerName}'
-  ASPNETCORE_URLS: 'http://+:8080'
-  WEBSITES_PORT: '8080'
-}
-
-resource appSettings 'Microsoft.Web/sites/config@2024-04-01' = {
+resource appSettings 'Microsoft.Web/sites/config@2024-11-01' = {
   name: 'appsettings'
   parent: webApp
-  properties: appConfigNew
+  properties: {
+    DOCKER_ENABLE_CI: 'true'
+    DOCKER_REGISTRY_SERVER_PASSWORD: dockerHubPassword
+    DOCKER_REGISTRY_SERVER_URL: 'https://index.docker.io/v1/'
+    DOCKER_REGISTRY_SERVER_USERNAME: dockerHubUsername
+    APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: appInsights.properties.ConnectionString
+    ASPNETCORE_URLS: 'http://+:8080'
+    WEBSITES_PORT: '8080'
+  }
 }
 
 resource domainBinding 'Microsoft.Web/sites/hostNameBindings@2024-11-01' = {
@@ -109,7 +87,7 @@ resource domainBinding 'Microsoft.Web/sites/hostNameBindings@2024-11-01' = {
   parent: webApp
   properties: {
     siteName: webApp.name
-    hostNameType: 'Verified' 
+    hostNameType: 'Verified'
     customHostNameDnsRecordType: 'CName'
     sslState: 'Disabled' // disable, enable in the module
   }
@@ -137,16 +115,4 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
-resource storageBlobContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, webApp.id, storageAccount.id, 'Storage Blob Data Contributor')
-  scope: storageAccount
-  properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe') // Storage Blob Data Contributor
-    principalId: webApp.identity.principalId
-    principalType: 'ServicePrincipal'
-  }
-}
-
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
-output storageAccountName string = storageAccount.name
-output storageAccountKey string = storageAccount.listKeys().keys[0].value
