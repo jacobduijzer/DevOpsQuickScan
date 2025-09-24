@@ -44,6 +44,7 @@ jobs:
             --template-file infra/main.bicep \
             --parameters webAppName=$WEBAPP_NAME dockerHubPassword=${{ secrets.DOCKERHUB_TOKEN }} dockerHubUsername=${{ secrets.DOCKERHUB_USERNAME }} customDomainName=$DOMAIN_NAME \
             --query "{storageAccountName:properties.outputs.storageAccountName.value, storageAccountKey:properties.outputs.storageAccountKey.value}" \
+            -- debug \
             --output json > outputs.json
           cat outputs.json
 

@@ -22,8 +22,6 @@ param dockerHubPassword string
 @description('Docker hub username')
 param dockerHubUsername string
 
-var baseStorageAccountName = toLower('${webAppName}${uniqueString(resourceGroup().id)}')
-var storageAccountName = substring(baseStorageAccountName, 0, 24)
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
@@ -37,19 +35,6 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
     reserved: true
   }
 }
-
-// resource storageAccount 'Microsoft.Storage/storageAccounts@2024-01-01' = {
-//   name: storageAccountName
-//   location: location
-//   sku: {
-//     name: 'Standard_LRS'
-//   }
-//   kind: 'StorageV2'
-//   properties: {
-//     accessTier: 'Hot'
-//     supportsHttpsTrafficOnly: true
-//   }
-// }
 
 resource webApp 'Microsoft.Web/sites@2024-04-01' = {
   name: webAppName
