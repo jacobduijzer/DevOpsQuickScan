@@ -71,7 +71,7 @@ resource domainBinding 'Microsoft.Web/sites/hostNameBindings@2024-11-01' = {
   name: customDomainName
   parent: webApp
   properties: {
-    siteName: webApp.name
+    siteName: 'https://quickscan.duijzer.com'
     hostNameType: 'Verified'
     customHostNameDnsRecordType: 'CName'
     sslState: 'Disabled' // disable, enable in the module

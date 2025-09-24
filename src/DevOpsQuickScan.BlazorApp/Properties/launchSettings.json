@@ -5,7 +5,7 @@
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": false,
-        "launchUrl": "facilitator",
+        "launchUrl": "FacilitatorHub",
         "applicationUrl": "http://localhost:5119",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
@@ -15,7 +15,7 @@
         "commandName": "Project",
         "dotnetRunMessages": true,
         "launchBrowser": false,
-        "launchUrl": "facilitator",
+        "launchUrl": "FacilitatorHub",
         "applicationUrl": "https://localhost:7176",
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
