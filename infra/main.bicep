@@ -100,4 +100,12 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   }
 }
 
+resource azureMailServices 'Microsoft.Communication/emailServices@2025-05-01' = {
+  name: 'acs-${webAppName}'
+  location: location
+  properties: {
+    dataLocation: 'string'
+  }
+}
+
 output webAppUrl string = 'https://${webAppName}.azurewebsites.net/'
