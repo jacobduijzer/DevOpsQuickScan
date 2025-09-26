@@ -104,7 +104,7 @@ resource azureMailServices 'Microsoft.Communication/emailServices@2025-05-01' = 
   name: 'acs-${webAppName}'
   location: location
   properties: {
-    dataLocation: 'string'
+    dataLocation: 'Europe'
   }
 }
 
