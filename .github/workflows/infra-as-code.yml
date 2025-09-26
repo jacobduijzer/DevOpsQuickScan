@@ -20,6 +20,7 @@ env:
 
 jobs:
   deploy:
+    environment: devops-quickscan-azure
     runs-on: ubuntu-latest
 
     steps:
