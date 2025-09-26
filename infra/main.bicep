@@ -22,7 +22,6 @@ param dockerHubPassword string
 @description('Docker hub username')
 param dockerHubUsername string
 
-
 resource hostingPlan 'Microsoft.Web/serverfarms@2024-04-01' = {
   name: hostingPlanName
   location: location
@@ -97,14 +96,6 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   kind: 'web'
   properties: {
     Application_Type: 'web'
-  }
-}
-
-resource azureMailServices 'Microsoft.Communication/emailServices@2025-05-01' = {
-  name: 'acs-${webAppName}'
-  location: location
-  properties: {
-    dataLocation: 'Europe'
   }
 }
 

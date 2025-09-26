@@ -402,3 +402,4 @@ FodyWeavers.xsd
 
 # MacOs
 .DS_Store
+az-deploy-test.sh
