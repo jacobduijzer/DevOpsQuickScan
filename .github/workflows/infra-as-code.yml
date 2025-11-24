@@ -21,6 +21,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: devops-quickscan-azure
 
     steps:
       - name: Checkout code
