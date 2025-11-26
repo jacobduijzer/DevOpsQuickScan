@@ -253,7 +253,7 @@
     "id": 10,
     "text": "How effectively does your team practice continuous delivery?",
     "link": "https://dora.dev/capabilities/continuous-delivery/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -281,7 +281,7 @@
     "id": 11,
     "text": "How does your team manage database changes?",
     "link": "https://dora.dev/capabilities/database-change-management/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -309,7 +309,7 @@
     "id": 12,
     "text": "How automated are your deployment processes?",
     "link": "https://dora.dev/capabilities/deployment-automation/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -337,7 +337,7 @@
     "id": 13,
     "text": "How flexible and on-demand is your infrastructure provisioning?",
     "link": "https://dora.dev/capabilities/flexible-infrastructure/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -365,7 +365,7 @@
     "id": 14,
     "text": "How independently can your team deliver and deploy changes without relying on other teams?",
     "link": "https://dora.dev/capabilities/loosely-coupled-teams/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -393,7 +393,7 @@
     "id": 15,
     "text": "How streamlined is your change approval process?",
     "link": "https://dora.dev/capabilities/streamlining-change-approval/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -421,7 +421,7 @@
     "id": 16,
     "text": "How closely does your team follow trunk-based development practices?",
     "link": "https://dora.dev/capabilities/trunk-based-development/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -449,7 +449,7 @@
     "id": 17,
     "text": "How effectively does your team use version control for all production artifacts?",
     "link": "https://dora.dev/capabilities/version-control/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -477,7 +477,7 @@
     "id": 18,
     "text": "How effectively does your team use visual management to track work and progress?",
     "link": "https://dora.dev/capabilities/visual-management/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -505,7 +505,7 @@
     "id": 19,
     "text": "How does your team manage work in progress (WIP) limits?",
     "link": "https://dora.dev/capabilities/wip-limits/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
@@ -533,7 +533,7 @@
     "id": 20,
     "text": "How consistently does your team work in small batches?",
     "link": "https://dora.dev/capabilities/working-in-small-batches/",
-    "category": "Capabilities that enable Fast Delivery",
+    "category": "Capabilities that enable Fast Flow",
     "answers": [
       {
         "id": 1,
