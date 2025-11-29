@@ -3,6 +3,7 @@ using DevOpsQuickScan.BlazorApp.Components;
 using DevOpsQuickScan.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddServiceDefaults();
 
 builder.Services
     .AddApplicationInsightsTelemetry()

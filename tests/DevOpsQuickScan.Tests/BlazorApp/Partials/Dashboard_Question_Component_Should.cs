@@ -34,7 +34,7 @@ public class Dashboard_Question_Component_Should : TestContext
         };
 
         // ACT 
-        var component = RenderComponent<DashboardQuestionComponent>(parameters =>
+        var component = Render<DashboardQuestionComponent>(parameters =>
         {
             parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         });
@@ -59,7 +59,7 @@ public class Dashboard_Question_Component_Should : TestContext
     public void Render_Without_Throwing_Without_A_Question()
     {
         // ACT 
-        var component = RenderComponent<DashboardQuestionComponent>(parameters =>
+        var component = Render<DashboardQuestionComponent>(parameters =>
         {
             parameters.Add(p => p.QuestionWithAnswers, null);
         }); 

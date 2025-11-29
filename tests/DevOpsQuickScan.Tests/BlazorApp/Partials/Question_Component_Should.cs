@@ -29,7 +29,7 @@ public class Question_Component_Should : TestContext
         };
 
         // ACT 
-        var component = RenderComponent<QuestionComponent>(parameters =>
+        var component = Render<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
@@ -72,7 +72,7 @@ public class Question_Component_Should : TestContext
     public void Render_Correctly_Without_Question()
     {
         // ACT
-        var component = RenderComponent<QuestionComponent>(parameters =>
+        var component = Render<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, null);
             parameters.Add(p => p.PreviousAnswer, null);
@@ -103,7 +103,7 @@ public class Question_Component_Should : TestContext
             ]
         };
 
-        var component = RenderComponent<QuestionComponent>(parameters =>
+        var component = Render<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
@@ -140,7 +140,7 @@ public class Question_Component_Should : TestContext
 
         QuestionAnswered? answeredQuestion = null;
 
-        var component = RenderComponent<QuestionComponent>(parameters =>
+        var component = Render<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, null);
@@ -183,7 +183,7 @@ public class Question_Component_Should : TestContext
         };
 
         // ACT 
-        var component = RenderComponent<QuestionComponent>(parameters =>
+        var component = Render<QuestionComponent>(parameters =>
         {
             parameters.Add(p => p.Question, question);
             parameters.Add(p => p.PreviousAnswer, 3);

@@ -13,7 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		Dockerfile = Dockerfile
+		QUESTIONS.md = QUESTIONS.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.AppHost", "src\DevOpsQuickScan.AppHost\DevOpsQuickScan.AppHost.csproj", "{C5DB7BA7-EBA7-4A3C-8D93-C25FED6B6D17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.ServiceDefaults", "src\DevOpsQuickScan.ServiceDefaults\DevOpsQuickScan.ServiceDefaults.csproj", "{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +41,13 @@ Global
 		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D5ACFA5-BF49-4055-A378-4C94BEAE9924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5DB7BA7-EBA7-4A3C-8D93-C25FED6B6D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5DB7BA7-EBA7-4A3C-8D93-C25FED6B6D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5DB7BA7-EBA7-4A3C-8D93-C25FED6B6D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5DB7BA7-EBA7-4A3C-8D93-C25FED6B6D17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

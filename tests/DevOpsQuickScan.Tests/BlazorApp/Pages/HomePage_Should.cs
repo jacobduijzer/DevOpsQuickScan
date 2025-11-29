@@ -20,7 +20,7 @@ public class HomePage_Should : TestContext
         Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
         
         // ACT
-        var homePage = RenderComponent<Home>();
+        var homePage = Render<Home>();
         
         // ASSERT
         Assert.NotEmpty(sessionService.Participants);
@@ -40,7 +40,7 @@ public class HomePage_Should : TestContext
         Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
         
         await sessionService.Initialize();
-        var homePage = RenderComponent<Home>();
+        var homePage = Render<Home>();
         
         // ACT
         sessionService.AskQuestion(1);
@@ -61,7 +61,7 @@ public class HomePage_Should : TestContext
         Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
         
         await sessionService.Initialize();
-        var homePage = RenderComponent<Home>();
+        var homePage = Render<Home>();
         sessionService.AskQuestion(1);
         
         // ACT

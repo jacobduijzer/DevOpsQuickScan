@@ -35,7 +35,7 @@ public class Reveal_Component_Should : TestContext
         };
         
         // ACT 
-        var component = RenderComponent<RevealComponent>(parameters =>
+        var component = Render<RevealComponent>(parameters =>
         {
             parameters.Add(p => p.QuestionWithAnswers, revealedQuestion);
         });
@@ -65,7 +65,7 @@ public class Reveal_Component_Should : TestContext
     public void Render_Component_Without_Question()
     {
         // ACT 
-        var component = RenderComponent<RevealComponent>(parameters =>
+        var component = Render<RevealComponent>(parameters =>
         {
             parameters.Add(p => p.QuestionWithAnswers, null);
         });

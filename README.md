@@ -5,6 +5,8 @@
 A lightweight, real-time questionnaire tool to spark meaningful conversations and improvements in your engineering
 team—based on the DORA.dev capabilities.
 
+The questions I use can be found [here](./QUESTIONS.md).
+
 ## Use Cases
 
 * Engineering team off-sites
