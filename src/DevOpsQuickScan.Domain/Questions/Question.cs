@@ -1,4 +1,4 @@
-namespace DevOpsQuickScan.Core;
+namespace DevOpsQuickScan.Domain.Questions;
 
 public class Question
 {

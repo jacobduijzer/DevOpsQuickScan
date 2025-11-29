@@ -1,10 +1,11 @@
 using Bunit;
 using DevOpsQuickScan.BlazorApp.Components.Partials;
 using DevOpsQuickScan.Core;
+using DevOpsQuickScan.Domain.Questions;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Partials;
 
-public class Dashboard_Question_Component_Should : TestContext
+public class DashboardQuestionComponentShould : BunitContext 
 {
     [Fact]
     public void Render_Correctly()

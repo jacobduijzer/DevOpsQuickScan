@@ -17,4 +17,8 @@
       <PackageReference Include="QRCoder" Version="1.7.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

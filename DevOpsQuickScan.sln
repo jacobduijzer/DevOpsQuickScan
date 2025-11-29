@@ -20,6 +20,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.AppHost", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.ServiceDefaults", "src\DevOpsQuickScan.ServiceDefaults\DevOpsQuickScan.ServiceDefaults.csproj", "{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Domain", "src\DevOpsQuickScan.Domain\DevOpsQuickScan.Domain.csproj", "{7FCB18C4-3345-4321-B2F7-561A87DF9E11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Infrastructure", "src\DevOpsQuickScan.Infrastructure\DevOpsQuickScan.Infrastructure.csproj", "{1C812229-CF85-48CC-9149-F9E5E223F60A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevOpsQuickScan.Application", "src\DevOpsQuickScan.Application\DevOpsQuickScan.Application.csproj", "{1ED99C98-941C-4A85-903D-41BFB0F87B65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,5 +55,17 @@ Global
 		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22E82128-7CFB-4AAA-A2FC-8519D1113B2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCB18C4-3345-4321-B2F7-561A87DF9E11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCB18C4-3345-4321-B2F7-561A87DF9E11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCB18C4-3345-4321-B2F7-561A87DF9E11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCB18C4-3345-4321-B2F7-561A87DF9E11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C812229-CF85-48CC-9149-F9E5E223F60A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C812229-CF85-48CC-9149-F9E5E223F60A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C812229-CF85-48CC-9149-F9E5E223F60A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C812229-CF85-48CC-9149-F9E5E223F60A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ED99C98-941C-4A85-903D-41BFB0F87B65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ED99C98-941C-4A85-903D-41BFB0F87B65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ED99C98-941C-4A85-903D-41BFB0F87B65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ED99C98-941C-4A85-903D-41BFB0F87B65}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

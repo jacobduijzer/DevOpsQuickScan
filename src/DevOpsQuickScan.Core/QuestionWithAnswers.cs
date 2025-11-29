@@ -1,3 +1,5 @@
+using DevOpsQuickScan.Domain.Questions;
+
 namespace DevOpsQuickScan.Core;
 
 public class QuestionWithAnswers(Question question)

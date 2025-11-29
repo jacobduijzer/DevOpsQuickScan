@@ -2,6 +2,7 @@ using AngleSharp.Dom;
 using Bunit;
 using DevOpsQuickScan.BlazorApp.Components.Partials;
 using DevOpsQuickScan.Core;
+using DevOpsQuickScan.Domain.Questions;
 using Microsoft.AspNetCore.Components;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Partials;

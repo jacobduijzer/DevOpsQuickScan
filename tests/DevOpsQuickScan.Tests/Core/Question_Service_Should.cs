@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace DevOpsQuickScan.Tests.Core;
 
-public class Question_Service_Should
+public class QuestionServiceShould
 {
     [Fact]
     public async Task Load_Questions_From_Disk()

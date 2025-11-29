@@ -1,8 +1,9 @@
 using DevOpsQuickScan.Core;
+using DevOpsQuickScan.Domain.Questions;
 
 namespace DevOpsQuickScan.Tests.Core;
 
-public class Session_Service_Should
+public class SessionServiceShould
 {
     [Fact]
     public async Task Initialize_Session_Service()

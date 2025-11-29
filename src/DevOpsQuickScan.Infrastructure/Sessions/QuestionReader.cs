@@ -1,15 +1,15 @@
 using System.Text.Json;
 using DevOpsQuickScan.Domain.Questions;
+using DevOpsQuickScan.Domain.Sessions;
 
-namespace DevOpsQuickScan.Core;
+namespace DevOpsQuickScan.Infrastructure.Sessions;
 
-public class QuestionsService(string webrootPath)
+public class QuestionReader(string webrootPath) : IQuestionReader
 {
     private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true, WriteIndented = true };
-
     private List<Question> _all = [];
 
-    public async Task<List<Question>> Load()
+    public async Task<List<Question>> Read()
     {
         var path = Path.Combine(webrootPath, "content", "questions.json");
         if (!File.Exists(path)) 

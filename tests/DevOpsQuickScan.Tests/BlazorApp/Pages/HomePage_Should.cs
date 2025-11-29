@@ -4,20 +4,20 @@ using DevOpsQuickScan.BlazorApp.Components.Pages;
 using DevOpsQuickScan.BlazorApp.Components.Partials;
 using DevOpsQuickScan.Core;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
+using NSubstitute;
 
 namespace DevOpsQuickScan.Tests.BlazorApp.Pages;
 
-public class HomePage_Should : TestContext
+public class HomePageShould : BunitContext 
 {
     [Fact]
     public void Load()
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();
-        Mock<IUserIdService> mockUserIdService = CreateMockUserIdService();
+        var userIdService = CreateSubstituteUserIdService();
         Services.AddSingleton<SessionService>(sessionService);
-        Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
+        Services.AddSingleton<IUserIdService>(userIdService);
         
         // ACT
         var homePage = Render<Home>();
@@ -35,9 +35,9 @@ public class HomePage_Should : TestContext
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();
-        Mock<IUserIdService> mockUserIdService = CreateMockUserIdService();
+        var userIdService = CreateSubstituteUserIdService();
         Services.AddSingleton<SessionService>(sessionService);
-        Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
+        Services.AddSingleton<IUserIdService>(userIdService);
         
         await sessionService.Initialize();
         var homePage = Render<Home>();
@@ -56,9 +56,9 @@ public class HomePage_Should : TestContext
     {
         // ARRANGE
         SessionService sessionService = CreateSessionService();
-        Mock<IUserIdService> mockUserIdService = CreateMockUserIdService();
+        var userIdService = CreateSubstituteUserIdService();
         Services.AddSingleton<SessionService>(sessionService);
-        Services.AddSingleton<IUserIdService>(mockUserIdService.Object);
+        Services.AddSingleton<IUserIdService>(userIdService);
         
         await sessionService.Initialize();
         var homePage = Render<Home>();
@@ -76,13 +76,10 @@ public class HomePage_Should : TestContext
     private static SessionService CreateSessionService() =>
         new (new QuestionsService("Core"), new ExportService());
 
-    private static Mock<IUserIdService> CreateMockUserIdService()
+    private static IUserIdService CreateSubstituteUserIdService()
     {
-        var mockUserIdService = new Mock<IUserIdService>();
-        mockUserIdService
-            .Setup(m => m.GetAsync())
-            .ReturnsAsync("test-user-id");
-
-        return mockUserIdService;
+        var userIdService = Substitute.For<IUserIdService>();
+        userIdService.GetAsync().Returns("test-user-id");
+        return userIdService;
     }
 }
